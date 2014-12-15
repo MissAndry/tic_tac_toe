@@ -3,7 +3,7 @@ require_relative 'player'
 
 class Game
   def initialize
-    @players  = players
+    @players = players
   end
 
   def human
@@ -23,8 +23,8 @@ class Game
   end
 
   def mark_space(where, player)
-    where = add_underscore(where)
-    board.grid[where.to_sym] = player.space
+    where = add_underscore(where).to_sym
+    board.grid[where] = player.space unless board.grid[where] != " "
   end
 
   def add_underscore(str)
