@@ -2,7 +2,6 @@ class Game
   COLUMN_BREAK = " | "
   BREAKER = "\n" + ("-" * 9) + "\n"
   def initialize
-    super
     @grid = grid
   end
 
