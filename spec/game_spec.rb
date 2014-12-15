@@ -21,11 +21,12 @@ describe 'Game' do
     end
   end
 
-  # describe '#mark_space' do
-  #   it 'marks the space where requested' do
-  #     expect{ game.mark_space("top left") }.to change{ game.rows[0][0] }
-  #   end
-  # end
+  describe '#mark_space' do
+    it 'marks the space where requested' do
+      expect{ game.mark_space("top left", game.computer) }.to change{ game.board.rows[0][0] }
+      expect{ game.mark_space("center", game.human) }.to change{ game.board.rows[1][1] }
+    end
+  end
 
   # describe '#add_underscore' do
   #   it 'replaces spaces with underscores' do

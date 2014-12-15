@@ -19,12 +19,12 @@ class Game
   end
 
   def board
-    "A board"
+    @board ||= Board.new
   end
 
-  def mark_space(where)
+  def mark_space(where, player)
     where = add_underscore(where)
-    board.grid[where.to_sym] = "X"
+    board.grid[where.to_sym] = player.space
   end
 
   def add_underscore(str)
