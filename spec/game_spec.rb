@@ -28,9 +28,9 @@ describe 'Game' do
     end
   end
 
-  # describe '#add_underscore' do
-  #   it 'replaces spaces with underscores' do
-  #     expect( game.add_underscore("top left") ).to eq("top_left")
-  #   end
-  # end
+  describe '#add_underscore' do
+    it 'replaces spaces with underscores' do
+      expect( game.add_underscore("top left") ).to eq("top_left")
+    end
+  end
 end
