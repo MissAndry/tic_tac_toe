@@ -12,7 +12,14 @@ describe 'Player' do
     expect(player2.space).to eq("hey")
   end
 
-  it 'initializes with "O" as a space by default' do
-    expect(player.space).to eq("O")
+  it 'initializes with "X" as a space by default' do
+    expect(player.space).to eq("X")
+  end
+end
+
+describe 'ComputerAI' do
+  let(:computer){ ComputerAI.new }
+  it 'uses an "O" as a space' do
+    expect(computer.space).to eq("O")
   end
 end
