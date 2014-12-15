@@ -21,6 +21,13 @@ class Board
     rows.transpose
   end
 
+  def diagonals
+    diagonal = []
+    diagonal << [grid[:top_left], grid[:center], grid[:bottom_right]]
+    diagonal << [grid[:top_right], grid[:center], grid[:bottom_left]]
+    diagonal
+  end
+
   def to_s
     full_board = []
     rows.each{ |row| full_board << row.join(COLUMN_BREAK) }

@@ -12,9 +12,15 @@ describe 'Board' do
     end
   end
 
-  describe '#column' do
+  describe '#columns' do
     it 'returns an array of all the columns' do
       expect(board.columns).to eq(board.rows.transpose)
+    end
+  end
+
+  describe '#diagonals' do
+    it 'returns an array of both diagonals' do
+      expect(board.diagonals).to eq([[board.rows[0][0], board.rows[1][1], board.rows[2][2]], [board.rows[0][2], board.rows[1][1], board.rows[2][0]]])
     end
   end
 
