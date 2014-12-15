@@ -3,7 +3,9 @@ require_relative 'player'
 
 class Game
   def initialize
-    @players = players
+    @human    = human
+    @computer = computer
+    @board    = board
   end
 
   def human
@@ -14,12 +16,16 @@ class Game
     @computer ||= ComputerAI.new
   end
 
+  def board
+    @board ||= Board.new
+  end
+
   def players
     @players ||= [human, computer]
   end
 
-  def board
-    @board ||= Board.new
+  def finished?
+    board.rows.flatten.all? { |x| x != " " } || winner != nil
   end
 
   def mark_space(where, player)
@@ -29,5 +35,13 @@ class Game
 
   def add_underscore(str)
     str.gsub(" ", "_")
+  end
+
+  def winner
+    players.each do |player|
+      return player if board.rows.any? { |row| row.all? { |space| space == player.space } }
+      return player if board.columns.any? { |column| column.all? { |space| space == player.space } }
+      return player if board.diagonals.any? { |diagonal| diagonal.all? { |space| space == player.space } }
+    end
   end
 end

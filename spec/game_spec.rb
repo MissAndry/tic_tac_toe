@@ -44,4 +44,27 @@ describe 'Game' do
       expect( game.add_underscore("top left") ).to eq("top_left")
     end
   end
+
+  describe '#winner' do
+    it 'returns the winner if there is a filled row' do
+      game.mark_space("middle left", game.computer)
+      game.mark_space("center", game.computer)
+      game.mark_space("middle right", game.computer)
+      expect( game.winner ).to be( game.computer )
+    end
+
+    it 'returns the winner if there is a filled column' do
+      game.mark_space("top right", game.human)
+      game.mark_space("middle right", game.human)
+      game.mark_space("bottom right", game.human)
+      expect( game.winner ).to be( game.human )
+    end
+
+    it 'returns the winner if there is a filled diagonal' do
+      game.mark_space("top right", game.human)
+      game.mark_space("center", game.human)
+      game.mark_space("bottom left", game.human)
+      expect( game.winner ).to be( game.human )
+    end
+  end
 end
