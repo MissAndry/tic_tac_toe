@@ -33,8 +33,8 @@ describe 'Computer' do
 
   describe 'ComputerAI module' do
     describe '#find_empty_spaces' do
-      it 'returns empty spaces from a board grid' do
-        expect(computer.find_empty_spaces(started_grid)).to eq([:top_center, :top_right, :middle_left, :bottom_center])
+      it 'returns empty key-value pairs from a board grid' do
+        expect(computer.find_empty_spaces(started_grid)).to eq({bottom_center: " ", middle_left: " ", top_center: " ", top_right: " "})
       end
     end
 
