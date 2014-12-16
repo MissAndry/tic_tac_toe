@@ -9,12 +9,14 @@ module ComputerAI
   end
 
   def next_move(board_grid)
-    pick_me = []
-    picked = nil
-    possible_moves = find_empty_spaces(board_grid)
+    # picked = nil
+    # possible_moves = find_empty_spaces(board_grid)
     all_combinations = grid_rows(board_grid) + grid_cols(board_grid) + grid_diag(board_grid)
-    all_combinations.each { |combo| pick_me = combo if combo.flatten.values_at(1, 3, 5).sort == [" ", self.space, self.space] }
-    pick_me.select{ |pair| return pair[0] if pair[1] == " "}
+    all_combinations.each do |combo|
+      if combo.flatten.values_at(1, 3, 5).sort == [" ", self.space, self.space] || combo.flatten.values_at(1, 3, 5).sort == [" ", "X", "X"]
+        combo.select{ |pair| return pair[0] if pair[1] == " "}
+      end
+    end
   end
 
   def grid_rows(grid_keys_or_vals)
