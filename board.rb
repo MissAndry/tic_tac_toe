@@ -23,8 +23,8 @@ class Board
 
   def diagonals
     diagonal = []
-    diagonal << [grid[:top_left], grid[:center], grid[:bottom_right]]
-    diagonal << [grid[:top_right], grid[:center], grid[:bottom_left]]
+    diagonal << rows.map.with_index { |key, index| key[index] }
+    diagonal << rows.map.with_index(1) { |key, index| key[-index] }
     diagonal
   end
 
