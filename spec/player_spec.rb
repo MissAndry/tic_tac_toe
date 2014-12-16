@@ -113,7 +113,7 @@ end
 
 describe 'Human' do
   let(:human){ Human.new }
-  it 'uses an "X" as a space' do
+  it 'uses an "X" as a marker' do
     expect(human.space).to eq("X")
   end
 end
