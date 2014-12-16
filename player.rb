@@ -1,8 +1,4 @@
 class Player
-  attr_reader :space
-  def initialize(space="X")
-    @space = space
-  end
 end
 
 class ComputerAI < Player
@@ -12,4 +8,7 @@ class ComputerAI < Player
 end
 
 class Human < Player
+  def space
+    "X"
+  end
 end
