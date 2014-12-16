@@ -27,14 +27,21 @@ describe 'Computer' do
                            middle_left: " ", center:        " ", middle_right: "O",
                            bottom_left: " ", bottom_center: "X", bottom_right: "X" }
 
-  computer_wins_by_column = { top_left:    "X", top_center:    " ", top_right:    " ",
-                              middle_left: " ", center:        "O", middle_right: " ",
-                              bottom_left: " ", bottom_center: "O", bottom_right: "X" }
+  computer_can_win_by_column = { top_left:    "X", top_center:    " ", top_right:    " ",
+                                 middle_left: " ", center:        "O", middle_right: " ",
+                                 bottom_left: " ", bottom_center: "O", bottom_right: "X" }
+
+  human_can_win_by_column = { top_left:    "X", top_center:    " ", top_right:    " ",
+                              middle_left: " ", center:        " ", middle_right: "X",
+                              bottom_left: "O", bottom_center: "O", bottom_right: "X" }
 
 
   computer_can_win_by_diagonal = { top_left:    "O", top_center:    "X", top_right:    " ",
                                    middle_left: "X", center:        "O", middle_right: " ",
                                    bottom_left: " ", bottom_center: "X", bottom_right: " " }
+  human_can_win_by_diagonal = { top_left:    "X", top_center:    "O", top_right:    " ",
+                                middle_left: "X", center:        "X", middle_right: "O",
+                                bottom_left: "O", bottom_center: "X", bottom_right: " " }
 
   it 'uses an "O" as a marker' do
     expect(computer.space).to eq("O")
@@ -57,12 +64,14 @@ describe 'Computer' do
     describe '#next_move' do
       it 'wins the game if possible' do
         expect(computer.next_move(computer_can_win_by_row)).to eq(:middle_right)
-        expect(computer.next_move(computer_wins_by_column)).to eq(:top_center)
+        expect(computer.next_move(computer_can_win_by_column)).to eq(:top_center)
         expect(computer.next_move(computer_can_win_by_diagonal) ).to eq(:bottom_right)
       end
 
       it 'stops the opponent from winning' do
         expect(computer.next_move(human_can_win_by_row)).to eq(:bottom_left)
+        expect(computer.next_move(human_can_win_by_column)).to eq(:top_right)
+        expect(computer.next_move(human_can_win_by_diagonal)).to eq(:bottom_right)
       end
     end
 
