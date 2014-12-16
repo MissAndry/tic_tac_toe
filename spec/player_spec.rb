@@ -9,6 +9,15 @@ describe 'Computer' do
   it 'uses an "O" as a space' do
     expect(computer.space).to eq("O")
   end
+
+  describe 'find_empty_spaces' do
+    board_grid = { top_left:    "X", top_center:    " ", top_right:    " ",
+                   middle_left: " ", center:        "O", middle_right: "X",
+                   bottom_left: "X", bottom_center: " ", bottom_right: "O" }
+    it 'returns empty spaces from a board grid' do
+      expect(computer.find_empty_spaces(board_grid)).to eq([:top_center, :top_right, :middle_left, :bottom_center])
+    end
+  end
 end
 
 describe 'Human' do
