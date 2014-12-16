@@ -13,7 +13,7 @@ class Game
   end
 
   def computer
-    @computer ||= ComputerAI.new
+    @computer ||= Computer.new
   end
 
   def board

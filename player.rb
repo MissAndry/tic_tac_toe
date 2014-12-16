@@ -1,7 +1,7 @@
 class Player
 end
 
-class ComputerAI < Player
+class Computer < Player
   def space
     "O"
   end

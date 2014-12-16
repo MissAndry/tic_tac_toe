@@ -4,8 +4,8 @@ describe 'Player' do
   let(:player){ Player.new }
 end
 
-describe 'ComputerAI' do
-  let(:computer){ ComputerAI.new }
+describe 'Computer' do
+  let(:computer){ Computer.new }
   it 'uses an "O" as a space' do
     expect(computer.space).to eq("O")
   end

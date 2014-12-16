@@ -17,7 +17,7 @@ describe 'Game' do
     end
 
     it 'has one Human player and one Computer player' do
-      expect(game.players.map{ |player| player.class }).to include(Human, ComputerAI)
+      expect(game.players.map{ |player| player.class }).to include(Human, Computer)
     end
   end
 
