@@ -27,13 +27,17 @@ describe 'Computer' do
                           middle_left: "O", center:        "O", middle_right: " ",
                           bottom_left: " ", bottom_center: "X", bottom_right: "X" }
 
-  it 'uses an "O" as a space' do
+  computer_diag_winner = { top_left:    "O", top_center:    "X", top_right:    " ",
+                           middle_left: "X", center:        "O", middle_right: " ",
+                           bottom_left: " ", bottom_center: "X", bottom_right: " " }
+
+  it 'uses an "O" as a marker' do
     expect(computer.space).to eq("O")
   end
 
   describe 'ComputerAI module' do
     describe '#find_empty_spaces' do
-      it 'returns empty key-value pairs from a board grid' do
+      it 'returns the empty spaces on the board' do
         expect(computer.find_empty_spaces(started_grid)).to eq({bottom_center: " ", middle_left: " ", top_center: " ", top_right: " "})
       end
     end
@@ -46,9 +50,10 @@ describe 'Computer' do
     end
 
     describe '#next_move' do
-      pending 'wins the game if possible' do
+      it 'wins the game if possible' do
         expect(computer.next_move(computer_row_winner)).to eq(:middle_right)
-        expect(computer.next_move(computer_col_winner)).to eq(:top_right)
+        expect(computer.next_move(computer_col_winner)).to eq(:top_center)
+        expect(computer.next_move(computer_diag_winner)).to eq(:bottom_right)
       end
     end
 
