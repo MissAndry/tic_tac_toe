@@ -27,9 +27,9 @@ describe 'Computer' do
                            middle_left: " ", center:        " ", middle_right: "O",
                            bottom_left: " ", bottom_center: "X", bottom_right: "X" }
 
-  computer_can_win_by_column = { top_left:    "X", top_center:    " ", top_right:    " ",
-                                 middle_left: " ", center:        "O", middle_right: " ",
-                                 bottom_left: " ", bottom_center: "O", bottom_right: "X" }
+  computer_can_win_by_column = { top_left:    " ", top_center:    " ", top_right:    " ",
+                                 middle_left: "X", center:        "O", middle_right: " ",
+                                 bottom_left: "X", bottom_center: "O", bottom_right: "X" }
 
   human_can_win_by_column = { top_left:    "X", top_center:    " ", top_right:    " ",
                               middle_left: " ", center:        " ", middle_right: "X",
@@ -39,6 +39,7 @@ describe 'Computer' do
   computer_can_win_by_diagonal = { top_left:    "O", top_center:    "X", top_right:    " ",
                                    middle_left: "X", center:        "O", middle_right: " ",
                                    bottom_left: " ", bottom_center: "X", bottom_right: " " }
+
   human_can_win_by_diagonal = { top_left:    "X", top_center:    "O", top_right:    " ",
                                 middle_left: "X", center:        "X", middle_right: "O",
                                 bottom_left: "O", bottom_center: "X", bottom_right: " " }
@@ -72,6 +73,13 @@ describe 'Computer' do
         expect(computer.next_move(human_can_win_by_row)).to eq(:bottom_left)
         expect(computer.next_move(human_can_win_by_column)).to eq(:top_right)
         expect(computer.next_move(human_can_win_by_diagonal)).to eq(:bottom_right)
+      end
+
+      it 'chooses the winning move over the defensive move' do
+        computer_can_win_by_row[:top_center] = "X"
+        computer_can_win_by_column[:top_right] = "X"
+        expect(computer.next_move(computer_can_win_by_row)).to eq(:middle_right)
+        expect(computer.next_move(computer_can_win_by_column)).to eq(:top_center)
       end
     end
 
