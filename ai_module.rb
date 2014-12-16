@@ -13,9 +13,7 @@ module ComputerAI
   end
 
   def grid_rows(grid_keys_or_vals)
-    rowed = []
-    grid_keys_or_vals.each_slice(3){ |val| rowed << val }
-    rowed
+    grid_keys_or_vals.each_slice(3).to_a
   end
 
   def grid_cols(grid_keys_or_vals)

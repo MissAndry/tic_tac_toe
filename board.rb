@@ -12,9 +12,7 @@ class Board
   end
 
   def rows
-    rowed = []
-    grid.values.each_slice(3){ |val| rowed << val }
-    rowed
+    grid.values.each_slice(3).to_a
   end
 
   def columns
