@@ -37,6 +37,11 @@ describe 'Game' do
       game.mark_space("center", game.human)
       expect( game.board.rows[1][1] ).to eq( game.computer.space )
     end
+
+    it 'works with symbols' do
+      expect{ game.mark_space(:center, game.human) }.not_to raise_error
+      expect{ game.mark_space(:top_right, game.human) }.to change{ game.board.rows[0][2] }
+    end
   end
 
   describe '#add_underscore' do
