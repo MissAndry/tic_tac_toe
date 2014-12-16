@@ -47,24 +47,60 @@ describe 'Game' do
 
   describe '#winner' do
     it 'returns the winner if there is a filled row' do
-      game.mark_space("middle left", game.computer)
-      game.mark_space("center", game.computer)
-      game.mark_space("middle right", game.computer)
+      row_win( game.computer )
       expect( game.winner ).to be( game.computer )
     end
 
     it 'returns the winner if there is a filled column' do
-      game.mark_space("top right", game.human)
-      game.mark_space("middle right", game.human)
-      game.mark_space("bottom right", game.human)
+      column_win( game.human )
       expect( game.winner ).to be( game.human )
     end
 
     it 'returns the winner if there is a filled diagonal' do
-      game.mark_space("top right", game.human)
-      game.mark_space("center", game.human)
-      game.mark_space("bottom left", game.human)
+      diagonal_win( game.human )
       expect( game.winner ).to be( game.human )
     end
+  end
+
+  describe '#finished?' do
+    it 'is true if there is a winner' do
+      diagonal_win( game.computer )
+      expect( game.finished? ).to be true
+    end
+
+    it 'is true if all the spaces on the board are filled' do
+      fill_board
+      expect( game.finished? ).to be true
+    end
+  end
+
+  def diagonal_win(player)
+    game.mark_space("top right", player)
+    game.mark_space("center", player)
+    game.mark_space("bottom left", player)
+  end
+
+  def row_win(player)
+    game.mark_space("middle left", player)
+    game.mark_space("center", player)
+    game.mark_space("middle right", player)
+  end
+
+  def column_win(player)
+    game.mark_space("top right", player)
+    game.mark_space("middle right", player)
+    game.mark_space("bottom right", player)
+  end
+
+  def fill_board
+    game.mark_space("top right", game.human)
+    game.mark_space("middle right", game.human)
+    game.mark_space("bottom right", game.computer)
+    game.mark_space("top center", game.computer)
+    game.mark_space("center", game.human)
+    game.mark_space("bottom center", game.computer)
+    game.mark_space("top left", game.computer)
+    game.mark_space("middle left", game.computer)
+    game.mark_space("bottom left", game.human)
   end
 end
