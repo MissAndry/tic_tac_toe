@@ -6,7 +6,7 @@ end
 
 describe 'Computer' do
   let(:computer){ Computer.new }
-  
+
   started_grid = { top_left:    "X", top_center:    " ", top_right:    " ",
                    middle_left: " ", center:        "O", middle_right: "X",
                    bottom_left: "X", bottom_center: " ", bottom_right: "O" }
@@ -26,7 +26,7 @@ describe 'Computer' do
   computer_row_winner = { top_left:    "X", top_center:    " ", top_right:    " ",
                           middle_left: "O", center:        "O", middle_right: " ",
                           bottom_left: " ", bottom_center: "X", bottom_right: "X" }
-  
+
   it 'uses an "O" as a space' do
     expect(computer.space).to eq("O")
   end
@@ -46,7 +46,7 @@ describe 'Computer' do
     end
 
     describe '#next_move' do
-      xit 'wins the game if possible' do
+      pending 'wins the game if possible' do
         expect(computer.next_move(computer_row_winner)).to eq(:middle_right)
         expect(computer.next_move(computer_col_winner)).to eq(:top_right)
       end
