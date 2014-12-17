@@ -4,6 +4,13 @@ describe 'Player' do
   let(:player){ Player.new }
 end
 
+describe 'Human' do
+  let(:human){ Human.new }
+  it 'uses an "X" as a marker' do
+    expect(human.space).to eq("X")
+  end
+end
+
 describe 'Computer' do
   let(:computer){ Computer.new }
 
@@ -49,6 +56,11 @@ describe 'Computer' do
 
       it 'takes the empty corners first' do
         expect(computer.next_move(two_human_moves_one_computer_corners_taken)).to eq(:top_left)
+        expect(computer.next_move(two_human_moves_one_computer_sides_taken)).to eq(:top_left)
+      end
+
+      it 'takes empty corners when the computer has the first move' do
+        expect([:top_left, :top_right, :bottom_left, :bottom_right]).to include(computer.next_move(empty_board))
       end
     end
 
@@ -87,6 +99,12 @@ describe 'Computer' do
 
   def two_human_moves_one_computer_corners_taken # => the strategy of taking the corners currently makes the computer beatable 12/16
     { top_left:    " ", top_center:    " ", top_right:    "X",
+      middle_left: " ", center:        "O", middle_right: " ",
+      bottom_left: "X", bottom_center: " ", bottom_right: " " }
+  end
+
+  def two_human_moves_one_computer_sides_taken
+    { top_left:    " ", top_center:    "X", top_right:    " ",
       middle_left: " ", center:        "O", middle_right: " ",
       bottom_left: "X", bottom_center: " ", bottom_right: " " }
   end
@@ -144,11 +162,10 @@ describe 'Computer' do
       middle_left: "X", center:        "X", middle_right: "O",
       bottom_left: "O", bottom_center: "X", bottom_right: " " }
   end
-end
 
-describe 'Human' do
-  let(:human){ Human.new }
-  it 'uses an "X" as a marker' do
-    expect(human.space).to eq("X")
+  def empty_board
+    { top_left:    " ", top_center:    " ", top_right:    " ",
+      middle_left: " ", center:        " ", middle_right: " ",
+      bottom_left: " ", bottom_center: " ", bottom_right: " " }
   end
 end

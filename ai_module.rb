@@ -1,10 +1,12 @@
+require 'pry'
+
 module ComputerAI
   def find_empty_spaces(board_grid)
     board_grid.select{ |key| board_grid[key] == " " }
   end
 
   def first_move(board_grid)
-    return [:center] if board_grid[:center] == " "
+    return [:center] if (board_grid[:center] == " " && board_grid.values.include?("X"))
     [:top_left, :top_right, :bottom_left, :bottom_right]
   end
 
@@ -16,6 +18,7 @@ module ComputerAI
     moves << defend(all_combinations, "X", " ")
 
     moves.each { |move| return move if move.class == Symbol }
+    return first_move(board_grid).sample
   end
 
   def defend(all_combinations, marker=space, blank_space=nil)
