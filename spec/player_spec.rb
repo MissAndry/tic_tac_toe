@@ -50,8 +50,8 @@ describe 'Computer' do
     describe '#grid_rows' do
       it 'returns an array of rows as keys' do
         expect(computer.grid_rows(starting_grid.keys)).to eq([[:top_left, :top_center, :top_right],
-                                                            [:middle_left, :center, :middle_right],
-                                                            [:bottom_left, :bottom_center, :bottom_right]])
+                                                              [:middle_left, :center, :middle_right],
+                                                              [:bottom_left, :bottom_center, :bottom_right]])
         expect(computer.grid_rows(starting_grid.values)).to eq([["X", " ", " "], [" ", "O", "X"], ["X", " ", "O"]])
       end
     end
@@ -59,8 +59,8 @@ describe 'Computer' do
     describe '#grid_cols' do
       it 'returns an array of columns as keys' do
         expect(computer.grid_cols(first_move_in_the_center.keys)).to eq([[:top_left, :middle_left, :bottom_left],
-                                                            [:top_center, :center, :bottom_center],
-                                                            [:top_right, :middle_right, :bottom_right]])
+                                                                         [:top_center, :center, :bottom_center],
+                                                                         [:top_right, :middle_right, :bottom_right]])
         expect(computer.grid_cols(starting_grid.values)).to eq([["X", " ", "X"], [" ", "O", " "], [" ", "X", "O"]])
       end
     end
@@ -68,7 +68,7 @@ describe 'Computer' do
     describe '#grid_diag' do
       it 'returns an array of diagonals' do
         expect(computer.grid_diag(computer_can_win_by_row.keys)).to eq([[:top_left, :center, :bottom_right],
-                                                                   [:top_right, :center, :bottom_left]])
+                                                                        [:top_right, :center, :bottom_left]])
         expect(computer.grid_diag(starting_grid.values)) .to eq([["X", "O", "O"], [" ", "O", "X"]])
       end
     end

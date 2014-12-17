@@ -10,14 +10,15 @@ module ComputerAI
 
   def next_move(board_grid)
     all_combinations = grid_rows(board_grid) + grid_cols(board_grid) + grid_diag(board_grid)
+    winning_move = defend(all_combinations, self.space)
+    defense = defend(all_combinations, "X")
+    winning_move.class != Symbol ? defense : winning_move
+  end
+
+  def defend(all_combinations, marker)
     all_combinations.each do |combo|
-      if combo.flatten.values_at(1, 3, 5).sort == [" ", self.space, self.space]
-        combo.select{ |pair| return pair[0] if pair[1] == " "}
-      end
-    end
-    all_combinations.each do |combo|
-      if combo.flatten.values_at(1, 3, 5).sort == [" ", "X", "X"]
-        combo.select{ |pair| return pair[0] if pair[1] == " "}
+      if combo.flatten.values_at(1, 3, 5).sort == [" ", marker, marker]
+        combo.select{ |pair| return pair[0] if pair[1] == " " }
       end
     end
   end
