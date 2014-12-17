@@ -17,7 +17,7 @@ module ComputerAI
 
   def defend(all_combinations, marker)
     all_combinations.each do |combo|
-      if combo.flatten.values_at(1, 3, 5).sort == [" ", marker, marker]
+      if combo.flatten.values_at(1, 3, 5).sort == [" ",  , marker]
         combo.select{ |pair| return pair[0] if pair[1] == " " }
       end
     end
