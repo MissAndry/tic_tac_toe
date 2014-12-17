@@ -37,6 +37,7 @@ describe 'Computer' do
         expect(computer.next_move(human_can_win_by_column)).to eq(:top_right)
         expect(computer.next_move(human_can_win_by_diagonal)).to eq(:bottom_right)
         expect(computer.next_move(starting_grid)).to eq(:middle_left)
+        expect(computer.next_move(two_human_moves_one_computer_human_takes_center)).to eq(:middle_left)
       end
 
       it 'chooses the winning move over the defensive move' do
@@ -44,6 +45,10 @@ describe 'Computer' do
         computer_can_win_by_column[:top_right] = "X"
         expect(computer.next_move(computer_can_win_by_row)).to eq(:middle_right)
         expect(computer.next_move(computer_can_win_by_column)).to eq(:top_center)
+      end
+
+      it 'takes the empty corners first' do
+        expect(computer.next_move(two_human_moves_one_computer_corners_taken)).to eq(:top_left)
       end
     end
 
@@ -78,6 +83,18 @@ describe 'Computer' do
     { top_left:    "X", top_center:    " ", top_right:    " ",
       middle_left: " ", center:        "O", middle_right: "X",
       bottom_left: "X", bottom_center: " ", bottom_right: "O" }
+  end
+
+  def two_human_moves_one_computer_corners_taken # => the strategy of taking the corners currently makes the computer beatable 12/16
+    { top_left:    " ", top_center:    " ", top_right:    "X",
+      middle_left: " ", center:        "O", middle_right: " ",
+      bottom_left: "X", bottom_center: " ", bottom_right: " " }
+  end
+
+  def two_human_moves_one_computer_human_takes_center
+    { top_left:    " ", top_center:    " ", top_right:    " ",
+      middle_left: " ", center:        "X", middle_right: "X",
+      bottom_left: " ", bottom_center: " ", bottom_right: "O" }
   end
 
   def first_move_in_the_center
@@ -124,8 +141,8 @@ describe 'Computer' do
 
   def human_can_win_by_diagonal
     { top_left:    "X", top_center:    "O", top_right:    " ",
-     middle_left: "X", center:        "X", middle_right: "O",
-     bottom_left: "O", bottom_center: "X", bottom_right: " " }
+      middle_left: "X", center:        "X", middle_right: "O",
+      bottom_left: "O", bottom_center: "X", bottom_right: " " }
   end
 end
 
