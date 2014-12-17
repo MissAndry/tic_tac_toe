@@ -10,14 +10,18 @@ module ComputerAI
 
   def next_move(board_grid)
     all_combinations = grid_rows(board_grid) + grid_cols(board_grid) + grid_diag(board_grid)
-    winning_move = defend(all_combinations, self.space)
+    winning_move = defend(all_combinations)
     defense = defend(all_combinations, "X")
     winning_move.class != Symbol ? defense : winning_move
   end
 
-  def defend(all_combinations, marker)
+  def defend(all_combinations, marker=space, blank_space=nil)
+    blank_space = marker if blank_space.nil? # the idea is to pass in a " " when you're searching for a move in a started yet sparsely populated board, but you need a test first! Then, up above, save the output of all of these things (plus the starting move) and return the one that is a symbol (because it'll return the whole array if it doesn't match anything)
+    # SO: TODO - figure out some strategy past choosing a corner space
+    # You can probably do it
+    # Soon you should make views and test that it works with a dynamically created board
     all_combinations.each do |combo|
-      if combo.flatten.values_at(1, 3, 5).sort == [" ", marker, marker]
+      if combo.flatten.values_at(1, 3, 5).sort == [" ", blank_space, marker]
         combo.select{ |pair| return pair[0] if pair[1] == " " }
       end
     end
