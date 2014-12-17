@@ -7,43 +7,6 @@ end
 describe 'Computer' do
   let(:computer){ Computer.new }
 
-  starting_grid = { top_left:    "X", top_center:    " ", top_right:    " ",
-                    middle_left: " ", center:        "O", middle_right: "X",
-                    bottom_left: "X", bottom_center: " ", bottom_right: "O" }
-
-  first_move_in_the_center = { top_left:    " ", top_center:    " ", top_right:    " ",
-                               middle_left: " ", center:        "X", middle_right: " ",
-                               bottom_left: " ", bottom_center: " ", bottom_right: " " }
-
-  first_move_in_the_corner = { top_left:    " ", top_center:    " ", top_right:    " ",
-                               middle_left: " ", center:        " ", middle_right: " ",
-                               bottom_left: " ", bottom_center: " ", bottom_right: "X" }
-
-  computer_can_win_by_row = { top_left:    "X", top_center:    " ", top_right:    " ",
-                              middle_left: "O", center:        "O", middle_right: " ",
-                              bottom_left: " ", bottom_center: "X", bottom_right: "X" }
-
-  human_can_win_by_row = { top_left:    "X", top_center:    "O", top_right:    "O",
-                           middle_left: " ", center:        " ", middle_right: "O",
-                           bottom_left: " ", bottom_center: "X", bottom_right: "X" }
-
-  computer_can_win_by_column = { top_left:    " ", top_center:    " ", top_right:    " ",
-                                 middle_left: "X", center:        "O", middle_right: " ",
-                                 bottom_left: "X", bottom_center: "O", bottom_right: "X" }
-
-  human_can_win_by_column = { top_left:    "X", top_center:    " ", top_right:    " ",
-                              middle_left: " ", center:        " ", middle_right: "X",
-                              bottom_left: "O", bottom_center: "O", bottom_right: "X" }
-
-
-  computer_can_win_by_diagonal = { top_left:    "O", top_center:    "X", top_right:    " ",
-                                   middle_left: "X", center:        "O", middle_right: " ",
-                                   bottom_left: " ", bottom_center: "X", bottom_right: " " }
-
-  human_can_win_by_diagonal = { top_left:    "X", top_center:    "O", top_right:    " ",
-                                middle_left: "X", center:        "X", middle_right: "O",
-                                bottom_left: "O", bottom_center: "X", bottom_right: " " }
-
   it 'uses an "O" as a marker' do
     expect(computer.space).to eq("O")
   end
@@ -73,6 +36,7 @@ describe 'Computer' do
         expect(computer.next_move(human_can_win_by_row)).to eq(:bottom_left)
         expect(computer.next_move(human_can_win_by_column)).to eq(:top_right)
         expect(computer.next_move(human_can_win_by_diagonal)).to eq(:bottom_right)
+        expect(computer.next_move(starting_grid)).to eq(:middle_left)
       end
 
       it 'chooses the winning move over the defensive move' do
@@ -108,6 +72,60 @@ describe 'Computer' do
         expect(computer.grid_diag(starting_grid.values)) .to eq([["X", "O", "O"], [" ", "O", "X"]])
       end
     end
+  end
+
+  def starting_grid
+    { top_left:    "X", top_center:    " ", top_right:    " ",
+      middle_left: " ", center:        "O", middle_right: "X",
+      bottom_left: "X", bottom_center: " ", bottom_right: "O" }
+  end
+
+  def first_move_in_the_center
+    { top_left:    " ", top_center:    " ", top_right:    " ",
+      middle_left: " ", center:        "X", middle_right: " ",
+      bottom_left: " ", bottom_center: " ", bottom_right: " " }
+  end
+
+  def first_move_in_the_corner
+    { top_left:    " ", top_center:    " ", top_right:    " ",
+      middle_left: " ", center:        " ", middle_right: " ",
+      bottom_left: " ", bottom_center: " ", bottom_right: "X" }
+  end
+
+  def computer_can_win_by_row
+    { top_left:    "X", top_center:    " ", top_right:    " ",
+      middle_left: "O", center:        "O", middle_right: " ",
+      bottom_left: " ", bottom_center: "X", bottom_right: "X" }
+  end
+
+  def computer_can_win_by_column
+    { top_left:    " ", top_center:    " ", top_right:    " ",
+      middle_left: "X", center:        "O", middle_right: " ",
+      bottom_left: "X", bottom_center: "O", bottom_right: "X" }
+  end
+
+  def computer_can_win_by_diagonal
+    { top_left:    "O", top_center:    "X", top_right:    " ",
+      middle_left: "X", center:        "O", middle_right: " ",
+      bottom_left: " ", bottom_center: "X", bottom_right: " " }
+  end
+
+  def human_can_win_by_row
+    { top_left:    "X", top_center:    "O", top_right:    "O",
+      middle_left: " ", center:        " ", middle_right: "O",
+      bottom_left: " ", bottom_center: "X", bottom_right: "X" }
+  end
+
+  def human_can_win_by_column
+    { top_left:    "X", top_center:    " ", top_right:    " ",
+      middle_left: " ", center:        " ", middle_right: "X",
+      bottom_left: "O", bottom_center: "O", bottom_right: "X" }
+  end
+
+  def human_can_win_by_diagonal
+    { top_left:    "X", top_center:    "O", top_right:    " ",
+     middle_left: "X", center:        "X", middle_right: "O",
+     bottom_left: "O", bottom_center: "X", bottom_right: " " }
   end
 end
 
