@@ -11,13 +11,10 @@ module ComputerAI
   end
 
   def next_move(board_grid)
-    moves = []
-    all_combinations = grid_rows(board_grid) + grid_cols(board_grid) + grid_diag(board_grid)
-    moves << defend(all_combinations)
-    moves << defend(all_combinations, "X")
-    moves << defend(all_combinations, "X", " ")
+    all_combinations = all_rows_columns_diagonal_combos(board_grid)
+    potential_moves = get_next_moves(all_combinations)
 
-    moves.each { |move| return move if move.class == Symbol }
+    potential_moves.each { |move| return move if move.class == Symbol }
     return first_move(board_grid).sample
   end
 
@@ -31,6 +28,18 @@ module ComputerAI
         combo.select{ |pair| return pair[0] if pair[1] == " " }
       end
     end
+  end
+
+  def get_next_moves(all_combinations)
+    moves = []
+    moves << defend(all_combinations)
+    moves << defend(all_combinations, "X")
+    moves << defend(all_combinations, "X", " ")
+    moves
+  end
+
+  def all_rows_columns_diagonal_combos(board_grid)
+    grid_rows(board_grid) + grid_cols(board_grid) + grid_diag(board_grid)
   end
 
   def grid_rows(grid_keys_or_vals)
