@@ -12,16 +12,27 @@ module ComputerAI
 
   def next_move(board_grid)
     all_combinations = all_rows_columns_diagonal_combos(board_grid)
+    opposing_diag = find_opposing_diagonal(board_grid)
+    
     potential_moves = get_next_moves(all_combinations)
+    potential_moves.unshift(opposing_diag) if !opposing_diag.nil?
 
     potential_moves.each { |move| return move if move.class == Symbol }
     return first_move(board_grid).sample
   end
 
+  def find_opposing_diagonal(board_grid)
+    diagonals = grid_diag(board_grid)
+    marked_row = diagonals.select{ |diag| diag.flatten.include?("X") }.pop
+    return if marked_row.nil?
+    return marked_row.last if marked_row.last.include?(" ")
+    marked_row.first
+  end
+
   def defend(all_combinations, marker=space, blank_space=nil)
     blank_space = marker if blank_space.nil? # the idea is to pass in a " " when you're searching for a move in a started yet sparsely populated board, but you need a test first! Then, up above, save the output of all of these things //(plus the starting move)// and return the one that is a symbol (because it'll return the whole array if it doesn't match anything)
-    # SO: TODO - figure out some strategy past choosing a corner space
-    # You can probably do it
+    # SO: TODO - figure out some strategy past choosing a corner space, like if the computer goes first, it should take a corner. Then, its second move should be the opposite corner. That should actually be true for human moving in a corner, too. Like, that is the best first move, no question. Center is the third-best first move.
+    # TODO - write a method that finds the opposite corner. You already got diagonals. You can do this!
     # Soon you should make views and test that it works with a dynamically created board
     all_combinations.each do |combo|
       if combo.flatten.values_at(1, 3, 5).sort == [" ", blank_space, marker]

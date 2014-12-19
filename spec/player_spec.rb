@@ -28,7 +28,7 @@ describe 'Computer' do
     describe '#first_move' do
       it 'returns the ideal first move (either a corner or center) depending on the opponent\'s first move' do
         expect(computer.first_move(first_move_in_the_center)).to eq([:top_left, :top_right, :bottom_left, :bottom_right])
-        expect(computer.first_move(first_move_in_the_corner)).to eq([:center])
+        expect(computer.first_move(bottom_left_corner_taken)).to eq([:center])
       end
     end
 
@@ -61,6 +61,15 @@ describe 'Computer' do
 
       it 'takes empty corners when the computer has the first move' do
         expect([:top_left, :top_right, :bottom_left, :bottom_right]).to include(computer.next_move(empty_board))
+      end
+    end
+
+    describe '#find_opposing_diagonal' do
+      it 'finds the diagonal opposite from a taken diagonal' do
+        expect(computer.find_opposing_diagonal(bottom_left_corner_taken)).to eq([:top_right, " "])
+        expect(computer.find_opposing_diagonal(bottom_right_corner_taken)).to eq([:top_left, " "])
+        expect(computer.find_opposing_diagonal(top_left_corner_taken)).to eq([:bottom_right, " "])
+        expect(computer.find_opposing_diagonal(top_right_corner_taken)).to eq([:bottom_left, " "])
       end
     end
 
@@ -121,10 +130,28 @@ describe 'Computer' do
       bottom_left: " ", bottom_center: " ", bottom_right: " " }
   end
 
-  def first_move_in_the_corner
+  def bottom_left_corner_taken
+    { top_left:    " ", top_center:    " ", top_right:    " ",
+      middle_left: " ", center:        " ", middle_right: " ",
+      bottom_left: "X", bottom_center: " ", bottom_right: " " }
+  end
+
+  def bottom_right_corner_taken
     { top_left:    " ", top_center:    " ", top_right:    " ",
       middle_left: " ", center:        " ", middle_right: " ",
       bottom_left: " ", bottom_center: " ", bottom_right: "X" }
+  end
+
+  def top_left_corner_taken
+    { top_left:    "X", top_center:    " ", top_right:    " ",
+      middle_left: " ", center:        " ", middle_right: " ",
+      bottom_left: " ", bottom_center: " ", bottom_right: " " }
+  end
+
+  def top_right_corner_taken
+    { top_left:    " ", top_center:    " ", top_right:    "X",
+      middle_left: " ", center:        " ", middle_right: " ",
+      bottom_left: " ", bottom_center: " ", bottom_right: " " }
   end
 
   def computer_can_win_by_row
