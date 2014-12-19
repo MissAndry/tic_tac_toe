@@ -44,4 +44,8 @@ class Game
       return player if board.diagonals.any? { |diagonal| diagonal.all? { |space| space == player.space } }
     end
   end
+
+  def to_s
+    @board.to_s
+  end
 end
