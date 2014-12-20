@@ -4,18 +4,17 @@ class Player
   def initialize(space=nil)
     @space = space
   end
-
-  def space
-    @space ||= "X"
-  end
 end
 
 class Computer < Player
 include ComputerAI
   def space
-    "O"
+    @space ||= "O"
   end
 end
 
 class Human < Player
+  def space
+    @space ||= "X"
+  end
 end
