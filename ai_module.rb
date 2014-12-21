@@ -11,7 +11,8 @@ module ComputerAI
 
   def first_move(board_grid)
     return [:center] if (board_grid[:center] == " " && board_grid.values.include?("X"))
-    [:top_left, :top_right, :bottom_left, :bottom_right] - taken_spaces(board_grid)
+    [:top_left, :top_right, :bottom_left, :bottom_right] - taken_spaces(board_grid) # THIS NEEDS A TEST
+    
   end
 
   def next_move(board_grid)
