@@ -101,12 +101,12 @@ describe 'Game' do
       expect(tic_tac_computer.player1.space).not_to eq(tic_tac_computer.player2.space)
     end
 
-    it 'never lets player 2 win' do
+    it 'always results in a tie' do
       until tic_tac_computer.finished?
         tic_tac_computer.mark_space(tic_tac_computer.player1.next_move(tic_tac_computer.board.grid), tic_tac_computer.player1)
         tic_tac_computer.mark_space(tic_tac_computer.player2.next_move(tic_tac_computer.board.grid), tic_tac_computer.player2)
       end
-      expect(tic_tac_computer.winner).not_to be tic_tac_computer.player2
+      expect(tic_tac_computer.winner).to be nil
     end
   end
 
