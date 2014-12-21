@@ -19,16 +19,19 @@ describe 'Computer' do
   end
 
   describe 'ComputerAI module' do
-    describe '#find_empty_spaces' do
-      it 'returns the empty spaces on the board' do
-        expect(computer.find_empty_spaces(starting_grid)).to eq({bottom_center: " ", middle_left: " ", top_center: " ", top_right: " "})
+    describe '#enemy_marker' do
+      it 'returns an "O" if the computer\'s marker is an "X", and vice versa' do
+        x_marks_the_spot = Computer.new("X")
+        o_no_you_didnt = Computer.new("O")
+        expect(x_marks_the_spot.enemy_marker).to eq("O")
+        expect(o_no_you_didnt.enemy_marker).to eq("X")
       end
     end
 
     describe '#first_move' do
       it 'returns the ideal first move (either a corner or center) depending on the opponent\'s first move' do
         expect(computer.first_move(first_move_in_the_center)).to eq([:top_left, :top_right, :bottom_left, :bottom_right])
-        expect(computer.first_move(bottom_left_corner_taken)).to eq([:center])
+        expect(computer.first_move(bottom_left_corner_taken)).to eq([:top_right])
       end
     end
 

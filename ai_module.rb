@@ -1,8 +1,9 @@
 require 'pry'
 
 module ComputerAI
-  def find_empty_spaces(board_grid)
-    board_grid.select{ |key| board_grid[key] == " " }
+  def enemy_marker
+    return "X" if self.space == "O"
+    return "O" if self.space == "X"
   end
 
   def taken_spaces(board_grid)
@@ -10,9 +11,13 @@ module ComputerAI
   end
 
   def first_move(board_grid)
-    return [:center] if (board_grid[:center] == " " && board_grid.values.include?("X"))
-    [:top_left, :top_right, :bottom_left, :bottom_right] - taken_spaces(board_grid) # THIS NEEDS A TEST
-    
+    if corner_spaces(board_grid).include? enemy_marker
+      return [find_opposing_diagonal(board_grid).first]
+    elsif empty?(board_grid) || board_grid[:center] != " "
+      [:top_left, :top_right, :bottom_left, :bottom_right] - taken_spaces(board_grid)
+    else
+      return [:center]
+    end
   end
 
   def next_move(board_grid)
@@ -23,19 +28,19 @@ module ComputerAI
     potential_moves.unshift(opposing_diag) if !opposing_diag.nil?
     maybe_first = first_move(board_grid).sample
 
-    return maybe_first if board_grid.values.count("X") <= 1
+    return maybe_first if board_grid.values.count(enemy_marker) <= 1 && board_grid.values.count(self.space) == 0
     potential_moves.each { |move| return move if move.class == Symbol }
   end
 
   def find_opposing_diagonal(board_grid)
     diagonals = grid_diag(board_grid)
-    marked_row = diagonals.select{ |diag| diag.flatten.include?("X") }.pop
+    marked_row = diagonals.select{ |diag| diag.flatten.include?(enemy_marker) }.pop
     return if marked_row.nil?
     return marked_row.last if marked_row.last.include?(" ")
     marked_row.first
   end
 
-  def defend(all_combinations, marker=space, blank_space=nil)
+  def defend(all_combinations, marker=self.space, blank_space=nil)
     blank_space = marker if blank_space.nil? 
     all_combinations.each do |combo|
       if combo.flatten.values_at(1, 3, 5).sort == [" ", blank_space, marker]
@@ -47,8 +52,9 @@ module ComputerAI
   def get_next_moves(all_combinations)
     moves = []
     moves << defend(all_combinations)
-    moves << defend(all_combinations, "X")
-    moves << defend(all_combinations, "X", " ")
+    moves << defend(all_combinations, enemy_marker)
+    moves << defend(all_combinations, enemy_marker, self.space)
+    moves << defend(all_combinations, enemy_marker, " ")
     moves
   end
 
