@@ -3,18 +3,18 @@ require_relative 'player'
 
 class Game
   def initialize(options={})
-    @player1 = options.fetch(:player1){ "human" }
-    @player2 = options.fetch(:player2){ "computer" }
-    @players = players
-    @board   = board
+    @player1      = options.fetch(:player1){ "human" }
+    @player2      = options.fetch(:player2){ "computer" }
+    @players      = players
+    @board        = board
   end
 
   def human
-    @human ||= Human.new
+    @human ||= players.select{ |player| player.is_a? Human }.pop
   end
 
   def computer
-    @computer ||= Computer.new
+    @computer ||= players.select{ |player| player.is_a? Computer }.pop
   end
 
   def board

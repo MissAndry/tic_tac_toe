@@ -39,6 +39,7 @@ class TicTacController
 
   def handle_starting_input(input)
     help?(input)
+    
     if input.to_i == 1
       @tic_tac_toe = Game.new
     elsif input.to_i == 2

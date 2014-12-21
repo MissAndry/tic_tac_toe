@@ -17,7 +17,19 @@ describe 'Game' do
     end
 
     it 'has one Human player and one Computer player' do
-      expect(game.players.map{ |player| player.class }).to include(Human, Computer)
+      expect(game.players).to include(Human, Computer)
+    end
+  end
+
+  describe 'player1' do
+    it 'is the first player' do
+      expect(game.player1).to eq(game.players[0])
+    end
+  end
+
+  describe 'player2' do
+    it 'is the second player' do
+      expect(game.player2).to eq(game.players[1])
     end
   end
 
@@ -53,17 +65,17 @@ describe 'Game' do
   describe '#winner' do
     it 'returns the winner if there is a filled row' do
       row_win( game.computer )
-      expect( game.winner ).to be( game.computer )
+      expect( game.winner ).to eq( game.computer )
     end
 
     it 'returns the winner if there is a filled column' do
       column_win( game.human )
-      expect( game.winner ).to be( game.human )
+      expect( game.winner ).to eq( game.human )
     end
 
     it 'returns the winner if there is a filled diagonal' do
       diagonal_win( game.human )
-      expect( game.winner ).to be( game.human )
+      expect( game.winner ).to eq( game.human )
     end
   end
 
@@ -76,6 +88,17 @@ describe 'Game' do
     it 'is true if all the spaces on the board are filled' do
       fill_board
       expect( game.finished? ).to be true
+    end
+  end
+
+  context "two computer players" do
+    let(:tic_tac_computer){ Game.new(player1: "computer", player2: "computer") }
+    it 'initializes with two computer players' do
+      expect(tic_tac_computer.players.all? { |player| player.is_a? Computer }).to be true
+    end
+
+    it 'sets the players with different markers' do
+      expect(tic_tac_computer.player1.space).not_to eq(tic_tac_computer.player2.space)
     end
   end
 
