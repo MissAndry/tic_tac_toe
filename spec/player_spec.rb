@@ -28,6 +28,27 @@ describe 'Computer' do
       end
     end
 
+    describe 'empty?' do
+      it 'returns true if the board is empty and false otherwise' do
+        expect(computer.empty?(empty_board)).to be true
+        expect(computer.empty?(starting_grid)).to be false
+      end
+    end
+
+    describe '#taken_spaces' do
+      it 'returns the keys of all the taken spaces' do
+        expect(computer.taken_spaces(empty_board)).to be_empty
+        expect(computer.taken_spaces(first_move_in_the_center)).to eq([:center])
+      end
+    end
+
+    describe '#corner_spaces' do
+      it 'returns the state of the corners of the board' do
+        expect(computer.corner_spaces(empty_board)).not_to include(:top_center, :middle_left, :center, :middle_right, :bottom_center)
+        expect(computer.corner_spaces(human_can_win_by_row)).to include("X", "O")
+      end
+    end
+
     describe '#first_move' do
       it 'returns the ideal first move (either a corner or center) depending on the opponent\'s first move' do
         expect(computer.first_move(first_move_in_the_center)).to eq([:top_left, :top_right, :bottom_left, :bottom_right])
@@ -58,8 +79,9 @@ describe 'Computer' do
       end
 
       it 'takes the empty corners first' do
-        expect(computer.next_move(two_human_moves_one_computer_corners_taken)).to eq(:top_left)
-        expect(computer.next_move(two_human_moves_one_computer_sides_taken)).to eq(:top_left)
+        expect([:top_left, :top_right, :bottom_left, :bottom_right]).to include(computer.next_move(two_human_moves_one_computer_corners_taken))
+        expect([:top_left, :top_right, :bottom_left, :bottom_right]).to include(computer.next_move(two_human_moves_one_computer_sides_taken))
+        expect(computer.next_move(first_move_in_the_center)).not_to eq(:center)
       end
 
       it 'takes empty corners when the computer has the first move' do

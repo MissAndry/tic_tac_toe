@@ -6,8 +6,18 @@ module ComputerAI
     return "O" if self.space == "X"
   end
 
+  def empty?(board_grid)
+    board_grid.values.all? { |space| space == " " }
+  end
+
   def taken_spaces(board_grid)
-    board_grid.select{ |key| board_grid[key] != " "}
+    board_grid.keys.select{ |key| board_grid[key] != " "}
+  end
+
+  def corner_spaces(board_grid)
+    diagonals = grid_diag(board_grid.values)
+    corners = diagonals.map{ |row| [row.first, row.last] }
+    corners.flatten
   end
 
   def first_move(board_grid)
@@ -62,18 +72,18 @@ module ComputerAI
     grid_rows(board_grid) + grid_cols(board_grid) + grid_diag(board_grid)
   end
 
-  def grid_rows(grid_keys_or_vals)
-    grid_keys_or_vals.each_slice(3).to_a
+  def grid_rows(board_grid)
+    board_grid.each_slice(3).to_a
   end
 
-  def grid_cols(grid_keys_or_vals)
-    grid_rows(grid_keys_or_vals).transpose
+  def grid_cols(board_grid)
+    grid_rows(board_grid).transpose
   end
 
-  def grid_diag(grid_keys_or_vals)
+  def grid_diag(board_grid)
     diags = []
-    diags << grid_rows(grid_keys_or_vals).map.with_index { |val, i| val[i] }
-    diags << grid_rows(grid_keys_or_vals).map.with_index(1) { |val, i| val[-i] }
+    diags << grid_rows(board_grid).map.with_index { |val, i| val[i] }
+    diags << grid_rows(board_grid).map.with_index(1) { |val, i| val[-i] }
     diags
   end
 end
