@@ -84,8 +84,8 @@ describe 'Computer' do
         expect(computer.next_move(first_move_in_the_center)).not_to eq(:center)
       end
 
-      it 'takes empty corners when the computer has the first move' do
-        expect([:top_left, :top_right, :bottom_left, :bottom_right]).to include(computer.next_move(empty_board))
+      it 'takes empty corners or the center when the computer has the first move' do
+        expect([:top_left, :top_right, :center, :bottom_left, :bottom_right]).to include(computer.next_move(empty_board))
       end
     end
 

@@ -23,22 +23,23 @@ module ComputerAI
   def first_move(board_grid)
     if corner_spaces(board_grid).include? enemy_marker
       return [find_opposing_diagonal(board_grid).first]
-    elsif empty?(board_grid) || board_grid[:center] != " "
+    elsif board_grid[:center] != " "
       [:top_left, :top_right, :bottom_left, :bottom_right] - taken_spaces(board_grid)
     else
-      return [:center]
+      [:top_left, :top_right, :center, :bottom_left, :bottom_right] - taken_spaces(board_grid)
     end
   end
 
   def next_move(board_grid)
+    maybe_first = first_move(board_grid).sample
+    return maybe_first if board_grid.values.count(enemy_marker) <= 1 && board_grid.values.count(self.space) <= 0
+
     all_combinations = all_rows_columns_diagonal_combos(board_grid)
     opposing_diag = find_opposing_diagonal(board_grid)
     
     potential_moves = get_next_moves(all_combinations)
-    potential_moves.unshift(opposing_diag) if !opposing_diag.nil?
-    maybe_first = first_move(board_grid).sample
+    potential_moves << (opposing_diag) if !opposing_diag.nil?
 
-    return maybe_first if board_grid.values.count(enemy_marker) <= 1 && board_grid.values.count(self.space) == 0
     potential_moves.each { |move| return move if move.class == Symbol }
   end
 
@@ -63,8 +64,8 @@ module ComputerAI
     moves = []
     moves << defend(all_combinations)
     moves << defend(all_combinations, enemy_marker)
-    moves << defend(all_combinations, enemy_marker, self.space)
     moves << defend(all_combinations, enemy_marker, " ")
+    moves << defend(all_combinations, enemy_marker, self.space)
     moves
   end
 
