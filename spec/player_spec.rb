@@ -36,7 +36,7 @@ describe 'Computer' do
       it 'wins the game if possible' do
         expect(computer.next_move(computer_can_win_by_row)).to eq(:middle_right)
         expect(computer.next_move(computer_can_win_by_column)).to eq(:top_center)
-        expect(computer.next_move(computer_can_win_by_diagonal) ).to eq(:bottom_right)
+        expect(computer.next_move(computer_can_win_by_diagonal)).to eq(:bottom_right)
       end
 
       it 'stops the opponent from winning' do

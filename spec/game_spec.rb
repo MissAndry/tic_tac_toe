@@ -35,24 +35,24 @@ describe 'Game' do
 
   describe '#mark_space' do
     it 'marks the space where requested' do
-      expect{ game.mark_space("top left", game.computer) }.to change{ game.board.rows[0][0] }
-      expect{ game.mark_space("center", game.human) }.to change{ game.board.rows[1][1] }
+      expect{ game.mark_space("top left", game.player2) }.to change{ game.board.rows[0][0] }
+      expect{ game.mark_space("center", game.player1) }.to change{ game.board.rows[1][1] }
     end
 
     it 'marks the space with the player\'s space character' do
-      game.mark_space("bottom right", game.computer)
-      expect( game.board.rows[2][2] ).to eq( game.computer.space )
+      game.mark_space("bottom right", game.player2)
+      expect( game.board.rows[2][2] ).to eq( game.player2.space )
     end
 
     it 'doesn\'t let a player change an already populated space' do
-      game.mark_space("center", game.computer)
-      game.mark_space("center", game.human)
-      expect( game.board.rows[1][1] ).to eq( game.computer.space )
+      game.mark_space("center", game.player2)
+      game.mark_space("center", game.player1)
+      expect( game.board.rows[1][1] ).to eq( game.player2.space )
     end
 
     it 'works with symbols' do
-      expect{ game.mark_space(:center, game.human) }.not_to raise_error
-      expect{ game.mark_space(:top_right, game.human) }.to change{ game.board.rows[0][2] }
+      expect{ game.mark_space(:center, game.player1) }.not_to raise_error
+      expect{ game.mark_space(:top_right, game.player1) }.to change{ game.board.rows[0][2] }
     end
   end
 
@@ -64,24 +64,24 @@ describe 'Game' do
 
   describe '#winner' do
     it 'returns the winner if there is a filled row' do
-      row_win( game.computer )
-      expect( game.winner ).to eq( game.computer )
+      row_win( game.player2 )
+      expect( game.winner ).to eq( game.player2 )
     end
 
     it 'returns the winner if there is a filled column' do
-      column_win( game.human )
-      expect( game.winner ).to eq( game.human )
+      column_win( game.player1 )
+      expect( game.winner ).to eq( game.player1 )
     end
 
     it 'returns the winner if there is a filled diagonal' do
-      diagonal_win( game.human )
-      expect( game.winner ).to eq( game.human )
+      diagonal_win( game.player1 )
+      expect( game.winner ).to eq( game.player1 )
     end
   end
 
   describe '#finished?' do
     it 'is true if there is a winner' do
-      diagonal_win( game.computer )
+      diagonal_win( game.player2 )
       expect( game.finished? ).to be true
     end
 
@@ -121,14 +121,14 @@ describe 'Game' do
   end
 
   def fill_board
-    game.mark_space("top right", game.human)
-    game.mark_space("middle right", game.human)
-    game.mark_space("bottom right", game.computer)
-    game.mark_space("top center", game.computer)
-    game.mark_space("center", game.human)
-    game.mark_space("bottom center", game.computer)
-    game.mark_space("top left", game.computer)
-    game.mark_space("middle left", game.computer)
-    game.mark_space("bottom left", game.human)
+    game.mark_space("top right", game.player1)
+    game.mark_space("middle right", game.player1)
+    game.mark_space("bottom right", game.player2)
+    game.mark_space("top center", game.player2)
+    game.mark_space("center", game.player1)
+    game.mark_space("bottom center", game.player2)
+    game.mark_space("top left", game.player2)
+    game.mark_space("middle left", game.player2)
+    game.mark_space("bottom left", game.player1)
   end
 end

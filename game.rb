@@ -9,14 +9,6 @@ class Game
     @board        = board
   end
 
-  def human
-    @human ||= players.select{ |player| player.is_a? Human }.pop
-  end
-
-  def computer
-    @computer ||= players.select{ |player| player.is_a? Computer }.pop
-  end
-
   def board
     @board ||= Board.new
   end
