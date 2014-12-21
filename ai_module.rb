@@ -5,9 +5,13 @@ module ComputerAI
     board_grid.select{ |key| board_grid[key] == " " }
   end
 
+  def taken_spaces(board_grid)
+    board_grid.select{ |key| board_grid[key] != " "}
+  end
+
   def first_move(board_grid)
     return [:center] if (board_grid[:center] == " " && board_grid.values.include?("X"))
-    [:top_left, :top_right, :bottom_left, :bottom_right]
+    [:top_left, :top_right, :bottom_left, :bottom_right] - taken_spaces(board_grid)
   end
 
   def next_move(board_grid)
@@ -16,9 +20,10 @@ module ComputerAI
     
     potential_moves = get_next_moves(all_combinations)
     potential_moves.unshift(opposing_diag) if !opposing_diag.nil?
+    maybe_first = first_move(board_grid).sample
 
+    return maybe_first if board_grid.values.count("X") <= 1
     potential_moves.each { |move| return move if move.class == Symbol }
-    return first_move(board_grid).sample
   end
 
   def find_opposing_diagonal(board_grid)
