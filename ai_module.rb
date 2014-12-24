@@ -39,8 +39,8 @@ module ComputerAI
   end
 
   def next_move(board_grid)
-    maybe_first = first_move(board_grid).sample
-    return maybe_first if board_grid.values.count(enemy_marker) <= 1 && board_grid.values.count(self.space) <= 0
+    first = first_move(board_grid).sample
+    return first if board_grid.values.count(enemy_marker) <= 1 && board_grid.values.count(self.space) <= 0
     later_moves(board_grid)
   end
 
