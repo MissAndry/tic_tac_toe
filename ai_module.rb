@@ -30,17 +30,18 @@ module ComputerAI
     end
   end
 
+  def later_moves(board_grid)
+    all_combinations = all_rows_columns_diagonal_combos(board_grid)
+    opposing_diag = find_opposing_diagonal(board_grid)
+    potential_moves = get_next_moves(all_combinations)
+    potential_moves << (opposing_diag) if !opposing_diag.nil?
+    potential_moves.each { |move| return move if move.class == Symbol }
+  end
+
   def next_move(board_grid)
     maybe_first = first_move(board_grid).sample
     return maybe_first if board_grid.values.count(enemy_marker) <= 1 && board_grid.values.count(self.space) <= 0
-
-    all_combinations = all_rows_columns_diagonal_combos(board_grid)
-    opposing_diag = find_opposing_diagonal(board_grid)
-    
-    potential_moves = get_next_moves(all_combinations)
-    potential_moves << (opposing_diag) if !opposing_diag.nil?
-
-    potential_moves.each { |move| return move if move.class == Symbol }
+    later_moves(board_grid)
   end
 
   def find_opposing_diagonal(board_grid)
