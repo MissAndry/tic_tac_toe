@@ -65,6 +65,11 @@ class Game
     nil
   end
 
+  def winning_player
+    "Player 1" if winner == player1
+    "Player 2" if winner == player2
+  end
+
   def to_s
     @board.to_s
   end
