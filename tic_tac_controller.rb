@@ -59,7 +59,6 @@ class TicTacController
   def help?(input)
     if input == "help"
       puts GameView.help
-      # print GameView.prompt
     end
   end
 end

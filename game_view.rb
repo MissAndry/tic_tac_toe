@@ -41,6 +41,8 @@ OTHER OPTIONS
 help:         Display this screen
 quit:         Quit the game
 
+To go back to the game, type where you would like to move.
+
 HELP
   end
 
