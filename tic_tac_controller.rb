@@ -33,14 +33,14 @@ class TicTacController
     end
   end
 
+  def tic_tac_toe
+    @tic_tac_toe
+  end
+
   def start
     puts GameView.welcome
     puts GameView.game_options
     print GameView.prompt
-  end
-
-  def tic_tac_toe
-    @tic_tac_toe
   end
 
   def handle_starting_input(input)
