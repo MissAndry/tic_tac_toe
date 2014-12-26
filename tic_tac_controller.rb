@@ -48,7 +48,6 @@ class TicTacController
     
     until tic_tac_toe.finished? || input == "exit" || input == "quit"
       if tic_tac_toe.player1.is_a? Human
-        @user_commands << input
         help?(input)
         puts GameView.shoot_prompt
         print GameView.prompt
