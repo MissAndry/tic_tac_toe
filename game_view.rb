@@ -47,4 +47,12 @@ HELP
   def self.render
     @game.to_s
   end
+
+  def self.winner(winner)
+    "#{winner} wins!"
+  end
+
+  def self.tie
+    "Cat game!"
+  end
 end

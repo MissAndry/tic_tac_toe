@@ -37,9 +37,9 @@ class TicTacController
     end
 
     if tic_tac_toe.winner
-      puts "#{tic_tac_toe.winner} wins!" 
+      puts GameView.winner(tic_tac_toe.winning_player)
     elsif tic_tac_toe.finished?
-      puts "Cat game!"
+      puts GameView.tie
     end
   end
 
