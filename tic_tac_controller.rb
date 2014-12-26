@@ -10,9 +10,6 @@ class TicTacController
   def run!
     start
     input = gets.chomp
-    handle_starting_input(input)
-    puts tic_tac_toe
-    puts
    
     play_game(input)
 
@@ -38,8 +35,6 @@ class TicTacController
   end
 
   def handle_starting_input(input)
-    help?(input)
-    
     if input == "y"
       @tic_tac_toe = Game.new
     else
@@ -48,6 +43,9 @@ class TicTacController
   end
 
   def play_game(input)
+    handle_starting_input(input)
+    puts tic_tac_toe
+    # puts
     until tic_tac_toe.finished? || input == "exit" || input == "quit"
       if tic_tac_toe.player1.is_a? Human
         @user_commands << input
