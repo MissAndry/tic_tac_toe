@@ -35,6 +35,12 @@ class TicTacController
       puts tic_tac_toe
       puts
     end
+
+    if tic_tac_toe.winner
+      puts "#{tic_tac_toe.winner} wins!" 
+    elsif tic_tac_toe.finished?
+      puts "Cat game!"
+    end
   end
 
   def handle_starting_input(input)
