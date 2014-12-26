@@ -29,6 +29,7 @@ class TicTacController
   end
 
   def start
+    print GameView.clear_screen
     puts GameView.welcome
     puts GameView.game_options
     print GameView.prompt
@@ -44,8 +45,9 @@ class TicTacController
 
   def play_game(input)
     handle_starting_input(input)
+    print GameView.clear_screen
     puts tic_tac_toe
-    
+
     until tic_tac_toe.finished? || input == "exit" || input == "quit"
       if tic_tac_toe.player1.is_a? Human
         help?(input)
@@ -59,6 +61,7 @@ class TicTacController
         tic_tac_toe.mark_space(tic_tac_toe.player1.next_move(tic_tac_toe.board.grid), tic_tac_toe.player1)
       end
       tic_tac_toe.mark_space(tic_tac_toe.player2.next_move(tic_tac_toe.board.grid), tic_tac_toe.player2) unless help_or_quit?
+      print GameView.clear_screen
       puts tic_tac_toe
     end
   end

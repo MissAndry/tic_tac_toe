@@ -1,13 +1,15 @@
 class GameView
-  def initialize(game)
-    @game = game
-  end
-
   def self.welcome
 <<-welcome
+
+
               You're playing Tic-Tac-Toe
 
 welcome
+  end
+
+  def self.clear_screen
+    "\e[2J\e[H"
   end
 
   def self.prompt
@@ -43,10 +45,6 @@ quit:         Quit the game
 To go back to the game, type where you would like to move.
 
 HELP
-  end
-
-  def self.render
-    @game.to_s
   end
 
   def self.winner(winner)
