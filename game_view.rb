@@ -8,7 +8,6 @@ class GameView
               You're playing Tic-Tac-Toe
 
 welcome
-#Please declare if you are a human or a computer
   end
 
   def self.prompt
