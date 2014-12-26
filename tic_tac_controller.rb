@@ -3,16 +3,6 @@ require_relative 'game_view'
 require 'pry'
 
 class TicTacController
-  def start
-    puts GameView.welcome
-    puts GameView.game_options
-    print GameView.prompt
-  end
-
-  def tic_tac_toe
-    @tic_tac_toe
-  end
-
   def run!
     start
     input = gets.chomp
@@ -41,6 +31,16 @@ class TicTacController
     elsif tic_tac_toe.finished?
       puts GameView.tie
     end
+  end
+
+  def start
+    puts GameView.welcome
+    puts GameView.game_options
+    print GameView.prompt
+  end
+
+  def tic_tac_toe
+    @tic_tac_toe
   end
 
   def handle_starting_input(input)
