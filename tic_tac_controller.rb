@@ -3,6 +3,10 @@ require_relative 'game_view'
 require 'pry'
 
 class TicTacController
+  def initialize
+    @user_commands = user_commands
+  end
+
   def run!
     start
     input = gets.chomp
@@ -17,6 +21,10 @@ class TicTacController
     elsif tic_tac_toe.finished?
       puts GameView.tie
     end
+  end
+
+  def user_commands
+    @user_commands ||= Array.new
   end
 
   def tic_tac_toe
@@ -42,15 +50,18 @@ class TicTacController
   def play_game(input)
     until tic_tac_toe.finished? || input == "exit" || input == "quit"
       if tic_tac_toe.player1.is_a? Human
+        @user_commands << input
         help?(input)
         puts GameView.shoot_prompt
         print GameView.prompt
         input = gets.chomp
+        @user_commands << input
+        
         tic_tac_toe.mark_space(input, tic_tac_toe.player1)
       else
         tic_tac_toe.mark_space(tic_tac_toe.player1.next_move(tic_tac_toe.board.grid), tic_tac_toe.player1)
       end
-      tic_tac_toe.mark_space(tic_tac_toe.player2.next_move(tic_tac_toe.board.grid), tic_tac_toe.player2)
+      tic_tac_toe.mark_space(tic_tac_toe.player2.next_move(tic_tac_toe.board.grid), tic_tac_toe.player2) unless user_commands.last == "help"
       puts tic_tac_toe
       puts
     end
