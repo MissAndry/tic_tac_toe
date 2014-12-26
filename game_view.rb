@@ -20,7 +20,7 @@ welcome
   end
 
   def self.shoot_prompt
-    "Where would you like to shoot? (Type \"help\" for options)"
+    "Where would you like to move? (Type \"help\" for options)"
   end
 
   def self.help
