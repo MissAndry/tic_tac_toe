@@ -45,7 +45,7 @@ class TicTacController
   def play_game(input)
     handle_starting_input(input)
     puts tic_tac_toe
-    # puts
+    
     until tic_tac_toe.finished? || input == "exit" || input == "quit"
       if tic_tac_toe.player1.is_a? Human
         @user_commands << input
@@ -59,9 +59,8 @@ class TicTacController
       else
         tic_tac_toe.mark_space(tic_tac_toe.player1.next_move(tic_tac_toe.board.grid), tic_tac_toe.player1)
       end
-      tic_tac_toe.mark_space(tic_tac_toe.player2.next_move(tic_tac_toe.board.grid), tic_tac_toe.player2) unless user_commands.last == "help"
+      tic_tac_toe.mark_space(tic_tac_toe.player2.next_move(tic_tac_toe.board.grid), tic_tac_toe.player2) unless help_or_quit?
       puts tic_tac_toe
-      puts
     end
   end
 
@@ -69,6 +68,10 @@ class TicTacController
     if input == "help"
       puts GameView.help
     end
+  end
+
+  def help_or_quit?
+    user_commands.last == "help" || user_commands.last == "quit" || user_commands.last == "exit"
   end
 end
 
