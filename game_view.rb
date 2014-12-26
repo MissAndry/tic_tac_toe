@@ -15,7 +15,7 @@ welcome
   end
 
   def self.game_options
-    "One player or two?"
+    "Are you a human? (y/n)"
   end
 
   def self.shoot_prompt

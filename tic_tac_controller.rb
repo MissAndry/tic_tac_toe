@@ -40,7 +40,7 @@ class TicTacController
   def handle_starting_input(input)
     help?(input)
     
-    if input.to_i == 1
+    if input == "y"
       @tic_tac_toe = Game.new
     else
       @tic_tac_toe = Game.new(player1: "computer", player2: "computer")
@@ -56,7 +56,7 @@ class TicTacController
         print GameView.prompt
         input = gets.chomp
         @user_commands << input
-        
+
         tic_tac_toe.mark_space(input, tic_tac_toe.player1)
       else
         tic_tac_toe.mark_space(tic_tac_toe.player1.next_move(tic_tac_toe.board.grid), tic_tac_toe.player1)
