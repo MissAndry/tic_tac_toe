@@ -10,21 +10,7 @@ class TicTacController
     puts tic_tac_toe
     puts
    
-    until tic_tac_toe.finished? || input == "exit" || input == "quit"
-      if tic_tac_toe.players.any? { |player| player.is_a? Human }
-        unless help?(input)
-          puts GameView.shoot_prompt
-          print GameView.prompt
-          input = gets.chomp
-        end
-        tic_tac_toe.mark_space(input, tic_tac_toe.player1)
-      else
-        tic_tac_toe.mark_space(tic_tac_toe.player1.next_move(tic_tac_toe.board.grid), tic_tac_toe.player1)
-      end
-      tic_tac_toe.mark_space(tic_tac_toe.player2.next_move(tic_tac_toe.board.grid), tic_tac_toe.player2)
-      puts tic_tac_toe
-      puts
-    end
+    play_game(input)
 
     if tic_tac_toe.winner
       puts GameView.winner(tic_tac_toe.winning_player)
@@ -48,18 +34,32 @@ class TicTacController
     
     if input.to_i == 1
       @tic_tac_toe = Game.new
-    elsif input.to_i == 2
-      @tic_tac_toe = Game.new(player1: "human", player2: "human")
     else
       @tic_tac_toe = Game.new(player1: "computer", player2: "computer")
+    end
+  end
+
+  def play_game(input)
+    until tic_tac_toe.finished? || input == "exit" || input == "quit"
+      if tic_tac_toe.player1.is_a? Human
+        help?(input)
+        puts GameView.shoot_prompt
+        print GameView.prompt
+        input = gets.chomp
+        tic_tac_toe.mark_space(input, tic_tac_toe.player1)
+      else
+        tic_tac_toe.mark_space(tic_tac_toe.player1.next_move(tic_tac_toe.board.grid), tic_tac_toe.player1)
+      end
+      tic_tac_toe.mark_space(tic_tac_toe.player2.next_move(tic_tac_toe.board.grid), tic_tac_toe.player2)
+      puts tic_tac_toe
+      puts
     end
   end
 
   def help?(input)
     if input == "help"
       puts GameView.help
-      print GameView.prompt
-      input = gets.chomp
+      # print GameView.prompt
     end
   end
 end
