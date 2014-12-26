@@ -66,8 +66,8 @@ class Game
   end
 
   def winning_player
-    "Player 1" if winner == player1
-    "Player 2" if winner == player2
+    return "Player 1" if winner == player1
+    return "Player 2"
   end
 
   def to_s
