@@ -1,6 +1,7 @@
 class Board
   COLUMN_BREAK = " | "
-  BREAKER = "\n" + ("-" * 9) + "\n"
+  PADDING = " " * 22
+  BREAKER = "\n" + PADDING + ("-" * 9) + "\n"
   def initialize
     @grid = grid
   end
@@ -28,7 +29,7 @@ class Board
 
   def to_s
     full_board = []
-    rows.each{ |row| full_board << row.join(COLUMN_BREAK) }
+    rows.each{ |row| full_board << PADDING + row.join(COLUMN_BREAK) }
     full_board.join(BREAKER)
   end
 end

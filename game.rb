@@ -71,6 +71,6 @@ class Game
   end
 
   def to_s
-    @board.to_s + "\n\n"
+    "\n\n" + @board.to_s + "\n\n"
   end
 end
