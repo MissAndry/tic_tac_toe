@@ -30,8 +30,8 @@ class TicTacController
 
   def start
     print GameView.clear_screen
-    puts GameView.welcome
-    puts GameView.game_options
+    puts  GameView.welcome
+    puts  GameView.game_options
     print GameView.prompt
   end
 
@@ -59,6 +59,7 @@ class TicTacController
         tic_tac_toe.mark_space(input, tic_tac_toe.player1)
       else
         tic_tac_toe.mark_space(tic_tac_toe.player1.next_move(tic_tac_toe.board.grid), tic_tac_toe.player1)
+        sleep 0.4
       end
       tic_tac_toe.mark_space(tic_tac_toe.player2.next_move(tic_tac_toe.board.grid), tic_tac_toe.player2) unless help_or_quit?
       print GameView.clear_screen
