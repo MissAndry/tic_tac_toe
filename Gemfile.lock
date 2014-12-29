@@ -28,4 +28,3 @@ PLATFORMS
 DEPENDENCIES
   pry
   rspec
-  rspec-mocks
