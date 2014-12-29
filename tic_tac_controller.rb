@@ -50,7 +50,7 @@ class TicTacController
 
     until tic_tac_toe.finished? || input == "exit" || input == "quit"
       if tic_tac_toe.player1.is_a? Human
-        help?(input)
+        puts help?(input)
         puts GameView.shoot_prompt
         print GameView.prompt
         input = gets.chomp
@@ -68,7 +68,7 @@ class TicTacController
 
   def help?(input)
     if input == "help"
-      puts GameView.help
+      GameView.help
     end
   end
 
@@ -77,5 +77,5 @@ class TicTacController
   end
 end
 
-game = TicTacController.new
-game.run!
+# game = TicTacController.new
+# game.run!
