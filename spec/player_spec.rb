@@ -1,12 +1,8 @@
 require_relative '../player'
 
-describe 'Player' do
-  let(:player){ Player.new }
-end
-
 describe 'Human' do
   let(:human){ Human.new }
-  it 'uses an "X" as a marker' do
+  it 'uses an "X" as a marker unless otherwise stated' do
     expect(human.space).to eq("X")
   end
 end
