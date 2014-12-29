@@ -76,6 +76,3 @@ class TicTacController
     user_commands.last == "help" || user_commands.last == "quit" || user_commands.last == "exit"
   end
 end
-
-# game = TicTacController.new
-# game.run!

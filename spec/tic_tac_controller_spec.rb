@@ -3,8 +3,13 @@ require_relative '../tic_tac_controller'
 describe 'TicTacController' do
   ALPHA = %w(a b c d e f g h i j k l m n o p q r s t u v w x y z)
   NUM = (1..10).to_a
-  
+
   let(:tic_tac_controller){ TicTacController.new }
+
+  it 'keeps track of user commands' do
+    allow(tic_tac_controller).to receive(:user_commands).and_return(["center"])
+    expect(tic_tac_controller.user_commands).to include("center")
+  end
 
   describe '#help?' do
     it 'returns the help screen when passed the argument "help"' do
