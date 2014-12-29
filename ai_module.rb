@@ -71,7 +71,7 @@ module ComputerAI
   end
 
   def all_rows_columns_diagonal_combos(board_grid)
-    grid_rows(board_grid) + grid_cols(board_grid) + grid_diag(board_grid)
+    grid_diag(board_grid) + grid_cols(board_grid) + grid_rows(board_grid)
   end
 
   def grid_rows(board_grid)

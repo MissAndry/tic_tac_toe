@@ -127,7 +127,7 @@ describe 'Computer' do
       bottom_left: "X", bottom_center: " ", bottom_right: "O" }
   end
 
-  def two_human_moves_one_computer_corners_taken # => the strategy of taking the corners currently makes the computer beatable 12/16
+  def two_human_moves_one_computer_corners_taken
     { top_left:    " ", top_center:    " ", top_right:    "X",
       middle_left: " ", center:        "O", middle_right: " ",
       bottom_left: "X", bottom_center: " ", bottom_right: " " }
@@ -194,13 +194,13 @@ describe 'Computer' do
   end
 
   def human_can_win_by_row
-    { top_left:    "X", top_center:    "O", top_right:    "O",
-      middle_left: " ", center:        " ", middle_right: "O",
+    { top_left:    "O", top_center:    " ", top_right:    " ",
+      middle_left: "X", center:        "O", middle_right: "O",
       bottom_left: " ", bottom_center: "X", bottom_right: "X" }
   end
 
   def human_can_win_by_column
-    { top_left:    "X", top_center:    " ", top_right:    " ",
+    { top_left:    " ", top_center:    " ", top_right:    " ",
       middle_left: " ", center:        " ", middle_right: "X",
       bottom_left: "O", bottom_center: "O", bottom_right: "X" }
   end
