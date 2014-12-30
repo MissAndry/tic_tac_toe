@@ -26,7 +26,7 @@ describe 'Board' do
 
   describe '#to_s' do
     it 'prints the board as a string' do
-      expect(board.to_s).to eq(board.rows[0].join(Board::COLUMN_BREAK) + Board::BREAKER + board.rows[1].join(Board::COLUMN_BREAK) + Board::BREAKER + board.rows[2].join(Board::COLUMN_BREAK))
+      expect(board.to_s).to eq(Board::PADDING + board.rows[0].join(Board::COLUMN_BREAK) + Board::BREAKER + Board::PADDING + board.rows[1].join(Board::COLUMN_BREAK) + Board::BREAKER + Board::PADDING + board.rows[2].join(Board::COLUMN_BREAK))
     end
   end
 end
