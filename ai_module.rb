@@ -20,6 +20,14 @@ module ComputerAI
     corners.flatten
   end
 
+  def find_opposing_diagonal(board_grid)
+    diagonals = grid_diag(board_grid)
+    marked_row = diagonals.select{ |diag| diag.flatten.include?(enemy_marker) }.pop
+    return if marked_row.nil?
+    return marked_row.last if marked_row.last.include?(" ")
+    marked_row.first
+  end
+
   def first_move(board_grid)
     if corner_spaces(board_grid).include? enemy_marker
       return [find_opposing_diagonal(board_grid).first]
@@ -32,9 +40,7 @@ module ComputerAI
 
   def later_moves(board_grid)
     all_combinations = all_rows_columns_diagonal_combos(board_grid)
-    opposing_diag = find_opposing_diagonal(board_grid)
     potential_moves = get_next_moves(all_combinations)
-    potential_moves << (opposing_diag) if !opposing_diag.nil?
     potential_moves.each { |move| return move if move.class == Symbol }
   end
 
@@ -42,14 +48,6 @@ module ComputerAI
     first = first_move(board_grid).sample
     return first if board_grid.values.count(enemy_marker) <= 1 && board_grid.values.count(self.space) <= 0
     later_moves(board_grid)
-  end
-
-  def find_opposing_diagonal(board_grid)
-    diagonals = grid_diag(board_grid)
-    marked_row = diagonals.select{ |diag| diag.flatten.include?(enemy_marker) }.pop
-    return if marked_row.nil?
-    return marked_row.last if marked_row.last.include?(" ")
-    marked_row.first
   end
 
   def defend(all_combinations, marker=self.space, blank_space=nil)
