@@ -36,10 +36,18 @@ class TicTacController
   end
 
   def handle_starting_input(input)
-    if input == "y"
+    puts GameView.help if help?(input.downcase)
+
+    if input.downcase == "y" || input.downcase == "yes"
       @tic_tac_toe = Game.new
-    else
+    elsif input.downcase == "n" || input.downcase == "no"
       @tic_tac_toe = Game.new(player1: "computer", player2: "computer")
+    else
+      puts "\nPlease indicate whether or not you are human"
+      puts  GameView.game_options
+      print GameView.prompt
+      input = gets.chomp
+      handle_starting_input(input)
     end
   end
 
@@ -53,15 +61,22 @@ class TicTacController
         puts help?(input)
         puts GameView.shoot_prompt
         print GameView.prompt
-        input = gets.chomp
-        @user_commands << input
-
+        input = gets.chomp.downcase
+        
+        until !invalid_move?(input) || input == "exit" || input == "quit"
+          puts help?(input)
+          puts "\nThat move is invalid. Please try again." unless input == "help"
+          puts GameView.shoot_prompt
+          print GameView.prompt
+          input = gets.chomp.downcase
+        end
+        
         tic_tac_toe.mark_space(input, tic_tac_toe.player1)
       else
         tic_tac_toe.mark_space(tic_tac_toe.player1.next_move(tic_tac_toe.board.grid), tic_tac_toe.player1)
         sleep 0.4
       end
-      tic_tac_toe.mark_space(tic_tac_toe.player2.next_move(tic_tac_toe.board.grid), tic_tac_toe.player2) unless help_or_quit?
+      tic_tac_toe.mark_space(tic_tac_toe.player2.next_move(tic_tac_toe.board.grid), tic_tac_toe.player2) unless tic_tac_toe.finished?
       print GameView.clear_screen
       puts tic_tac_toe
     end
@@ -73,7 +88,14 @@ class TicTacController
     end
   end
 
-  def help_or_quit?
-    user_commands.last == "help" || user_commands.last == "quit" || user_commands.last == "exit"
+  def invalid_move?(input)
+    move = tic_tac_toe.add_underscore(input).to_sym
+    if tic_tac_toe.board.grid[move] != " " 
+      return true
+    elsif !tic_tac_toe.board.grid.keys.include? move
+      return true
+    else
+      return false
+    end
   end
 end
