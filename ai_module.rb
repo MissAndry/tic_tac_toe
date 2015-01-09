@@ -47,9 +47,12 @@ module ComputerAI
   end
 
   def next_move(board_grid)
+    neighbor = neighboring_space(board_grid).sample
     first = first_move(board_grid).sample
     return first if board_grid.values.count(enemy_marker) <= 1 && board_grid.values.count(self.space) <= 0
     return :center if board_grid[:center] == " "
+    puts neighbor.inspect
+    return neighbor if neighbor && (corner_spaces(board_grid).count(enemy_marker) == board_grid.values.count(enemy_marker))
     later_moves(board_grid)
   end
 
@@ -90,6 +93,14 @@ module ComputerAI
     diags
   end
 
+  def neighboring_space(board_grid)
+    sides = side_spaces(board_grid).values_at(0, 2, 4, 6)
+    puts "These are the sides: #{sides}"
+    corners = grid_diag(board_grid).flatten.values_at(0, 2, 4, 6)
+    puts "These are the corners: #{corners}"
+    corners.each.with_index { |value, index| return [sides[index]] if board_grid[value] == enemy_marker }
+  end
+
   def side_spaces(board_grid)
     sides = []
     sides << grid_rows(board_grid).first[1]
@@ -104,26 +115,31 @@ module ComputerAI
     rows = grid_rows(board_grid)
     cols = grid_cols(board_grid)
 
-    if rows.first[1].include? enemy_marker
-      opposite = rows.first
-    elsif rows.last[1].include? enemy_marker
-      opposite = rows.last
-    elsif cols.first[1].include? enemy_marker
-      opposite = cols.first
-    elsif cols.last[1].include? enemy_marker
-      opposite = cols.last
+    if rows.first[1].include? enemy_marker && rows
+      opposite << rows.first
+    elsif rows.last[1].include? enemy_marker && rows
+      opposite << rows.last
+    elsif cols.first[1].include? enemy_marker && cols
+      opposite << cols.first
+    elsif cols.last[1].include? enemy_marker && cols
+      opposite << cols.last
     end
-    [opposite.first.first] + [opposite.last.first]
+    unless opposite.empty?
+      return opposite.first.first + opposite.last.first
+    end
+    opposite
   end
 
   def player_went_side_first(board_grid)
     starting_point = []
     rows = grid_rows(board_grid)
     cols = grid_cols(board_grid)
-    starting_point = rows[1].first.first if rows[1].last.last == enemy_marker
-    starting_point = rows[1].last.first  if rows[1].first.last == enemy_marker
-    starting_point = cols[1].first.first if cols[1].last.last == enemy_marker
-    starting_point = cols[1].last.first  if cols[1].first.last == enemy_marker
-    [starting_point] + find_opposing_side(board_grid) + [:center]
+    opposite = find_opposing_side(board_grid)
+    starting_point << rows[1].first.first if rows[1].last.last == enemy_marker
+    starting_point << rows[1].last.first  if rows[1].first.last == enemy_marker
+    starting_point << cols[1].first.first if cols[1].last.last == enemy_marker
+    starting_point << cols[1].last.first  if cols[1].first.last == enemy_marker
+    
+    starting_point + opposite + [:center]
   end
 end
