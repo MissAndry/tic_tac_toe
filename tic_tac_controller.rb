@@ -21,7 +21,7 @@ class TicTacController
   end
 
   def user_commands
-    @user_commands ||= Array.new
+    @user_commands ||= String.new
   end
 
   def tic_tac_toe

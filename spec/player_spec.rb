@@ -24,7 +24,7 @@ describe 'Computer' do
       end
     end
 
-    describe 'empty?' do
+    describe '#empty?' do
       it 'returns true if the board is empty and false otherwise' do
         expect(computer.empty?(empty_board)).to be true
         expect(computer.empty?(starting_grid)).to be false
@@ -45,10 +45,18 @@ describe 'Computer' do
       end
     end
 
+    describe '#side_spaces' do
+      it 'returns the state of the non-corner, non-center spaces' do
+        expect(computer.side_spaces(empty_board)).not_to include(:top_left, :top_right, :center, :bottom_left, :bottom_right)
+        expect(computer.side_spaces(computer_can_win_by_column)).to include("X", "O")
+      end
+    end
+
     describe '#first_move' do
       it 'returns the ideal first move (either a corner or center) depending on the opponent\'s first move' do
         expect(computer.first_move(first_move_in_the_center)).to eq([:top_left, :top_right, :bottom_left, :bottom_right])
-        expect(computer.first_move(bottom_left_corner_taken)).to eq([:top_right])
+        expect(computer.first_move(bottom_left_corner_taken)).to eq([:center])
+        expect(computer.first_move(first_move_on_the_side)).to eq([:middle_left, :top_right, :bottom_right, :center])
       end
     end
 
@@ -148,6 +156,12 @@ describe 'Computer' do
   def first_move_in_the_center
     { top_left:    " ", top_center:    " ", top_right:    " ",
       middle_left: " ", center:        "X", middle_right: " ",
+      bottom_left: " ", bottom_center: " ", bottom_right: " " }
+  end
+
+  def first_move_on_the_side
+    { top_left:    " ", top_center:    " ", top_right:    " ",
+      middle_left: " ", center:        " ", middle_right: "X",
       bottom_left: " ", bottom_center: " ", bottom_right: " " }
   end
 
