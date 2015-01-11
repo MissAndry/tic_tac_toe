@@ -33,14 +33,14 @@ welcome
   end
 
   def self.help(started)
-    help = GameView.help_screen
+    show_help = GameView.help_screen
 
     if started
-      help += "To go back to the game, type where you would like to move.\n"
+      show_help += "To go back to the game, type where you would like to move.\n"
     else
-      help += "To start the game, please indicate whether or not you are human\n"
+      show_help += "To start the game, please indicate whether or not you are human\n"
     end
-    help
+    show_help
   end
 
   def self.winner(winner)

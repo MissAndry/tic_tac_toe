@@ -6,20 +6,8 @@ describe 'TicTacController' do
 
   let(:tic_tac_controller){ TicTacController.new }
 
-  it 'keeps track of user commands' do
-    allow(tic_tac_controller).to receive(:user_commands).and_return(["center"])
-    expect(tic_tac_controller.user_commands).to include("center")
-  end
-
-  describe '#help?' do
-    it 'returns the help screen when passed the argument "help"' do
-      expect(tic_tac_controller.help?("help")).to eq(GameView.help)
-    end
-
-    it 'returns nothing when it\'s passed anything besides "help"' do
-      word = ""
-      NUM.sample.times { word += ALPHA.sample }
-      expect(tic_tac_controller.help?(word)).to eq nil
-    end
+  it 'keeps track of the most recent user commands' do
+    allow(tic_tac_controller).to receive(:user_input).and_return("center")
+    expect(tic_tac_controller.user_input).to eq("center")
   end
 end

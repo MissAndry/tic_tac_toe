@@ -78,10 +78,10 @@ module ComputerAI
   def second_move(board_grid)
     all_combinations = all_rows_columns_diagonal_combos(board_grid)
     defense = defend(all_combinations, enemy_marker)
-    if center_empty?(board_grid)
-      [:center]
-    elsif !defense.nil?
+    if !defense.nil?
       [defense]
+    elsif center_empty?(board_grid)
+      [:center]
     else
       sides = side_spaces(board_grid).values_at(0, 2, 4, 6)
       sides - taken_spaces(board_grid)

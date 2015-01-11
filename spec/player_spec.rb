@@ -86,10 +86,6 @@ describe 'Computer' do
         expect(computer.next_move(first_move_in_the_center)).to satisfy{ |move| [:top_left, :top_right, :bottom_left, :bottom_right].include?(move) }
       end
 
-      it 'takes empty corners or the center when the computer has the first move' do
-        expect(computer.next_move(empty_board)).to satisfy{ |move| [:top_left, :top_right, :center, :bottom_left, :bottom_right].include?(move) }
-      end
-
       it 'takes side spaces when appropriate, i.e. when the center has already been taken and the human moves in a corner' do
         expect(computer.next_move(two_human_moves_one_computer_corners_taken)).to satisfy{ |move| [:top_center, :middle_left, :middle_right, :bottom_center].include?(move) }
       end
