@@ -28,18 +28,6 @@ module ComputerAI
     marked_row.first
   end
 
-  def first_move(board_grid)
-    if corner_spaces(board_grid).include? enemy_marker
-      return [:center]
-    elsif board_grid[:center] == enemy_marker
-      [:top_left, :top_right, :bottom_left, :bottom_right]
-    elsif side_spaces(board_grid).include? enemy_marker
-      player_went_side_first(board_grid) - taken_spaces(board_grid)
-    else
-      [:top_left, :top_right, :center, :bottom_left, :bottom_right] - taken_spaces(board_grid)
-    end
-  end
-
   def later_moves(board_grid)
     all_combinations = all_rows_columns_diagonal_combos(board_grid)
     potential_moves = get_next_moves(all_combinations)
@@ -47,13 +35,14 @@ module ComputerAI
   end
 
   def next_move(board_grid)
-    neighbor = neighboring_space(board_grid).sample
-    first = first_move(board_grid).sample
-    return first if board_grid.values.count(enemy_marker) <= 1 && board_grid.values.count(self.space) <= 0
-    return :center if board_grid[:center] == " "
-    puts neighbor.inspect
-    return neighbor if neighbor && (corner_spaces(board_grid).count(enemy_marker) == board_grid.values.count(enemy_marker))
-    later_moves(board_grid)
+    if first_move?(board_grid)
+      return first_move(board_grid).sample 
+    elsif second_move?(board_grid)
+      second = second_move(board_grid).sample 
+      return second
+    else
+      return later_moves(board_grid)
+    end
   end
 
   def defend(all_combinations, marker=self.space, blank_space=nil)
@@ -63,6 +52,44 @@ module ComputerAI
         combo.select{ |pair| return pair[0] if pair[1] == " " }
       end
     end
+    nil
+  end
+
+  def first_move?(board_grid)
+    board_grid.values.count(enemy_marker) <= 1
+  end
+
+  def first_move(board_grid)
+    if corner_spaces(board_grid).include? enemy_marker
+      return [:center]
+    elsif board_grid[:center] == enemy_marker
+      [:top_left, :top_right, :bottom_left, :bottom_right]
+    elsif side_spaces(board_grid).include? enemy_marker
+      player_went_side_first(board_grid) - taken_spaces(board_grid)
+    else
+      board_grid.keys
+    end
+  end
+
+  def second_move?(board_grid)
+    board_grid.values.count(enemy_marker) == 2
+  end
+
+  def second_move(board_grid)
+    all_combinations = all_rows_columns_diagonal_combos(board_grid)
+    defense = defend(all_combinations, enemy_marker)
+    if center_empty?(board_grid)
+      [:center]
+    elsif !defense.nil?
+      [defense]
+    else
+      sides = side_spaces(board_grid).values_at(0, 2, 4, 6)
+      sides - taken_spaces(board_grid)
+    end
+  end
+
+  def center_empty?(board_grid)
+    board_grid[:center] == " "
   end
 
   def get_next_moves(all_combinations)
@@ -94,10 +121,9 @@ module ComputerAI
   end
 
   def neighboring_space(board_grid)
-    sides = side_spaces(board_grid).values_at(0, 2, 4, 6)
-    puts "These are the sides: #{sides}"
+    sides = side_spaces(board_grid).values_at(0, 2, 4, 6) 
     corners = grid_diag(board_grid).flatten.values_at(0, 2, 4, 6)
-    puts "These are the corners: #{corners}"
+    
     corners.each.with_index { |value, index| return [sides[index]] if board_grid[value] == enemy_marker }
   end
 
@@ -115,17 +141,18 @@ module ComputerAI
     rows = grid_rows(board_grid)
     cols = grid_cols(board_grid)
 
-    if rows.first[1].include? enemy_marker && rows
-      opposite << rows.first
-    elsif rows.last[1].include? enemy_marker && rows
-      opposite << rows.last
-    elsif cols.first[1].include? enemy_marker && cols
-      opposite << cols.first
-    elsif cols.last[1].include? enemy_marker && cols
-      opposite << cols.last
+    if rows.first[1].include? enemy_marker
+      opposite += rows.first
+    elsif rows.last[1].include? enemy_marker
+      opposite += rows.last
+    elsif cols.first[1].include? enemy_marker
+      opposite += cols.first
+    elsif cols.last[1].include? enemy_marker
+      opposite += cols.last
     end
+    
     unless opposite.empty?
-      return opposite.first.first + opposite.last.first
+      return opposite.flatten.values_at(0, 4)
     end
     opposite
   end
