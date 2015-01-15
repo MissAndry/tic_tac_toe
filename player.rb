@@ -1,20 +1,20 @@
 require_relative 'ai_module'
 
 class Player
-  def initialize(space=nil)
-    @space = space
+  def initialize(marker=nil)
+    @marker = marker
   end
 end
 
 class Computer < Player
 include ComputerAI
-  def space
-    @space ||= "O"
+  def marker
+    @marker ||= "O"
   end
 end
 
 class Human < Player
-  def space
-    @space ||= "X"
+  def marker
+    @marker ||= "X"
   end
 end

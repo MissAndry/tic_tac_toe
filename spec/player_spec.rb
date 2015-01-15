@@ -3,126 +3,25 @@ require_relative '../player'
 describe 'Human' do
   let(:human){ Human.new }
   it 'uses an "X" as a marker unless otherwise stated' do
-    expect(human.space).to eq("X")
+    expect(human.marker).to eq("X")
   end
 end
 
 describe 'Computer' do
   let(:computer){ Computer.new }
 
-  it 'uses an "O" as a marker' do
-    expect(computer.space).to eq("O")
+  it 'uses an "O" as a marker by default' do
+    expect(computer.marker).to eq("O")
   end
 
   describe 'ComputerAI module' do
-    describe '#enemy_marker' do
-      it 'returns an "O" if the computer\'s marker is an "X", and vice versa' do
-        x_marks_the_spot = Computer.new("X")
-        o_no_you_didnt = Computer.new("O")
-        expect(x_marks_the_spot.enemy_marker).to eq("O")
-        expect(o_no_you_didnt.enemy_marker).to eq("X")
-      end
-    end
-
-    describe '#taken_spaces' do
-      it 'returns the keys of all the taken spaces' do
-        expect(computer.taken_spaces(empty_board)).to be_empty
-        expect(computer.taken_spaces(first_move_in_the_center)).to eq([:center])
-      end
-    end
-
-    describe '#corner_spaces' do
-      it 'returns the state of the corners of the board' do
-        expect(computer.corner_spaces(empty_board)).not_to include(:top_center, :middle_left, :center, :middle_right, :bottom_center)
-        expect(computer.corner_spaces(human_can_win_by_row)).to include("X", "O")
-      end
-    end
-
-    describe '#side_spaces' do
-      it 'returns the state of the non-corner, non-center spaces' do
-        expect(computer.side_spaces(empty_board)).not_to include(:top_left, :top_right, :center, :bottom_left, :bottom_right)
-        expect(computer.side_spaces(computer_can_win_by_column)).to include("X", "O")
-      end
-    end
-
-    describe '#first_move' do
-      it 'returns the ideal first move (either a corner or center) depending on the opponent\'s first move' do
-        expect(computer.first_move(first_move_in_the_center)).to eq([:top_left, :top_right, :bottom_left, :bottom_right])
-        expect(computer.first_move(bottom_left_corner_taken)).to eq([:center])
-        expect(computer.first_move(first_move_on_the_side)).to eq([:middle_left, :top_right, :bottom_right, :center])
-      end
-    end
-
-    describe '#second_move?' do
-      it 'indicates the second move if the computer has moved once' do
-        expect(computer.second_move?(bottom_center_taken_first_center_taken_second)).to be true
+    describe '#board_empty?' do
+      it 'returns true if the passed-in board grid is empty' do
+        expect(computer.board_empty?(empty_board)).to be true
       end
 
-      it 'moves defensively when the computer is player 2, i.e. marks a space in a row already populated by the first player' do
-        expect(computer.second_move(bottom_center_taken_first_center_taken_second).sample).to satisfy{ |move| [:top_left, :bottom_left, :bottom_right].include?(move) }
-      end
-    end
-
-    describe '#next_move' do
-      it 'wins the game if possible' do
-        expect(computer.next_move(computer_can_win_by_row)).to eq(:middle_right)
-        expect(computer.next_move(computer_can_win_by_column)).to eq(:top_center)
-        expect(computer.next_move(computer_can_win_by_diagonal)).to eq(:bottom_right)
-      end
-
-      it 'stops the opponent from winning' do
-        expect(computer.next_move(human_can_win_by_row)).to eq(:bottom_left)
-        expect(computer.next_move(human_can_win_by_column)).to eq(:top_right)
-        expect(computer.next_move(human_can_win_by_diagonal)).to eq(:bottom_right)
-        expect(computer.next_move(starting_grid)).to eq(:middle_left)
-        expect(computer.next_move(two_human_moves_one_computer_human_takes_center)).to eq(:middle_left)
-      end
-
-      it 'chooses the winning move over the defensive move' do
-        computer_can_win_by_row[:top_center] = "X"
-        computer_can_win_by_column[:top_right] = "X"
-        expect(computer.next_move(computer_can_win_by_row)).to eq(:middle_right)
-        expect(computer.next_move(computer_can_win_by_column)).to eq(:top_center)
-      end
-
-      it 'takes the empty corners first' do
-        expect(computer.next_move(first_move_in_the_center)).to satisfy{ |move| [:top_left, :top_right, :bottom_left, :bottom_right].include?(move) }
-      end
-
-    end
-
-    describe '#find_opposing_diagonal' do
-      it 'finds the diagonal opposite from a taken diagonal' do
-        expect(computer.find_opposing_diagonal(bottom_left_corner_taken)).to eq([:top_right, " "])
-        expect(computer.find_opposing_diagonal(bottom_right_corner_taken)).to eq([:top_left, " "])
-        expect(computer.find_opposing_diagonal(top_left_corner_taken)).to eq([:bottom_right, " "])
-        expect(computer.find_opposing_diagonal(top_right_corner_taken)).to eq([:bottom_left, " "])
-      end
-    end
-
-    describe '#grid_rows' do
-      it 'returns an array of rows as keys' do
-        expect(computer.grid_rows(starting_grid.keys)).to eq([[:top_left, :top_center, :top_right],
-                                                              [:middle_left, :center, :middle_right],
-                                                              [:bottom_left, :bottom_center, :bottom_right]])
-        expect(computer.grid_rows(starting_grid.values)).to eq([["X", " ", " "], [" ", "O", "X"], ["X", " ", "O"]])
-      end
-    end
-
-    describe '#grid_cols' do
-      it 'returns an array of columns as keys' do
-        expect(computer.grid_cols(first_move_in_the_center.keys)).to eq([[:top_left, :middle_left, :bottom_left],
-                                                                         [:top_center, :center, :bottom_center],
-                                                                         [:top_right, :middle_right, :bottom_right]])
-        expect(computer.grid_cols(starting_grid.values)).to eq([["X", " ", "X"], [" ", "O", " "], [" ", "X", "O"]])
-      end
-    end
-
-    describe '#grid_diag' do
-      it 'returns an array of diagonals' do
-        expect(computer.grid_diag(computer_can_win_by_row.keys)).to eq([[:top_left, :center, :bottom_right],
-                                                                        [:top_right, :center, :bottom_left]])
-        expect(computer.grid_diag(starting_grid.values)) .to eq([["X", "O", "O"], [" ", "O", "X"]])
+      it 'returns false if the passed-in board grid has any marked spaces' do
+        expect(computer.board_empty?(starting_grid)).to be false
       end
     end
   end
