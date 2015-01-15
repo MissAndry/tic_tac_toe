@@ -49,7 +49,7 @@ class Game
 
   def mark_space(where, player)
     where = add_underscore(where).to_sym if where.class == String
-    board.grid[where] = player.space unless board.grid[where] != " "
+    board.grid[where] = player.space if board.grid[where] == " "
   end
 
   def add_underscore(str)

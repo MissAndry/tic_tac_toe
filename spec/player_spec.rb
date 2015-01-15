@@ -24,13 +24,6 @@ describe 'Computer' do
       end
     end
 
-    describe '#empty?' do
-      it 'returns true if the board is empty and false otherwise' do
-        expect(computer.empty?(empty_board)).to be true
-        expect(computer.empty?(starting_grid)).to be false
-      end
-    end
-
     describe '#taken_spaces' do
       it 'returns the keys of all the taken spaces' do
         expect(computer.taken_spaces(empty_board)).to be_empty
@@ -60,6 +53,16 @@ describe 'Computer' do
       end
     end
 
+    describe '#second_move?' do
+      it 'indicates the second move if the computer has moved once' do
+        expect(computer.second_move?(bottom_center_taken_first_center_taken_second)).to be true
+      end
+
+      it 'moves defensively when the computer is player 2, i.e. marks a space in a row already populated by the first player' do
+        expect(computer.second_move(bottom_center_taken_first_center_taken_second).sample).to satisfy{ |move| [:top_left, :bottom_left, :bottom_right].include?(move) }
+      end
+    end
+
     describe '#next_move' do
       it 'wins the game if possible' do
         expect(computer.next_move(computer_can_win_by_row)).to eq(:middle_right)
@@ -86,9 +89,6 @@ describe 'Computer' do
         expect(computer.next_move(first_move_in_the_center)).to satisfy{ |move| [:top_left, :top_right, :bottom_left, :bottom_right].include?(move) }
       end
 
-      it 'takes side spaces when appropriate, i.e. when the center has already been taken and the human moves in a corner' do
-        expect(computer.next_move(two_human_moves_one_computer_corners_taken)).to satisfy{ |move| [:top_center, :middle_left, :middle_right, :bottom_center].include?(move) }
-      end
     end
 
     describe '#find_opposing_diagonal' do
@@ -221,6 +221,12 @@ describe 'Computer' do
     { top_left:    "X", top_center:    "O", top_right:    " ",
       middle_left: "X", center:        "X", middle_right: "O",
       bottom_left: "O", bottom_center: "X", bottom_right: " " }
+  end
+
+  def bottom_center_taken_first_center_taken_second
+    { top_left:    " ", top_center:    " ", top_right:    " ",
+      middle_left: "X", center:        "O", middle_right: " ",
+      bottom_left: " ", bottom_center: "X", bottom_right: " " }
   end
 
   def empty_board
