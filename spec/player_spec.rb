@@ -84,6 +84,38 @@ describe 'Computer' do
       end
     end
 
+    describe '#tryna_win' do
+      it 'chooses the winning move when the "X" computer can win by row' do
+        x_computer.send(:board=, human_can_win_by_row)
+        expect(x_computer.tryna_win).to eq([:bottom_left])
+      end
+      
+      it 'chooses the winning move when the "O" computer can win by row' do
+        o_computer.send(:board=, computer_can_win_by_row)
+        expect(o_computer.tryna_win).to eq([:middle_right])
+      end
+      
+      it 'chooses the winning move when the "X" computer can win by column' do
+        x_computer.send(:board=, human_can_win_by_column)
+        expect(x_computer.tryna_win).to eq([:top_right])
+      end
+      
+      it 'chooses the winning move when the "O" computer can win by column' do
+        o_computer.send(:board=, computer_can_win_by_column)
+        expect(o_computer.tryna_win).to eq([:top_center])
+      end
+      
+      it 'chooses the winning move when the "X" computer can win by diagonal' do
+        x_computer.send(:board=, human_can_win_by_diagonal)
+        expect(x_computer.tryna_win).to eq([:bottom_right])
+      end
+      
+      it 'chooses the winning move when the "O" computer can win by diagonal' do
+        o_computer.send(:board=, computer_can_win_by_diagonal)
+        expect(o_computer.tryna_win).to eq([:bottom_left])
+      end
+    end
+
     describe '#enemy_in_the_corner?' do
       it 'returns true if the enemy is in the corner' do
         o_computer.send(:board=, bottom_right_corner_taken)
@@ -135,7 +167,7 @@ describe 'Computer' do
       end
       it 'stops the opponent from winning if they have two marked spaces in a row' do
         x_computer.send(:board=, computer_can_win_by_diagonal)
-        expect(x_computer.block_them).to eq([:bottom_right])
+        expect(x_computer.block_them).to eq([:bottom_left])
       end
     end
   end
@@ -237,13 +269,13 @@ describe 'Computer' do
   end
 
   def computer_can_win_by_diagonal
-    board.grid[:top_left] = "O"
+    board.grid[:top_right] = "O"
     board.grid[:top_center] = "X"
     board.grid[:middle_left] = "X"
     board.grid[:center] = "O"
     board.grid[:bottom_center] = "X"
     board.grid
-    # { top_left:    "O", top_center:    "X", top_right:    " ",
+    # { top_left:    " ", top_center:    "X", top_right:    "O",
     #   middle_left: "X", center:        "O", middle_right: " ",
     #   bottom_left: " ", bottom_center: "X", bottom_right: " " }
   end

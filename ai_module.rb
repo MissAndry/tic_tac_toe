@@ -29,10 +29,16 @@ module ComputerAI
     elsif enemy_in_the_corner?
       [:center]
     elsif enemy_on_the_side?
-      row = board.rows.select{ |row| row.flatten.include? enemy_marker }
-      col = board.columns.select{ |col| col.flatten.include? enemy_marker }
-      row.flatten.values_at(0, 2) + col.flatten.values_at(0, 4)
+      all_rows = board.rows.select{ |row| row.flatten.include? enemy_marker }
+      all_cols = board.columns.select{ |col| col.flatten.include? enemy_marker }
+      all_rows.flatten.values_at(0, 2) + all_cols.flatten.values_at(0, 4)
     end
+  end
+
+  def tryna_win
+    all_combinations = board.diagonals + board.rows + board.columns
+    potential_winner = all_combinations.select{ |combo| combo.flatten.values_at(1, 3, 5).sort == [" ", marker, marker] }.pop
+    potential_winner.map{ |move| move.first if move.last == " " }.compact
   end
 
   def enemy_in_the_corner?
