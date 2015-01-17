@@ -24,17 +24,6 @@ describe 'Computer' do
   describe 'ComputerAI module' do
     let(:x_computer){ Computer.new(board, "X") }
     let(:o_computer){ Computer.new(board) }
-    describe '#board_empty?' do
-      it 'returns true if the passed-in board grid is empty' do
-        computer.send(:board=, empty_board)
-        expect(computer.board_empty?).to be true
-      end
-
-      it 'returns false if the passed-in board grid has any marked spaces' do
-        computer.send(:board=, starting_grid)
-        expect(computer.board_empty?).to be false
-      end
-    end
 
     describe '#first_move?' do
       it 'returns true if the computer hasn\'t moved yet' do
@@ -52,6 +41,60 @@ describe 'Computer' do
         x_computer.send(:board=, starting_grid)
         expect(o_computer.first_move?).to be false
         expect(x_computer.first_move?).to be false
+      end
+    end
+
+    describe '#first_move' do
+      context 'marker is "X"' do
+        it 'tells the computer to go anywhere' do
+          expect(x_computer.first_move).to eq(starting_grid.keys)
+        end
+      end
+
+      context 'marker is "O" and "X" has already gone' do
+       it 'takes a corner space if "X" is in the center' do
+          o_computer.send(:board=, first_move_in_the_center)
+          expect(o_computer.first_move).to eq([:top_left, :top_right, :bottom_left, :bottom_right])
+        end
+        
+        it 'takes the center space if "X" is in a corner' do
+          o_computer.send(:board=, bottom_right_corner_taken)
+          expect(o_computer.first_move).to eq([:center])
+        end
+
+        it 'takes a space in the row or column including "X" if "X" starts on the side' do
+          o_computer.send(:board=, first_move_on_the_side)
+          expect(o_computer.first_move).to eq([:middle_left, :center, :top_right, :bottom_right])
+        end
+      end
+    end
+
+    describe '#next_move' do
+      it 'returns a symbol indicating the best next move' do
+        o_computer.send(:board=, bottom_right_corner_taken)
+        expect(o_computer.next_move).to eq(:center)
+
+        o_computer.send(:board=, nil)
+        o_computer.send(:board=, first_move_on_the_side)
+        expect(o_computer.next_move).to satisfy{ |move| [:middle_left, :center, :top_right, :bottom_right].include? move }
+
+        o_computer.send(:board=, nil)
+        o_computer.send(:board=, first_move_in_the_center)
+        expect(o_computer.next_move).to satisfy{ |move| [:top_left, :top_right, :bottom_left, :bottom_right].include? move }
+      end
+    end
+
+    describe '#enemy_in_the_corner?' do
+      it 'returns true if the enemy is in the corner' do
+        o_computer.send(:board=, bottom_right_corner_taken)
+        expect(o_computer.enemy_in_the_corner?).to be true
+      end
+    end
+
+    describe '#enemy_on_the_side?' do
+      it 'returns true if the enemy is on the side' do
+        o_computer.send(:board=, first_move_on_the_side)
+        expect(o_computer.enemy_on_the_side?).to be true
       end
     end
 
@@ -86,9 +129,13 @@ describe 'Computer' do
     end
 
     describe '#block_them' do
-      pending 'stops the opponent from winning if they have two marked spaces in a row' do
+      it 'stops the opponent from winning if they have two marked spaces in a row' do
         o_computer.send(:board=, starting_grid)
-        expect(o_computer.block_them).to eq(:middle_left)
+        expect(o_computer.block_them).to eq([:middle_left])
+      end
+      it 'stops the opponent from winning if they have two marked spaces in a row' do
+        x_computer.send(:board=, computer_can_win_by_diagonal)
+        expect(x_computer.block_them).to eq([:bottom_right])
       end
     end
   end

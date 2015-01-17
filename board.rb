@@ -43,6 +43,10 @@ class Board
     corner
   end
 
+  def empty?
+    grid.values.all? { |space| space == " " }
+  end
+
   def to_s
     full_board = []
     rows.each{ |row| full_board << PADDING + row.join(COLUMN_BREAK) }

@@ -38,6 +38,17 @@ describe 'Board' do
     end
   end
 
+  describe '#empty?' do
+    it 'returns true if the board is empty' do
+      expect(board.empty?).to be true
+    end
+
+    it 'returns false if the board is not empty' do
+      board.grid[:center] = "X"
+      expect(board.empty?).to be false
+    end
+  end
+
   describe '#to_s' do
     it 'prints the board as a string' do
       expect(board.to_s).to eq(Board::PADDING + board.rows[0].join(Board::COLUMN_BREAK) + Board::BREAKER + Board::PADDING + board.rows[1].join(Board::COLUMN_BREAK) + Board::BREAKER + Board::PADDING + board.rows[2].join(Board::COLUMN_BREAK))
