@@ -43,6 +43,21 @@ class Board
     corner
   end
 
+  def row_values
+    grid.values.each_slice(3).to_a
+  end
+
+  def col_values
+    row_values.transpose
+  end
+
+  def diag_values
+    diagonal = []
+    diagonal << row_values.map.with_index{ |v, i| v[i] }
+    diagonal << row_values.map.with_index(1){ |v, i| v[-i] }
+    diagonal
+  end
+
   def empty?
     grid.values.all? { |space| space == " " }
   end
