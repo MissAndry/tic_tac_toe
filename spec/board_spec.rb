@@ -8,7 +8,9 @@ describe 'Board' do
 
   describe '#rows' do
     it 'returns an array of all the rows' do
-      expect(board.rows).to eq(Array.new(3, Array.new(3, " ")))
+      expect(board.rows).to eq([[[:top_left, " "], [:top_center, " "], [:top_right, " "]],
+       [[:middle_left, " "], [:center, " "], [:middle_right, " "]],
+       [[:bottom_left, " "], [:bottom_center, " "], [:bottom_right, " "]]])
     end
   end
 
@@ -21,6 +23,18 @@ describe 'Board' do
   describe '#diagonals' do
     it 'returns an array of both diagonals' do
       expect(board.diagonals).to eq([[board.rows[0][0], board.rows[1][1], board.rows[2][2]], [board.rows[0][2], board.rows[1][1], board.rows[2][0]]])
+    end
+  end
+
+  describe '#sides' do
+    it 'returns the key, value pairs of the side of the board' do
+      expect(board.sides).to eq([[:top_center, " "], [:bottom_center, " "], [:middle_left, " "], [:middle_right, " "]])
+    end
+  end
+
+  describe '#corners' do
+    it 'returns the key, value pairs of the corners of the board' do
+      expect(board.corners).to eq([[:top_left, " "], [:top_right, " "], [:bottom_left, " "], [:bottom_right, " "]])
     end
   end
 

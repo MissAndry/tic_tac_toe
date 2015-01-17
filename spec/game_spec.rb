@@ -93,23 +93,44 @@ describe 'Game' do
 
   context "two computer players" do
     let(:tic_tac_computer){ Game.new(player1: "computer", player2: "computer") }
-    # it 'initializes with two computer players' do
-    #   expect(tic_tac_computer.players.all? { |player| player.is_a? Computer }).to be true
-    # end
+    it 'initializes with two computer players' do
+      expect(tic_tac_computer.players.all? { |player| player.is_a? Computer }).to be true
+    end
 
-    # it 'sets the players with different markers' do
-    #   expect(tic_tac_computer.player1.space).not_to eq(tic_tac_computer.player2.space)
-    # end
+    it 'sets the players with different markers' do
+      expect(tic_tac_computer.player1.marker).not_to eq(tic_tac_computer.player2.marker)
+    end
 
-    # it 'always results in a tie' do
-    #   computer_game = computers_fight
-    #   expect(computer_game.winner).to be nil
-    # end
-
-    it 'always has players take all their turns' do
+    pending 'always results in a tie' do
       computer_game = computers_fight
-      expect(computer_game.board.grid.values.count(computer_game.player1.space)).to eq 5
-      expect(computer_game.board.grid.values.count(computer_game.player2.space)).to eq 4
+      expect(computer_game.winner).to be nil
+    end
+
+    pending 'always has players take all their turns' do
+      computer_game = computers_fight
+      expect(computer_game.board.grid.values.count(computer_game.player1.marker)).to eq 5
+      expect(computer_game.board.grid.values.count(computer_game.player2.marker)).to eq 4
+    end
+
+    describe '#mark_space' do
+      it 'updates the game board' do
+        expect{ tic_tac_computer.mark_space("center", tic_tac_computer.player1) }.to change{ tic_tac_computer.board.grid }
+      end
+
+      it 'updates the computer board' do
+        expect{ tic_tac_computer.mark_space("center", tic_tac_computer.player1) }.to change{ tic_tac_computer.player1.board.grid }
+      end
+
+      it 'updates the game and computer board in the same way' do
+        tic_tac_computer.mark_space("center", tic_tac_computer.player1)
+        expect(tic_tac_computer.board).to eq(tic_tac_computer.player1.board)
+        expect(tic_tac_computer.board.grid).to eq(tic_tac_computer.player1.board.grid)
+      end
+
+      it 'updates the other player\'s board when the other player is a computer' do
+        tic_tac_computer.mark_space("center", tic_tac_computer.player1)
+        expect(tic_tac_computer.player2.board.grid).to eq(tic_tac_computer.player1.board.grid)
+      end
     end
   end
 

@@ -1,12 +1,13 @@
 require_relative 'board'
 require_relative 'player'
+require 'pry'
 
 class Game
   def initialize(options={})
-    @player1      = options.fetch(:player1){ "human" }
-    @player2      = options.fetch(:player2){ "computer" }
-    @players      = players
-    @board        = board
+    @player1 = options.fetch(:player1){ "human" }
+    @player2 = options.fetch(:player2){ "computer" }
+    @players = players
+    @board   = board
   end
 
   def board
@@ -31,14 +32,14 @@ class Game
     when "human"
       people << Human.new("X")
     when "computer"
-      people << Computer.new("X")
+      people << Computer.new(board, "X")
     end
 
     case player_2
     when "human"
       people << Human.new("O")
     when "computer"
-      people << Computer.new("O")
+      people << Computer.new(board, "O")
     end
     people
   end
@@ -49,7 +50,7 @@ class Game
 
   def mark_space(where, player)
     where = add_underscore(where).to_sym if where.class == String
-    board.grid[where] = player.space if board.grid[where] == " "
+    board.grid[where] = player.marker if board.grid[where] == " "
   end
 
   def add_underscore(str)

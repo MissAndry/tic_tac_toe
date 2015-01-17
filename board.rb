@@ -1,3 +1,5 @@
+require 'pry'
+
 class Board
   COLUMN_BREAK = " | "
   PADDING = " " * 22
@@ -13,7 +15,7 @@ class Board
   end
 
   def rows
-    grid.values.each_slice(3).to_a
+    grid.each_slice(3).to_a
   end
 
   def columns
@@ -27,9 +29,29 @@ class Board
     diagonal
   end
 
+  def sides
+    go_through = rows + columns
+    go_through.map { |side| side[1] unless side[1].include? :center }.compact
+  end
+
+  def corners
+    corner = []
+    corner << rows.first.first
+    corner << rows.first.last
+    corner << rows.last.first
+    corner << rows.last.last
+    corner
+  end
+
   def to_s
     full_board = []
     rows.each{ |row| full_board << PADDING + row.join(COLUMN_BREAK) }
     full_board.join(BREAKER)
+  end
+
+  private
+
+  def grid=(new_grid)
+    @grid = new_grid
   end
 end
