@@ -59,9 +59,9 @@ class Game
 
   def winner
     players.each do |player|
-      return player if board.rows.any? { |row| row.all? { |space| space == player.space } }
-      return player if board.columns.any? { |column| column.all? { |space| space == player.space } }
-      return player if board.diagonals.any? { |diagonal| diagonal.all? { |space| space == player.space } }
+      return player if board.rows.any? { |row| row.flatten.values_at(1, 3, 5).all? { |space| space == player.marker } }
+      return player if board.columns.any? { |column| column.flatten.values_at(1, 3, 5).all? { |space| space == player.marker } }
+      return player if board.diagonals.any? { |diagonal| diagonal.flatten.values_at(1, 3, 5).all? { |space| space == player.marker } }
     end
     nil
   end
