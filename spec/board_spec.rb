@@ -38,6 +38,24 @@ describe 'Board' do
     end
   end
 
+  describe '#row_keys' do
+    it 'returns the keys of the rows' do
+      expect(board.row_keys).to eq([[:top_left, :top_center, :top_right], [:middle_left, :center, :middle_right], [:bottom_left, :bottom_center, :bottom_right]])
+    end
+  end
+
+  describe '#col_keys' do
+    it 'returns the keys of the columns' do
+      expect(board.col_keys).to eq([[:top_left, :middle_left, :bottom_left], [:top_center, :center, :bottom_center], [:top_right, :middle_right, :bottom_right]])
+    end
+  end
+
+  describe '#diag_keys' do
+    it 'returns the keys of the diagonals' do
+      expect(board.diag_keys).to eq([[:top_left, :center, :bottom_right], [:top_right, :center, :bottom_left]])
+    end
+  end
+
   describe '#empty?' do
     it 'returns true if the board is empty' do
       expect(board.empty?).to be true

@@ -47,14 +47,29 @@ class Board
     grid.values.each_slice(3).to_a
   end
 
+  def row_keys
+    grid.keys.each_slice(3).to_a
+  end
+
   def col_values
     row_values.transpose
+  end
+
+  def col_keys
+    row_keys.transpose
   end
 
   def diag_values
     diagonal = []
     diagonal << row_values.map.with_index{ |v, i| v[i] }
     diagonal << row_values.map.with_index(1){ |v, i| v[-i] }
+    diagonal
+  end
+
+  def diag_keys
+    diagonal = []
+    diagonal << row_keys.map.with_index{ |v, i| v[i] }
+    diagonal << row_keys.map.with_index(1){ |v, i| v[-i] }
     diagonal
   end
 
