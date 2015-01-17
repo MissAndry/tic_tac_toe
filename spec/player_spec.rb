@@ -160,6 +160,17 @@ describe 'Computer' do
       end
     end
 
+    describe '#neighboring_row_spaces' do
+      it 'finds the one to two spaces next to a given space' do
+        expect(o_computer.neighboring_row_spaces(:center)).to eq([:middle_left, :middle_right])
+        expect(o_computer.neighboring_row_spaces(:top_center)).to eq([:top_left, :top_right])
+        expect(o_computer.neighboring_row_spaces(:bottom_center)).to eq([:bottom_left, :bottom_right])
+        expect(o_computer.neighboring_row_spaces(:bottom_center)).to eq([:bottom_left, :bottom_right])
+        expect(o_computer.neighboring_row_spaces(:bottom_left)).to eq([:bottom_center])
+        expect(o_computer.neighboring_row_spaces(:top_right)).to eq([:top_center])
+      end
+    end
+
     describe '#block_them' do
       it 'stops the opponent from winning if they have two marked spaces in a row' do
         o_computer.send(:board=, starting_grid)
