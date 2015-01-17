@@ -66,7 +66,6 @@ describe 'Game' do
   describe '#winner' do
     it 'returns the winner if there is a filled row' do
       row_winner = row_win( game.player2 )
-      # binding.pry
       expect( row_winner.winner ).to eq( row_winner.player2 )
     end
 

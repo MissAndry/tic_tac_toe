@@ -131,7 +131,7 @@ describe 'Computer' do
     end
 
     describe '#which_move' do
-      it 'returns the number of the current move (1, 2, 3, etc.) based on the number of markers each player has' do
+      it 'returns the number of the current move (1, 2, 3, etc.) based on the number of markers each player has on the board' do
         x_computer.send(:board=, starting_grid)
         o_computer.send(:board=, starting_grid)
         expect(x_computer.which_move).to be 4
