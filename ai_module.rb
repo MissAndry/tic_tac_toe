@@ -7,12 +7,23 @@ module ComputerAI
   end
 
   def next_move
+    return tryna_win.sample if tryna_win?
+    return block_them.sample if defense_necessary?
     return first_move.sample if first_move?
-    block_them.sample
   end
 
   def first_move?
     which_move == 1
+  end
+
+  def tryna_win?
+    all_value_combos = board.row_values + board.col_values + board.diag_values
+    all_value_combos.any? { |combo| combo.sort == [" ", marker, marker] }
+  end
+
+  def defense_necessary?
+    all_value_combos = board.row_values + board.col_values + board.diag_values
+    all_value_combos.any? { |combo| combo.sort == [" ", enemy_marker, enemy_marker] }
   end
 
   def first_move
@@ -25,7 +36,7 @@ module ComputerAI
 
   def o_first_move
     if grid[:center] == enemy_marker
-      board.corners.flatten.values_at(0, 2, 4, 6)
+      board.corner_values
     elsif enemy_in_the_corner?
       [:center]
     elsif enemy_on_the_side?
@@ -61,9 +72,8 @@ module ComputerAI
       dir = board.row_keys
     when "col"
       dir = board.col_keys
-    when "diag"
-      dir = board.diag_keys
     end
+
     neighbor = []
     dir.each do |segment|
       segment.each_with_index do |val, index|

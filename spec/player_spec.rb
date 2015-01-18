@@ -81,6 +81,32 @@ describe 'Computer' do
         o_computer.send(:board=, nil)
         o_computer.send(:board=, first_move_in_the_center)
         expect(o_computer.next_move).to satisfy{ |move| [:top_left, :top_right, :bottom_left, :bottom_right].include? move }
+
+        o_computer.send(:board=, nil)
+        o_computer.send(:board=, computer_can_win_by_row)
+        expect(o_computer.next_move).to eq(:middle_right)
+      end
+    end
+
+    describe '#tryna_win?' do
+      it 'returns true if the computer can win by row in one move' do
+        o_computer.send(:board=, computer_can_win_by_row)
+        expect(o_computer.tryna_win?).to be true
+      end
+
+      it 'returns true if the computer can win by column in one move' do
+        o_computer.send(:board=, computer_can_win_by_column)
+        expect(o_computer.tryna_win?).to be true
+      end
+
+      it 'returns true if the computer can win by diagonal in one move' do
+        o_computer.send(:board=, computer_can_win_by_diagonal)
+        expect(o_computer.tryna_win?).to be true
+      end
+
+      it 'returns false if the computer can\'t win in one move' do
+        o_computer.send(:board=, two_human_moves_one_computer_corners_taken)
+        expect(o_computer.tryna_win?).to be false
       end
     end
 
@@ -176,6 +202,18 @@ describe 'Computer' do
         expect(o_computer.neighboring_spaces(:top_center, "col")).to eq([:center])
         expect(o_computer.neighboring_spaces(:bottom_center, "col")).to eq([:center])
         expect(o_computer.neighboring_spaces(:top_right, "col")).to eq([:middle_right])
+      end
+    end
+
+    describe '#defense_necessary?' do
+      it 'returns true if the opponent can win in one move' do
+        o_computer.send(:board=, human_can_win_by_row)
+        expect(o_computer.defense_necessary?).to be true
+      end
+
+      it 'returns false if the opponent can\'t win in one move' do
+        o_computer.send(:board=, two_human_moves_one_computer_sides_taken)
+        expect(o_computer.defense_necessary?).to be false
       end
     end
 

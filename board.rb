@@ -73,6 +73,10 @@ class Board
     diagonal
   end
 
+  def corner_values
+    corners.flatten.values_at(0, 2, 4, 6)
+  end
+
   def empty?
     grid.values.all? { |space| space == " " }
   end
