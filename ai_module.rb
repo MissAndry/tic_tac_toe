@@ -10,7 +10,8 @@ module ComputerAI
     return tryna_win.sample if tryna_win?
     return block_them.sample if defense_necessary?
     return first_move.sample if first_move?
-    go_anywhere
+    return second_move.sample if second_move?
+    return go_anywhere.sample
   end
 
   def first_move?
@@ -37,9 +38,12 @@ module ComputerAI
 
   def second_move
     if marker == "X"
+      # binding.pry
       x_second_move
     elsif marker =="O"
+      # binding.pry
       # o_second_move
+      go_anywhere
     end
   end
 
@@ -49,26 +53,36 @@ module ComputerAI
     elsif enemy_in_the_corner?
       [:center]
     elsif enemy_on_the_side?
-      all_rows = board.rows.select{ |row| row.flatten.include? enemy_marker }
-      all_cols = board.columns.select{ |col| col.flatten.include? enemy_marker }
-      all_rows.flatten.values_at(0, 2) + all_cols.flatten.values_at(0, 4)
+      side = board.find_side(enemy_marker)
+      opposite = board.find_opposing_side(side)
+      if board.col_values[1].include? enemy_marker
+        neighbors = neighboring_spaces(side, "row")
+        # binding.pry
+      elsif board.row_values[1].include? enemy_marker
+        neighbors = neighboring_spaces(side, "col")
+        # binding.pry
+      end
+      neighbors + [opposite] + [:center]
     end
   end
 
   def x_second_move
     if grid[:center] == marker
       if board.sides.flatten.include? enemy_marker
-        return go_anywhere - marked_spaces - [board.find_opposing_side(enemy_marker)]
+        return go_anywhere - [board.find_opposing_side(enemy_marker)]
       end
     elsif board.corner_values.include? marker
       if board.sides.flatten.include? enemy_marker
         return (board.corner_keys - marked_spaces - column_including(enemy_marker)) + [:center]
       elsif board.corner_values.flatten.include? enemy_marker
         return board.corner_keys - marked_spaces
-      else
-        return go_anywhere - marked_spaces
+      end
+    else
+      if grid[:center] == enemy_marker || board.corner_values.include?(enemy_marker)
+        return go_anywhere - [board.find_opposing_side(marker)]
       end
     end
+    go_anywhere
   end
 
   def tryna_win

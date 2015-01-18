@@ -64,7 +64,11 @@ describe 'Computer' do
 
         it 'takes a space in the row or column including "X" if "X" starts on the side' do
           o_computer.send(:board=, x_moves_first_on_side)
-          expect(o_computer.first_move).to eq([:middle_left, :center, :top_right, :bottom_right])
+          expect(o_computer.first_move).to eq([:top_left, :top_right, :bottom_center, :center])
+
+          reset_boards
+          o_computer.board.grid[:middle_left] = "X"
+          expect(o_computer.first_move).to eq([:top_left, :bottom_left, :middle_right, :center])
         end
       end
     end
@@ -91,6 +95,15 @@ describe 'Computer' do
           x_computer.send(:board=, x_started_in_a_corner_and_o_took_center)
           expect(x_computer.second_move).to eq([:top_left, :top_center, :top_right, :middle_left, :middle_right, :bottom_left, :bottom_center])
         end
+
+        it 'moves anywhere besides the opposite side if "X" took a side first and "O" is in a corner or the center' do
+          x_computer.send(:board=, x_started_on_the_side_and_o_is_in_the_center)
+          expect(x_computer.second_move).to eq([:top_left, :top_center, :top_right, :bottom_left, :bottom_center, :bottom_right])
+
+          reset_boards
+          x_computer.send(:board=, x_started_on_the_side_and_o_is_in_a_corner)
+          expect(x_computer.second_move).to eq([:top_left, :top_center, :top_right, :center, :bottom_left, :bottom_center])
+        end
       end
     end
 
@@ -101,7 +114,7 @@ describe 'Computer' do
 
         reset_boards
         o_computer.send(:board=, x_moves_first_on_side)
-        expect(o_computer.next_move).to satisfy{ |move| [:middle_left, :center, :top_right, :bottom_right].include? move }
+        expect(o_computer.next_move).to satisfy{ |move| [:top_right, :top_left, :center, :bottom_center].include? move }
 
         reset_boards
         o_computer.send(:board=, x_moves_first_in_center)
@@ -335,6 +348,18 @@ describe 'Computer' do
     board.grid[:top_right] = "O"
     board.grid
   end
+
+  def x_started_on_the_side_and_o_is_in_the_center
+    board.grid[:middle_left] = "X"
+    board.grid[:center] = "O"
+    board.grid
+  end
+
+  def x_started_on_the_side_and_o_is_in_a_corner
+    board.grid[:middle_left] = "X"
+    board.grid[:bottom_right] = "O"
+    board.grid
+  end
     
   def x_moves_first_in_center
     board.grid[:center] = "X"
@@ -342,7 +367,7 @@ describe 'Computer' do
   end
 
   def x_moves_first_on_side
-    board.grid[:middle_right] = "X"
+    board.grid[:top_center] = "X"
     board.grid
   end
 

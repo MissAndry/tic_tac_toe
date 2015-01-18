@@ -105,7 +105,7 @@ class Board
 
   def to_s
     full_board = []
-    rows.each{ |row| full_board << PADDING + row.join(COLUMN_BREAK) }
+    row_values.each{ |row| full_board << PADDING + row.join(COLUMN_BREAK) }
     full_board.join(BREAKER)
   end
 

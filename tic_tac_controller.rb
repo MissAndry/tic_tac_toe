@@ -66,17 +66,14 @@ class TicTacController
     puts tic_tac_toe unless quit?
 
     until tic_tac_toe.finished? || quit?
-
       if tic_tac_toe.player1.is_a? Human
         human_move
       else
         computer_player1_move
-        
       end
-
       computer_player2_move
+
       print GameView.clear_screen
-      
       puts tic_tac_toe unless quit?
     end
   end
@@ -100,7 +97,7 @@ class TicTacController
   end
 
   def started?
-    tic_tac_toe.board.grid.values.all? { |space| space != " " }
+    !tic_tac_toe.board.empty?
   end
 
   def quit?
@@ -124,11 +121,11 @@ class TicTacController
   end
 
   def computer_player2_move
-    tic_tac_toe.mark_space(tic_tac_toe.player2.next_move(tic_tac_toe.board.grid), tic_tac_toe.player2) unless tic_tac_toe.finished? || quit?
+    tic_tac_toe.mark_space(tic_tac_toe.player2.next_move, tic_tac_toe.player2) unless (tic_tac_toe.finished? || quit?)
   end
 
   def computer_player1_move
-    tic_tac_toe.mark_space(tic_tac_toe.player1.next_move(tic_tac_toe.board.grid), tic_tac_toe.player1)
+    tic_tac_toe.mark_space(tic_tac_toe.player1.next_move, tic_tac_toe.player1)
     sleep 0.4
   end
 
