@@ -160,14 +160,22 @@ describe 'Computer' do
       end
     end
 
-    describe '#neighboring_row_spaces' do
-      it 'finds the one to two spaces next to a given space' do
-        expect(o_computer.neighboring_row_spaces(:center)).to eq([:middle_left, :middle_right])
-        expect(o_computer.neighboring_row_spaces(:top_center)).to eq([:top_left, :top_right])
-        expect(o_computer.neighboring_row_spaces(:bottom_center)).to eq([:bottom_left, :bottom_right])
-        expect(o_computer.neighboring_row_spaces(:bottom_center)).to eq([:bottom_left, :bottom_right])
-        expect(o_computer.neighboring_row_spaces(:bottom_left)).to eq([:bottom_center])
-        expect(o_computer.neighboring_row_spaces(:top_right)).to eq([:top_center])
+    describe '#neighboring_spaces' do
+      it 'finds the one to two spaces next to a given space in a row' do
+        expect(o_computer.neighboring_spaces(:center, "row")).to eq([:middle_left, :middle_right])
+        expect(o_computer.neighboring_spaces(:top_center, "row")).to eq([:top_left, :top_right])
+        expect(o_computer.neighboring_spaces(:bottom_center, "row")).to eq([:bottom_left, :bottom_right])
+        expect(o_computer.neighboring_spaces(:bottom_left, "row")).to eq([:bottom_center])
+        expect(o_computer.neighboring_spaces(:top_right, "row")).to eq([:top_center])
+      end
+
+      it 'finds the one to two spaces next to a given space in a column' do
+        expect(o_computer.neighboring_spaces(:center, "col")).to eq([:top_center, :bottom_center])
+        expect(o_computer.neighboring_spaces(:middle_left, "col")).to eq([:top_left, :bottom_left])
+        expect(o_computer.neighboring_spaces(:middle_right, "col")).to eq([:top_right, :bottom_right])
+        expect(o_computer.neighboring_spaces(:top_center, "col")).to eq([:center])
+        expect(o_computer.neighboring_spaces(:bottom_center, "col")).to eq([:center])
+        expect(o_computer.neighboring_spaces(:top_right, "col")).to eq([:middle_right])
       end
     end
 

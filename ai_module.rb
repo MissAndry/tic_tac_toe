@@ -55,12 +55,20 @@ module ComputerAI
     potential_moves.map{ |move| move.first if move.last == " " }.compact
   end
 
-  def neighboring_row_spaces(space)
+  def neighboring_spaces(space, direction)
+    case direction
+    when "row"
+      dir = board.row_keys
+    when "col"
+      dir = board.col_keys
+    when "diag"
+      dir = board.diag_keys
+    end
     neighbor = []
-    board.row_keys.each do |row|
-      row.each_with_index do |val, index|
-        neighbor << row[index - 1] if val == space && index > 0
-        neighbor << row[index + 1] if val == space && index < row.length
+    dir.each do |segment|
+      segment.each_with_index do |val, index|
+        neighbor << segment[index - 1] if val == space && index > 0
+        neighbor << segment[index + 1] if val == space && index < segment.length
       end
     end
     neighbor.compact
