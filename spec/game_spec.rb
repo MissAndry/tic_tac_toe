@@ -102,12 +102,14 @@ describe 'Game' do
       expect(tic_tac_computer.player1.marker).not_to eq(tic_tac_computer.player2.marker)
     end
 
-    pending 'always results in a tie' do
+    it 'always results in a tie' do
+    pending("the computer doesn't correctly autorun yet") 
       computer_game = computers_fight
       expect(computer_game.winner).to be nil
     end
 
-    pending 'always has players take all their turns' do
+    it 'always has players take all their turns' do
+    pending("the computer doesn't correctly autorun yet") 
       computer_game = computers_fight
       expect(computer_game.board.grid.values.count(computer_game.player1.marker)).to eq 5
       expect(computer_game.board.grid.values.count(computer_game.player2.marker)).to eq 4
