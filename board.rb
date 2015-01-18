@@ -74,11 +74,33 @@ class Board
   end
 
   def corner_values
+    corners.flatten.values_at(1, 3, 5, 7)
+  end
+
+  def corner_keys
     corners.flatten.values_at(0, 2, 4, 6)
   end
 
   def empty?
     grid.values.all? { |space| space == " " }
+  end
+
+  def find_side(marker)
+    marked_side = sides.select{ |side| side.flatten.include? marker }.pop
+    marked_side.first
+  end
+
+  def find_opposing_side(marker)
+    side = find_side(marker)
+    if side.match(/center/)
+      column = col_keys[1]
+      return column.first if side.match(/bottom/)
+      return column.last
+    else
+      row = row_keys[1]
+      return row.first if side.match(/right/)
+      return row.last
+    end
   end
 
   def to_s

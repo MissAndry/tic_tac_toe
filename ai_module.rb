@@ -10,6 +10,7 @@ module ComputerAI
     return tryna_win.sample if tryna_win?
     return block_them.sample if defense_necessary?
     return first_move.sample if first_move?
+    go_anywhere
   end
 
   def first_move?
@@ -34,15 +35,39 @@ module ComputerAI
     end
   end
 
+  def second_move
+    if marker == "X"
+      x_second_move
+    elsif marker =="O"
+      # o_second_move
+    end
+  end
+
   def o_first_move
     if grid[:center] == enemy_marker
-      board.corner_values
+      board.corner_keys
     elsif enemy_in_the_corner?
       [:center]
     elsif enemy_on_the_side?
       all_rows = board.rows.select{ |row| row.flatten.include? enemy_marker }
       all_cols = board.columns.select{ |col| col.flatten.include? enemy_marker }
       all_rows.flatten.values_at(0, 2) + all_cols.flatten.values_at(0, 4)
+    end
+  end
+
+  def x_second_move
+    if grid[:center] == marker
+      if board.sides.flatten.include? enemy_marker
+        return go_anywhere - marked_spaces - [board.find_opposing_side(enemy_marker)]
+      end
+    elsif board.corner_values.include? marker
+      if board.sides.flatten.include? enemy_marker
+        return (board.corner_keys - marked_spaces - column_including(enemy_marker)) + [:center]
+      elsif board.corner_values.flatten.include? enemy_marker
+        return board.corner_keys - marked_spaces
+      else
+        return go_anywhere - marked_spaces
+      end
     end
   end
 
@@ -86,6 +111,11 @@ module ComputerAI
 
   def second_move?
     which_move == 2
+  end
+
+  def column_including(marking=marker)
+    column = board.columns.select{ |col| col.flatten.include? marker }
+    column.flatten.values_at(0, 2, 4)
   end
 
   def which_move

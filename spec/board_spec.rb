@@ -56,6 +56,27 @@ describe 'Board' do
     end
   end
 
+  describe '#find_side' do
+    it 'finds the side space occupied by the given marker' do
+      board.grid[:middle_right] = "X"
+      expect(board.find_side("X")).to eq(:middle_right)
+      
+      board.grid[:middle_right] = " "
+      board.grid[:top_center] = "O"
+      expect(board.find_side("O")).to eq(:top_center)
+    end
+  end
+
+  describe '#find_opposing_side' do
+    it 'finds the side space opposite the space occupied by the given marker' do
+      board.grid[:middle_right] = "X"
+      expect(board.find_opposing_side("X")).to eq(:middle_left)
+
+      board.grid[:top_center] = "O"
+      expect(board.find_opposing_side("O")).to eq(:bottom_center)
+    end
+  end
+
   describe '#empty?' do
     it 'returns true if the board is empty' do
       expect(board.empty?).to be true

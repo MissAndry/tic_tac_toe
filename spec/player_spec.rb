@@ -69,6 +69,31 @@ describe 'Computer' do
       end
     end
 
+    describe '#second_move' do
+      context 'marker is "X"' do
+        it 'gives any move but the one directly across from "O" when "X" has the center and "O" has a side' do
+          x_computer.send(:board=, x_started_in_the_center_and_o_took_a_side)
+          expect(x_computer.second_move).to eq([:top_left, :top_center, :top_right, :bottom_left, :bottom_center, :bottom_right])
+          expect(x_computer.second_move).not_to include(:middle_left)
+        end
+
+        it 'takes the center or a corner if "X" took a corner first and "O" takes a side' do
+          x_computer.send(:board=, x_started_in_a_corner_and_o_takes_a_side)
+          expect(x_computer.second_move).to eq([:top_left, :bottom_left, :center])
+        end
+
+        it 'takes one of the two remaining corners if "X" took a corner first and "O" also took a corner' do
+          x_computer.send(:board=, x_started_in_a_corner_and_o_took_a_corner)
+          expect(x_computer.second_move).to eq([:top_left, :bottom_left])
+        end
+
+        it 'moves anywhere if "X" took a corner first and "O" is in the center' do
+          x_computer.send(:board=, x_started_in_a_corner_and_o_took_center)
+          expect(x_computer.second_move).to eq([:top_left, :top_center, :top_right, :middle_left, :middle_right, :bottom_left, :bottom_center])
+        end
+      end
+    end
+
     describe '#next_move' do
       it 'returns a symbol indicating the best next move' do
         o_computer.send(:board=, x_moves_first_in_bottom_right_corner)
@@ -281,6 +306,36 @@ describe 'Computer' do
     #   bottom_left: " ", bottom_center: " ", bottom_right: "O" }
   end
 
+  def x_started_in_the_center_and_o_took_a_side
+    board.grid[:center] = "X"
+    board.grid[:middle_right] = "O"
+    board.grid
+    # { top_left:    " ", top_center:    " ", top_right:    " ",
+    #   middle_left: " ", center:        "X", middle_right: "O",
+    #   bottom_left: " ", bottom_center: " ", bottom_right: " " }
+  end
+
+  def x_started_in_a_corner_and_o_takes_a_side
+    board.grid[:bottom_right] = "X"
+    board.grid[:middle_right] = "O"
+    board.grid
+    # { top_left:    " ", top_center:    " ", top_right:    " ",
+    #   middle_left: " ", center:        " ", middle_right: "O",
+    #   bottom_left: " ", bottom_center: " ", bottom_right: "X" }
+  end
+
+  def x_started_in_a_corner_and_o_took_center
+    board.grid[:bottom_right] = "X"
+    board.grid[:center] = "O"
+    board.grid
+  end
+
+  def x_started_in_a_corner_and_o_took_a_corner
+    board.grid[:bottom_right] = "X"
+    board.grid[:top_right] = "O"
+    board.grid
+  end
+    
   def x_moves_first_in_center
     board.grid[:center] = "X"
     board.grid
