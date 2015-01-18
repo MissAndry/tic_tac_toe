@@ -27,7 +27,7 @@ describe 'Computer' do
 
     describe '#first_move?' do
       it 'returns true if the computer hasn\'t moved yet' do
-        o_computer.send(:board=, first_move_in_the_center)
+        o_computer.send(:board=, x_moves_first_in_center)
         expect(o_computer.first_move?).to be true
       end
 
@@ -53,17 +53,17 @@ describe 'Computer' do
 
       context 'marker is "O" and "X" has already gone' do
        it 'takes a corner space if "X" is in the center' do
-          o_computer.send(:board=, first_move_in_the_center)
+          o_computer.send(:board=, x_moves_first_in_center)
           expect(o_computer.first_move).to eq([:top_left, :top_right, :bottom_left, :bottom_right])
         end
         
         it 'takes the center space if "X" is in a corner' do
-          o_computer.send(:board=, bottom_right_corner_taken)
+          o_computer.send(:board=, x_moves_first_in_bottom_right_corner)
           expect(o_computer.first_move).to eq([:center])
         end
 
         it 'takes a space in the row or column including "X" if "X" starts on the side' do
-          o_computer.send(:board=, first_move_on_the_side)
+          o_computer.send(:board=, x_moves_first_on_side)
           expect(o_computer.first_move).to eq([:middle_left, :center, :top_right, :bottom_right])
         end
       end
@@ -71,87 +71,91 @@ describe 'Computer' do
 
     describe '#next_move' do
       it 'returns a symbol indicating the best next move' do
-        o_computer.send(:board=, bottom_right_corner_taken)
+        o_computer.send(:board=, x_moves_first_in_bottom_right_corner)
         expect(o_computer.next_move).to eq(:center)
 
-        o_computer.send(:board=, nil)
-        o_computer.send(:board=, first_move_on_the_side)
+        reset_boards
+        o_computer.send(:board=, x_moves_first_on_side)
         expect(o_computer.next_move).to satisfy{ |move| [:middle_left, :center, :top_right, :bottom_right].include? move }
 
-        o_computer.send(:board=, nil)
-        o_computer.send(:board=, first_move_in_the_center)
+        reset_boards
+        o_computer.send(:board=, x_moves_first_in_center)
         expect(o_computer.next_move).to satisfy{ |move| [:top_left, :top_right, :bottom_left, :bottom_right].include? move }
 
-        o_computer.send(:board=, nil)
-        o_computer.send(:board=, computer_can_win_by_row)
+        reset_boards
+        o_computer.send(:board=, o_computer_can_win_by_row)
         expect(o_computer.next_move).to eq(:middle_right)
+
+        reset_boards
+        o_computer.send(:board=, x_computer_can_win_by_row)
+        expect(o_computer.next_move).to eq(:bottom_left)
       end
     end
 
     describe '#tryna_win?' do
       it 'returns true if the computer can win by row in one move' do
-        o_computer.send(:board=, computer_can_win_by_row)
+        o_computer.send(:board=, o_computer_can_win_by_row)
         expect(o_computer.tryna_win?).to be true
       end
 
       it 'returns true if the computer can win by column in one move' do
-        o_computer.send(:board=, computer_can_win_by_column)
+        o_computer.send(:board=, o_computer_can_win_by_column)
         expect(o_computer.tryna_win?).to be true
       end
 
       it 'returns true if the computer can win by diagonal in one move' do
-        o_computer.send(:board=, computer_can_win_by_diagonal)
+        o_computer.send(:board=, o_computer_can_win_by_diagonal)
         expect(o_computer.tryna_win?).to be true
       end
 
       it 'returns false if the computer can\'t win in one move' do
-        o_computer.send(:board=, two_human_moves_one_computer_corners_taken)
+        o_computer.send(:board=, two_x_moves_one_o_and_x_takes_corners)
         expect(o_computer.tryna_win?).to be false
       end
     end
 
     describe '#tryna_win' do
       it 'chooses the winning move when the "X" computer can win by row' do
-        x_computer.send(:board=, human_can_win_by_row)
+        x_computer.send(:board=, x_computer_can_win_by_row)
         expect(x_computer.tryna_win).to eq([:bottom_left])
       end
       
       it 'chooses the winning move when the "O" computer can win by row' do
-        o_computer.send(:board=, computer_can_win_by_row)
+        o_computer.send(:board=, o_computer_can_win_by_row)
         expect(o_computer.tryna_win).to eq([:middle_right])
       end
       
       it 'chooses the winning move when the "X" computer can win by column' do
-        x_computer.send(:board=, human_can_win_by_column)
+        x_computer.send(:board=, x_computer_can_win_by_column)
         expect(x_computer.tryna_win).to eq([:top_right])
       end
       
       it 'chooses the winning move when the "O" computer can win by column' do
-        o_computer.send(:board=, computer_can_win_by_column)
+        o_computer.send(:board=, o_computer_can_win_by_column)
         expect(o_computer.tryna_win).to eq([:top_center])
       end
       
       it 'chooses the winning move when the "X" computer can win by diagonal' do
-        x_computer.send(:board=, human_can_win_by_diagonal)
+        x_computer.send(:board=, x_computer_can_win_by_diagonal)
         expect(x_computer.tryna_win).to eq([:bottom_right])
       end
       
       it 'chooses the winning move when the "O" computer can win by diagonal' do
-        o_computer.send(:board=, computer_can_win_by_diagonal)
+        o_computer.send(:board=, o_computer_can_win_by_diagonal)
         expect(o_computer.tryna_win).to eq([:bottom_left])
       end
     end
 
     describe '#enemy_in_the_corner?' do
       it 'returns true if the enemy is in the corner' do
-        o_computer.send(:board=, bottom_right_corner_taken)
+        o_computer.send(:board=, x_moves_first_in_bottom_right_corner)
         expect(o_computer.enemy_in_the_corner?).to be true
       end
     end
 
     describe '#enemy_on_the_side?' do
       it 'returns true if the enemy is on the side' do
-        o_computer.send(:board=, first_move_on_the_side)
+        o_computer.send(:board=, x_moves_first_on_side)
         expect(o_computer.enemy_on_the_side?).to be true
       end
     end
@@ -207,12 +211,12 @@ describe 'Computer' do
 
     describe '#defense_necessary?' do
       it 'returns true if the opponent can win in one move' do
-        o_computer.send(:board=, human_can_win_by_row)
+        o_computer.send(:board=, x_computer_can_win_by_row)
         expect(o_computer.defense_necessary?).to be true
       end
 
       it 'returns false if the opponent can\'t win in one move' do
-        o_computer.send(:board=, two_human_moves_one_computer_sides_taken)
+        o_computer.send(:board=, two_x_moves_one_o_and_x_takes_sides)
         expect(o_computer.defense_necessary?).to be false
       end
     end
@@ -222,11 +226,17 @@ describe 'Computer' do
         o_computer.send(:board=, starting_grid)
         expect(o_computer.block_them).to eq([:middle_left])
       end
+
       it 'stops the opponent from winning if they have two marked spaces in a row' do
-        x_computer.send(:board=, computer_can_win_by_diagonal)
+        x_computer.send(:board=, o_computer_can_win_by_diagonal)
         expect(x_computer.block_them).to eq([:bottom_left])
       end
     end
+  end
+
+  def reset_boards
+    o_computer.send(:board=, nil)
+    x_computer.send(:board=, nil)
   end
 
   def starting_grid
@@ -241,7 +251,7 @@ describe 'Computer' do
     #   bottom_left: "X", bottom_center: " ", bottom_right: "O" }
   end
 
-  def two_human_moves_one_computer_corners_taken
+  def two_x_moves_one_o_and_x_takes_corners
     board.grid[:top_right] = "X"
     board.grid[:center] = "O"
     board.grid[:bottom_left] = "X"
@@ -251,7 +261,7 @@ describe 'Computer' do
     #   bottom_left: "X", bottom_center: " ", bottom_right: " " }
   end
 
-  def two_human_moves_one_computer_sides_taken
+  def two_x_moves_one_o_and_x_takes_sides
     board.grid[:top_center] = "X"
     board.grid[:center] = "O"
     board.grid[:bottom_left] = "X"
@@ -261,7 +271,7 @@ describe 'Computer' do
     #   bottom_left: "X", bottom_center: " ", bottom_right: " " }
   end
 
-  def two_human_moves_one_computer_human_takes_center
+  def two_x_moves_one_o_and_x_takes_center
     board.grid[:center] = "X"
     board.grid[:middle_right] = "X"
     board.grid[:bottom_right] = "O"
@@ -271,37 +281,22 @@ describe 'Computer' do
     #   bottom_left: " ", bottom_center: " ", bottom_right: "O" }
   end
 
-  def first_move_in_the_center
+  def x_moves_first_in_center
     board.grid[:center] = "X"
     board.grid
   end
 
-  def first_move_on_the_side
+  def x_moves_first_on_side
     board.grid[:middle_right] = "X"
     board.grid
   end
 
-  def bottom_left_corner_taken
-    board.grid[:bottom_left] = "X"
-    board.grid
-  end
-
-  def bottom_right_corner_taken
+  def x_moves_first_in_bottom_right_corner
     board.grid[:bottom_right] = "X"
     board.grid
   end
 
-  def top_left_corner_taken
-    board.grid[:top_left] = "X"
-    board.grid
-  end
-
-  def top_right_corner_taken
-    board.grid[:top_right] = "X"
-    board.grid
-  end
-
-  def computer_can_win_by_row
+  def o_computer_can_win_by_row
     board.grid[:top_left] = "X"
     board.grid[:middle_left] = "O"
     board.grid[:center] = "O"
@@ -313,7 +308,7 @@ describe 'Computer' do
     #   bottom_left: " ", bottom_center: "X", bottom_right: "X" }
   end
 
-  def computer_can_win_by_column
+  def o_computer_can_win_by_column
     board.grid[:middle_left] = "X"
     board.grid[:center] = "O"
     board.grid[:bottom_left] = "X"
@@ -325,7 +320,7 @@ describe 'Computer' do
     #   bottom_left: "X", bottom_center: "O", bottom_right: "X" }
   end
 
-  def computer_can_win_by_diagonal
+  def o_computer_can_win_by_diagonal
     board.grid[:top_right] = "O"
     board.grid[:top_center] = "X"
     board.grid[:middle_left] = "X"
@@ -337,7 +332,7 @@ describe 'Computer' do
     #   bottom_left: " ", bottom_center: "X", bottom_right: " " }
   end
 
-  def human_can_win_by_row
+  def x_computer_can_win_by_row
     board.grid[:top_left] = "O"
     board.grid[:middle_left] = "X"
     board.grid[:center] = "O"
@@ -350,7 +345,7 @@ describe 'Computer' do
     #   bottom_left: " ", bottom_center: "X", bottom_right: "X" }
   end
 
-  def human_can_win_by_column
+  def x_computer_can_win_by_column
     board.grid[:center] = "O"
     board.grid[:middle_right] = "X"
     board.grid[:bottom_right] = "X"
@@ -360,7 +355,7 @@ describe 'Computer' do
     #   bottom_left: " ", bottom_center: " ", bottom_right: "X" }
   end
 
-  def human_can_win_by_diagonal
+  def x_computer_can_win_by_diagonal
     board.grid[:top_left] = "X"
     board.grid[:top_center] = "O"
     board.grid[:middle_left] = "X"
@@ -374,28 +369,11 @@ describe 'Computer' do
     #   bottom_left: "O", bottom_center: "X", bottom_right: " " }
   end
 
-  def bottom_center_taken_first_center_taken_second
-    board.grid[:middle_left] = "X"
-    board.grid[:center] = "O"
-    board.grid[:bottom_center] = "X"
-    board.grid
-    # { top_left:    " ", top_center:    " ", top_right:    " ",
-    #   middle_left: "X", center:        "O", middle_right: " ",
-    #   bottom_left: " ", bottom_center: "X", bottom_right: " " }
-  end
-
   def o_makes_the_first_move
     board.grid[:bottom_left] = "O"
     board.grid
     # { top_left:    " ", top_center:    " ", top_right:    " ",
     #   middle_left: " ", center:        " ", middle_right: " ",
     #   bottom_left: "O", bottom_center: " ", bottom_right: " " }
-  end
-
-  def empty_board
-    board.grid
-    # { top_left:    " ", top_center:    " ", top_right:    " ",
-    #   middle_left: " ", center:        " ", middle_right: " ",
-    #   bottom_left: " ", bottom_center: " ", bottom_right: " " }
   end
 end
