@@ -56,6 +56,18 @@ describe 'Board' do
     end
   end
 
+  describe '#side_keys' do
+    it 'returns the keys of the sides' do
+      expect(board.side_keys).to eq([:top_center, :bottom_center, :middle_left, :middle_right])
+    end
+  end
+
+  describe '#corner_keys' do
+    it 'returns the keys of the corners' do
+      expect(board.corner_keys).to eq([:top_left, :top_right, :bottom_left, :bottom_right])
+    end
+  end
+
   describe '#find_side' do
     it 'finds the side space occupied by the given marker' do
       board.grid[:middle_right] = "X"
