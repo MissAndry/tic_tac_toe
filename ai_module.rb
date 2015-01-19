@@ -162,8 +162,8 @@ module ComputerAI
     neighbor = []
     dir.each do |segment|
       segment.each_with_index do |val, index|
-        neighbor << segment[index - 1] if val == space && index > 0
-        neighbor << segment[index + 1] if val == space && index < segment.length
+        neighbor << segment[index - 1] if grid[val] == space && index > 0
+        neighbor << segment[index + 1] if grid[val] == space && index < segment.length
       end
     end
     neighbor.compact
@@ -188,5 +188,13 @@ module ComputerAI
 
   def go_anywhere
     grid_keys - marked_spaces
+  end
+
+  def side_in_col?(side)
+    side.match(/middle/)
+  end
+
+  def side_in_row?(side)
+    side.match(/center/)
   end
 end
