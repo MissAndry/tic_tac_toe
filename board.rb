@@ -81,6 +81,10 @@ class Board
     corners.flatten.values_at(0, 2, 4, 6)
   end
 
+  def side_values
+    sides.flatten.values_at(1, 3, 5, 7)
+  end
+
   def empty?
     grid.values.all? { |space| space == " " }
   end

@@ -38,12 +38,9 @@ module ComputerAI
 
   def second_move
     if marker == "X"
-      # binding.pry
       x_second_move
     elsif marker =="O"
-      # binding.pry
-      # o_second_move
-      go_anywhere
+      o_second_move
     end
   end
 
@@ -57,22 +54,71 @@ module ComputerAI
       opposite = board.find_opposing_side(side)
       if board.col_values[1].include? enemy_marker
         neighbors = neighboring_spaces(side, "row")
-        # binding.pry
       elsif board.row_values[1].include? enemy_marker
         neighbors = neighboring_spaces(side, "col")
-        # binding.pry
       end
       neighbors + [opposite] + [:center]
     end
   end
 
+  def o_second_move
+    if board.side_values.count(enemy_marker) == 2 
+      if board.corner_values.include?(marker)
+        return (board.side_keys + [:center]) - marked_spaces
+      elsif board.side_values.include?(marker)
+        side = board.find_opposing_side(marker)
+        if side_in_row?(side)
+          found_row = board.row_keys.select{ |row| row.include? side }.pop
+          return [found_row.first, found_row.last]
+        elsif side_in_col?(side)
+          found_col = board.col_keys.select{ |col| col.include? side }.pop
+          return [found_col.first, found_col.last]
+        end
+      end
+    elsif enemy_on_the_side? && board.corner_values.include?(enemy_marker)
+      if board.side_values.include?(marker)
+        side = board.find_opposing_side(marker)
+        if side_in_row?(side)
+          found_row = board.row_keys.select{ |row| row.include? side }.pop
+          return [found_row.first, found_row.last]
+        elsif side_in_col?(side)
+          found_col = board.col_keys.select{ |col| col.include? side }.pop
+          return [found_col.first, found_col.last]
+        end
+      elsif board.corner_values.include?(marker)
+        col_neighbor = neighboring_spaces(marker, "col")
+        row_neighbor = neighboring_spaces(marker, "row")
+        if grid[col_neighbor] == enemy_marker
+          side = col_neighbor
+        else
+          side = row_neighbor
+        end
+        return [board.find_opposing_side(side), :center]
+      end
+    elsif grid[:center] == marker
+      if board.side_values.count(enemy_marker) == 2
+        return go_anywhere
+      else
+        row_neighbor = neighboring_spaces(marker, "row")
+        col_neighbor = neighboring_spaces(marker, "col")
+        if row_neighbor.any?{ |key| grid[key] == enemy_marker }
+          dir = col_neighbor
+        else
+          dir = row_neighbor
+        end
+        return dir
+      end
+    end
+    return go_anywhere
+  end
+
   def x_second_move
     if grid[:center] == marker
-      if board.sides.flatten.include? enemy_marker
+      if board.side_values.include? enemy_marker
         return go_anywhere - [board.find_opposing_side(enemy_marker)]
       end
     elsif board.corner_values.include? marker
-      if board.sides.flatten.include? enemy_marker
+      if board.side_values.include? enemy_marker
         return (board.corner_keys - marked_spaces - column_including(enemy_marker)) + [:center]
       elsif board.corner_values.flatten.include? enemy_marker
         return board.corner_keys - marked_spaces
@@ -96,7 +142,7 @@ module ComputerAI
   end
 
   def enemy_on_the_side?
-    board.sides.flatten.include? enemy_marker
+    board.side_values.include? enemy_marker
   end
 
   def block_them
