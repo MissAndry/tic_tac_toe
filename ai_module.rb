@@ -110,10 +110,10 @@ module ComputerAI
   end
 
   def side_in_col?(side)
-    side.match(/middle/)
+    side.to_s.include?("middle")
   end
 
   def side_in_row?(side)
-    side.match(/center/)
+    side.to_s.include?("center")
   end
 end
