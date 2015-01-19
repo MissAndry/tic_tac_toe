@@ -270,6 +270,26 @@ describe 'Computer' do
         expect(x_computer.block_them).to eq([:bottom_left])
       end
     end
+
+    describe '#side_in_row?' do
+      it 'returns true if the side is a \'center\'' do
+        expect(x_computer.side_in_row?(:top_center)).to be true
+      end
+
+      it 'returns false if the side is a \'middle\'' do
+        expect(o_computer.side_in_row?(:middle_left)).to be false
+      end
+    end
+
+    describe '#side_in_col?' do
+      it 'returns true if the side is a \'middle\'' do
+        expect(x_computer.side_in_col?(:middle_right)).to be true
+      end
+
+      it 'returns false if the side is a \'center\'' do
+        expect(o_computer.side_in_col?(:bottom_center)).to be false
+      end
+    end
   end
 
   def reset_boards

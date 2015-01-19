@@ -1,6 +1,12 @@
+require_relative 'x_computer_module'
+require_relative 'o_computer_module'
 require 'pry'
 
 module ComputerAI
+  include XComputer
+  include OComputer
+
+
   def enemy_marker
     return "X" if marker == "O"
     "O"
@@ -44,93 +50,6 @@ module ComputerAI
     end
   end
 
-  def o_first_move
-    if grid[:center] == enemy_marker
-      board.corner_keys
-    elsif enemy_in_the_corner?
-      [:center]
-    elsif enemy_on_the_side?
-      side = board.find_side(enemy_marker)
-      opposite = board.find_opposing_side(side)
-      if board.col_values[1].include? enemy_marker
-        neighbors = neighboring_spaces(side, "row")
-      elsif board.row_values[1].include? enemy_marker
-        neighbors = neighboring_spaces(side, "col")
-      end
-      neighbors + [opposite] + [:center]
-    end
-  end
-
-  def o_second_move
-    if board.side_values.count(enemy_marker) == 2 
-      if board.corner_values.include?(marker)
-        return (board.side_keys + [:center]) - marked_spaces
-      elsif board.side_values.include?(marker)
-        side = board.find_opposing_side(marker)
-        if side_in_row?(side)
-          found_row = board.row_keys.select{ |row| row.include? side }.pop
-          return [found_row.first, found_row.last]
-        elsif side_in_col?(side)
-          found_col = board.col_keys.select{ |col| col.include? side }.pop
-          return [found_col.first, found_col.last]
-        end
-      end
-    elsif enemy_on_the_side? && board.corner_values.include?(enemy_marker)
-      if board.side_values.include?(marker)
-        side = board.find_opposing_side(marker)
-        if side_in_row?(side)
-          found_row = board.row_keys.select{ |row| row.include? side }.pop
-          return [found_row.first, found_row.last]
-        elsif side_in_col?(side)
-          found_col = board.col_keys.select{ |col| col.include? side }.pop
-          return [found_col.first, found_col.last]
-        end
-      elsif board.corner_values.include?(marker)
-        col_neighbor = neighboring_spaces(marker, "col")
-        row_neighbor = neighboring_spaces(marker, "row")
-        if grid[col_neighbor] == enemy_marker
-          side = col_neighbor
-        else
-          side = row_neighbor
-        end
-        return [board.find_opposing_side(side), :center]
-      end
-    elsif grid[:center] == marker
-      if board.side_values.count(enemy_marker) == 2
-        return go_anywhere
-      else
-        row_neighbor = neighboring_spaces(marker, "row")
-        col_neighbor = neighboring_spaces(marker, "col")
-        if row_neighbor.any?{ |key| grid[key] == enemy_marker }
-          dir = col_neighbor
-        else
-          dir = row_neighbor
-        end
-        return dir
-      end
-    end
-    return go_anywhere
-  end
-
-  def x_second_move
-    if grid[:center] == marker
-      if board.side_values.include? enemy_marker
-        return go_anywhere - [board.find_opposing_side(enemy_marker)]
-      end
-    elsif board.corner_values.include? marker
-      if board.side_values.include? enemy_marker
-        return (board.corner_keys - marked_spaces - column_including(enemy_marker)) + [:center]
-      elsif board.corner_values.flatten.include? enemy_marker
-        return board.corner_keys - marked_spaces
-      end
-    else
-      if grid[:center] == enemy_marker || board.corner_values.include?(enemy_marker)
-        return go_anywhere - [board.find_opposing_side(marker)]
-      end
-    end
-    go_anywhere
-  end
-
   def tryna_win
     all_combinations = board.diagonals + board.rows + board.columns
     potential_winner = all_combinations.select{ |combo| combo.flatten.values_at(1, 3, 5).sort == [" ", marker, marker] }.pop
@@ -162,8 +81,8 @@ module ComputerAI
     neighbor = []
     dir.each do |segment|
       segment.each_with_index do |val, index|
-        neighbor << segment[index - 1] if grid[val] == space && index > 0
-        neighbor << segment[index + 1] if grid[val] == space && index < segment.length
+        neighbor << segment[index - 1] if val == space && index > 0
+        neighbor << segment[index + 1] if val == space && index < segment.length
       end
     end
     neighbor.compact
