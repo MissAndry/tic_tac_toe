@@ -1,6 +1,6 @@
 require_relative 'x_computer_module'
 require_relative 'o_computer_module'
-require 'pry'
+# require 'pry'
 
 module ComputerAI
   include XComputer
@@ -17,6 +17,7 @@ module ComputerAI
     return block_them.sample if defense_necessary?
     return first_move.sample if first_move?
     return second_move.sample if second_move?
+    return third_move.sample if third_move?
     return go_anywhere.sample
   end
 
@@ -46,8 +47,20 @@ module ComputerAI
     if marker == "X"
       x_second_move
     elsif marker =="O"
+      # binding.pry
       o_second_move
     end
+  end
+
+  def third_move
+    if marker == "O"
+      o_third_move
+    end
+    go_anywhere
+  end
+
+  def third_move?
+    which_move == 3
   end
 
   def tryna_win
@@ -57,7 +70,7 @@ module ComputerAI
   end
 
   def enemy_in_the_corner?
-    board.corners.flatten.include? enemy_marker
+    board.corner_values.include? enemy_marker
   end
 
   def enemy_on_the_side?
@@ -86,6 +99,23 @@ module ComputerAI
       end
     end
     neighbor.compact
+  end
+
+  def surrounding_keys(key)
+    (board.row_keys + board.col_keys).select{ |keys| keys.include? key }
+  end
+
+  def surrounding_values(starting_key)
+    row_keys = surrounding_keys(starting_key)
+    values = []
+    row_keys.each do |set|
+      values << set.map{ |key| grid[key] }
+    end
+    values
+  end
+
+  def all_in_a_row?(combo)
+    combo.sort == [enemy_marker, enemy_marker, marker].sort
   end
 
   def second_move?

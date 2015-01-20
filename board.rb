@@ -102,7 +102,8 @@ class Board
   end
 
   def find_opposing_side(marker)
-    side = find_sides(marker)
+    side = marker if marker.is_a? Symbol
+    side = find_sides(marker) if marker.is_a? String
     if side.to_s.include?("center")
       column = col_keys[1]
       return column.first if side.to_s.include?("bottom")

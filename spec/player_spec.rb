@@ -290,7 +290,70 @@ describe 'Computer' do
         expect(o_computer.side_in_col?(:bottom_center)).to be false
       end
     end
+
+    describe '#o_gets_the_middle' do
+      it 'returns a strategic move - not in the sides or a corner in an unpopulated row & col - when "X" has adjacent sides and "O" is in the middle' do
+        o_computer.send(:board=, o_has_the_center_x_all_up_the_sides)
+        expect(o_computer.o_gets_the_middle).to eq([:bottom_left, :bottom_right, :top_left])
+      end
+
+      it 'takes a space next to itself in an unobstructed row/col when "X" isn\'t on two sides and "O" is in the middle' do
+        o_computer.send(:board=, o_has_the_center_x_in_side_and_corner)
+        expect(o_computer.o_gets_the_middle).to eq([:top_center, :bottom_center])
+      end
+    end
+
+    describe '#surrounding_keys' do
+      it 'returns the row/col set that includes the given space' do
+        expect(o_computer.surrounding_keys(:bottom_right)).to eq([[:bottom_left, :bottom_center, :bottom_right], [:top_right, :middle_right, :bottom_right]])
+        expect(o_computer.surrounding_keys(:center)).to eq([[:middle_left, :center, :middle_right], [:top_center, :center, :bottom_center]])
+      end
+    end
+
+    describe '#surrounding_values' do
+      it 'returns the values of the row/col set that includes the given space' do
+        o_computer.send(:board=, x_computer_can_win_by_diagonal)
+        expect(o_computer.surrounding_values(:center)).to eq([["X", "X", "O"], ["O", "X", "X"]])
+      end
+    # { top_left:    "X", top_center:    "O", top_right:    " ",
+    #   middle_left: "X", center:        "X", middle_right: "O",
+    #   bottom_left: "O", bottom_center: "X", bottom_right: " " }
+    end
+
+    describe '#all_in_a_row?' do
+      it 'returns true if the given combination is equal to two enemy marks and one computer mark' do
+        expect(o_computer.all_in_a_row?(["X", "X", "O"])).to be true
+        expect(x_computer.all_in_a_row?(["O", "X", "O"])).to be true
+      end
+
+      it 'returns false if the given combination is not equal to two enemy marks and one computer mark' do
+        expect(o_computer.all_in_a_row?(["O", "X", "O"])).to be false
+      end
+    end
+
+    describe '#x_on_the_side_and_corner' do
+      it 'returns the set of best strategic moves - if "X" is in a corner and the middle space directly next to it with "O" taking the third space in the row/col' do
+        o_computer.send(:board=, x_and_o_all_in_a_row)
+        expect(o_computer.x_on_the_side_and_corner).to eq([:middle_left, :bottom_left])
+      end
+    end
+
+    describe '#o_second_move' do
+      it 'chooses the best strategic move - when the marker is "O", "O" is in a corner, and "X" is in a corner and a side adjacent to "O"' do
+        o_computer.send(:board=, o_in_the_corner_x_in_side_and_other_corner)
+        expect(o_computer.o_second_move).to eq([:middle_left, :center])
+      end
+    end
+
+    describe '#o_third_move' do
+      it 'returns the best strategic move - when the marker is "O", "O" has taken the center and a side, "X" is in a corner and two more sides but not in any position to immediately win' do
+        o_computer.send(:board=, o_needs_a_third_strategic_move)
+        expect(o_computer.o_third_move).to eq([:bottom_left, :bottom_right])
+      end
+    end
   end
+
+
 
   def reset_boards
     o_computer.send(:board=, nil)
@@ -469,11 +532,60 @@ describe 'Computer' do
     #   bottom_left: "O", bottom_center: "X", bottom_right: " " }
   end
 
+  def o_has_the_center_x_all_up_the_sides
+    board.grid[:middle_left] = "X"
+    board.grid[:center] = "O"
+    board.grid[:bottom_center] = "X"
+    board.grid
+    # { top_left:    " ", top_center:    " ", top_right:    " ",
+    #   middle_left: "X", center:        "O", middle_right: " ",
+    #   bottom_left: " ", bottom_center: "X", bottom_right: " " }
+  end
+
+  def o_has_the_center_x_in_side_and_corner
+    board.grid[:middle_left] = "X"
+    board.grid[:center] = "O"
+    board.grid[:bottom_right] = "X"
+    board.grid
+    # { top_left:    " ", top_center:    " ", top_right:    " ",
+    #   middle_left: "X", center:        "O", middle_right: " ",
+    #   bottom_left: " ", bottom_center: " ", bottom_right: "X" }
+  end
+
+  def x_and_o_all_in_a_row
+    board.grid[:top_right] = "X"
+    board.grid[:top_center] = "X"
+    board.grid[:top_left] = "O"
+    board.grid
+  end
+
   def o_makes_the_first_move
     board.grid[:bottom_left] = "O"
     board.grid
     # { top_left:    " ", top_center:    " ", top_right:    " ",
     #   middle_left: " ", center:        " ", middle_right: " ",
     #   bottom_left: "O", bottom_center: " ", bottom_right: " " }
+  end
+
+  def o_needs_a_third_strategic_move
+    board.grid[:top_left] = "X"
+    board.grid[:top_center] = "O"
+    board.grid[:center] = "O"
+    board.grid[:middle_right] = "X"
+    board.grid[:bottom_center] = "X"
+    board.grid
+    # { top_left:    "X", top_center:    "O", top_right:    " ",
+    #   middle_left: " ", center:        "O", middle_right: "X",
+    #   bottom_left: " ", bottom_center: "X", bottom_right: " " }
+  end
+
+  def o_in_the_corner_x_in_side_and_other_corner
+    board.grid[:middle_right] = "X"
+    board.grid[:bottom_left] = "X"
+    board.grid[:bottom_right] = "O"
+    board.grid
+    # { top_left:    " ", top_center:    " ", top_right:    " ",
+    #   middle_left: " ", center:        " ", middle_right: "X",
+    #   bottom_left: "X", bottom_center: " ", bottom_right: "O" }
   end
 end

@@ -142,6 +142,7 @@ describe 'Game' do
       tic_tac_computer.mark_space(tic_tac_computer.player1.next_move, tic_tac_computer.player1)
       tic_tac_computer.mark_space(tic_tac_computer.player2.next_move, tic_tac_computer.player2)
     end
+    # binding.pry
     tic_tac_computer
   end
 
