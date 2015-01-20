@@ -93,10 +93,8 @@ class Board
     grid.values.all? { |space| space == " " }
   end
 
-  def find_side(marker)
-    marked_side = sides.select{ |side| side.flatten.include? marker }.pop
-    # binding.pry
-    marked_side.first
+  def find_sides(marker)
+    side_keys.select{ |side| grid[side] == marker }
   end
 
   def find_corner(marker)
@@ -105,14 +103,14 @@ class Board
   end
 
   def find_opposing_side(marker)
-    side = find_side(marker)
-    if side.match(/center/)
+    side = find_sides(marker)
+    if side.to_s.include?("center")
       column = col_keys[1]
-      return column.first if side.match(/bottom/)
+      return column.first if side.to_s.include?("bottom")
       return column.last
     else
       row = row_keys[1]
-      return row.first if side.match(/right/)
+      return row.first if side.to_s.include?("right")
       return row.last
     end
   end

@@ -5,8 +5,8 @@ module OComputer
     elsif enemy_in_the_corner?
       [:center]
     elsif enemy_on_the_side?
-      side = board.find_side(enemy_marker)
-      opposite = board.find_opposing_side(side)
+      side = board.find_sides(enemy_marker).pop
+      opposite = board.find_opposing_side(enemy_marker)
       if board.col_values[1].include? enemy_marker
         neighbors = neighboring_spaces(side, "row")
       elsif board.row_values[1].include? enemy_marker

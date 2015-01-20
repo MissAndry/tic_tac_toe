@@ -69,13 +69,17 @@ describe 'Board' do
   end
 
   describe '#find_side' do
-    it 'finds the side space occupied by the given marker' do
+    it 'finds the side spaces occupied by the given marker' do
       board.grid[:middle_right] = "X"
-      expect(board.find_side("X")).to eq(:middle_right)
+      board.grid[:top_left] = "X"
+      expect(board.find_sides("X")).to eq([:middle_right])
+
+      board.grid[:top_center] = "X"
+      expect(board.find_sides("X")).to eq([:top_center, :middle_right])
       
       board.grid[:middle_right] = " "
       board.grid[:top_center] = "O"
-      expect(board.find_side("O")).to eq(:top_center)
+      expect(board.find_sides("O")).to eq([:top_center])
     end
   end
 
