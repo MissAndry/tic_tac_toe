@@ -17,24 +17,27 @@ module OComputer
   end
 
   def o_second_move
-    if board.side_values.count(enemy_marker) == 2 
-      return x_all_in_the_corner
+    if grid[:center] == marker
+      return o_gets_the_middle
+    elsif grid[:center] == enemy_marker && board.corner_values.include?(enemy_marker)
+      return board.corner_keys - marked_spaces
+    elsif board.side_values.count(enemy_marker) == 2 
+      return x_all_up_the_sides
     elsif enemy_on_the_side? && board.corner_values.include?(enemy_marker)
       return x_on_the_side_and_corner
-    elsif grid[:center] == marker
-      return o_gets_the_middle
     end
     return go_anywhere
   end
 
-  def x_all_in_the_corner
+  def x_all_up_the_sides
     if board.corner_values.include?(marker)
+      # binding.pry
       return (board.side_keys + [:center]) - marked_spaces
     elsif board.side_values.include?(marker)
       side = board.find_opposing_side(marker)
       if side_in_row?(side)
-        # binding.pry
         found_row = board.row_keys.select{ |row| row.include? side }.pop
+        # binding.pry
         return [found_row.first, found_row.last]
       elsif side_in_col?(side)
         found_col = board.col_keys.select{ |col| col.include? side }.pop
@@ -57,13 +60,13 @@ module OComputer
         return [found_col.first, found_col.last]
       end
     elsif board.corner_values.include?(marker)
-      corner = board.find_corner(marker)
+      corner = board.find_corner(marker).pop
       col_neighbor = neighboring_spaces(corner, "col")
       row_neighbor = neighboring_spaces(corner, "row")
       if grid[col_neighbor] == enemy_marker
-        side = col_neighbor
+        side = col_neighbor.pop
       else
-        side = row_neighbor
+        side = row_neighbor.pop
       end
       # binding.pry
       return [board.find_opposing_side(side), :center]
@@ -72,7 +75,8 @@ module OComputer
 
   def o_gets_the_middle
     if board.side_values.count(enemy_marker) == 2
-      return go_anywhere
+      # binding.pry
+      return board.corner_keys
     else
       row_neighbor = neighboring_spaces(:center, "row")
       col_neighbor = neighboring_spaces(:center, "col")
