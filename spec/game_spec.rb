@@ -103,13 +103,13 @@ describe 'Game' do
     end
 
     it 'always results in a tie' do
-    pending("the computer doesn't correctly autorun yet") 
+    # pending("the computer doesn't correctly autorun yet") 
       computer_game = computers_fight
       expect(computer_game.winner).to be nil
     end
 
     it 'always has players take all their turns' do
-    pending("the computer doesn't correctly autorun yet") 
+    # pending("the computer doesn't correctly autorun yet") 
       computer_game = computers_fight
       expect(computer_game.board.grid.values.count(computer_game.player1.marker)).to eq 5
       expect(computer_game.board.grid.values.count(computer_game.player2.marker)).to eq 4
@@ -139,8 +139,8 @@ describe 'Game' do
 
   def computers_fight
     until tic_tac_computer.finished?
-      tic_tac_computer.mark_space(tic_tac_computer.player1.next_move(tic_tac_computer.board.grid), tic_tac_computer.player1)
-      tic_tac_computer.mark_space(tic_tac_computer.player2.next_move(tic_tac_computer.board.grid), tic_tac_computer.player2)
+      tic_tac_computer.mark_space(tic_tac_computer.player1.next_move, tic_tac_computer.player1)
+      tic_tac_computer.mark_space(tic_tac_computer.player2.next_move, tic_tac_computer.player2)
     end
     tic_tac_computer
   end
