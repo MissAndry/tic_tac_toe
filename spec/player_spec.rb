@@ -299,7 +299,7 @@ describe 'Computer' do
 
       it 'takes a space next to itself in an unobstructed row/col when "X" isn\'t on two sides and "O" is in the middle' do
         o_computer.send(:board=, o_has_the_center_x_in_side_and_corner)
-        expect(o_computer.o_gets_the_middle).to eq([:top_center, :bottom_center])
+        expect(o_computer.o_gets_the_middle).to eq([:top_center, :bottom_center, :top_left, :bottom_left])
       end
     end
 
@@ -339,9 +339,32 @@ describe 'Computer' do
     end
 
     describe '#o_second_move' do
-      it 'chooses the best strategic move - when the marker is "O", "O" is in a corner, and "X" is in a corner and a side adjacent to "O"' do
-        o_computer.send(:board=, o_in_the_corner_x_in_side_and_other_corner)
-        expect(o_computer.o_second_move).to eq([:middle_left, :center])
+      context '"O" is in a corner, and "X" is in a corner and a side adjacent to "O"' do
+        it 'chooses the best strategic move' do
+          o_computer.send(:board=, o_in_the_corner_x_in_side_and_other_corner)
+          expect(o_computer.o_second_move).to eq([:middle_left, :center])
+        end
+      end
+
+      context '"O" is in the center, and "X" is in two side spots' do
+        it 'chooses the best strategic move' do
+          o_computer.send(:board=, o_in_the_center_x_in_opposing_corners)
+          expect(o_computer.o_second_move).to eq([:top_center, :bottom_center, :middle_left, :middle_right])
+        end
+      end
+
+      context '"O" is in the center, and "X" is in two spaces' do
+        it 'chooses the best strategic move' do
+          o_computer.send(:board=, o_in_the_center_x_on_opposing_sides)
+          expect(o_computer.o_second_move).to eq([:top_left, :bottom_left, :top_right, :bottom_right])
+        end
+      end
+
+      context '"O" is in the center, "X" is in a corner and a side"' do
+        it 'chooses the best strategic move' do
+          o_computer.send(:board=, o_in_the_center_x_flying_askew)
+          expect(o_computer.o_second_move).to eq([:top_center, :bottom_center, :top_right, :bottom_right])
+        end
       end
     end
 
@@ -350,10 +373,13 @@ describe 'Computer' do
         o_computer.send(:board=, o_needs_a_third_strategic_move)
         expect(o_computer.o_third_move).to eq([:bottom_left, :bottom_right])
       end
+
+      it 'takes the center if the center is empty and "X" is in two corners' do
+        o_computer.send(:board=, o_needs_to_take_center)
+        expect(o_computer.o_third_move).to eq([:center])
+      end
     end
   end
-
-
 
   def reset_boards
     o_computer.send(:board=, nil)
@@ -579,6 +605,18 @@ describe 'Computer' do
     #   bottom_left: " ", bottom_center: "X", bottom_right: " " }
   end
 
+  def o_needs_to_take_center
+    board.grid[:top_right] = "X"
+    board.grid[:middle_left] = "X"
+    board.grid[:middle_right] = "O"
+    board.grid[:bottom_left] = "O"
+    board.grid[:bottom_right] = "X"
+    board.grid
+    # { top_left:    " ", top_center:    " ", top_right:    "X",
+    #   middle_left: "X", center:        " ", middle_right: "O",
+    #   bottom_left: "O", bottom_center: " ", bottom_right: "X" }
+  end
+
   def o_in_the_corner_x_in_side_and_other_corner
     board.grid[:middle_right] = "X"
     board.grid[:bottom_left] = "X"
@@ -587,5 +625,29 @@ describe 'Computer' do
     # { top_left:    " ", top_center:    " ", top_right:    " ",
     #   middle_left: " ", center:        " ", middle_right: "X",
     #   bottom_left: "X", bottom_center: " ", bottom_right: "O" }
+  end
+
+  def o_in_the_center_x_flying_askew
+    board.grid[:center] = "O"
+    board.grid[:bottom_left] = "X"
+    board.grid[:middle_right] = "X"
+    board.grid
+    # { top_left:    " ", top_center:    " ", top_right:    " ",
+    #   middle_left: " ", center:        "O", middle_right: "X",
+    #   bottom_left: "X", bottom_center: " ", bottom_right: " " }
+  end
+
+  def o_in_the_center_x_in_opposing_corners
+    board.grid[:center] = "O"
+    board.grid[:top_right] = "X"
+    board.grid[:bottom_left] = "X"
+    board.grid
+  end
+
+  def o_in_the_center_x_on_opposing_sides
+    board.grid[:center] = "O"
+    board.grid[:middle_left] = "X"
+    board.grid[:middle_right] = "X"
+    board.grid
   end
 end

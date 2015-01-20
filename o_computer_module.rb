@@ -40,11 +40,15 @@ module OComputer
         neighbors.select!{ |combo| combo.length == 2 }
 
         neighbors.select do |combo| 
-          return combo if combo.all? { |value| !surrounding_values(value).flatten.include?(marker) }
+          # binding.pry
+          return combo if combo.all? { |value| 
+            # binding.pry
+            !surrounding_values(value).flatten.include?(marker) 
+          }
         end
       end
     end
-    go_anywhere
+    [:center]
   end
 
   def x_all_up_the_sides
@@ -105,24 +109,26 @@ module OComputer
       sides = board.find_sides(enemy_marker)
       row_neighbor = []
       col_neighbor = []
-      # binding.pry
       sides.each do |side|
         row_neighbor << neighboring_spaces(side, "row")
         col_neighbor << neighboring_spaces(side, "col")
       end
       moves = []
-      moves << row_neighbor.select{ |row| row.length == 2 }.pop
-      moves << col_neighbor.select{ |col| col.length == 2 }.pop
+      moves << row_neighbor.select{ |row| row.length == 2 }.flatten
+      moves << col_neighbor.select{ |col| col.length == 2 }.flatten
       return moves.flatten.compact.uniq
     else
+      dir = board.side_keys
       row_neighbor = neighboring_spaces(:center, "row")
       col_neighbor = neighboring_spaces(:center, "col")
       if row_neighbor.any?{ |key| grid[key] == enemy_marker }
-        dir = col_neighbor
-      else
-        dir = row_neighbor
+        dir -= row_neighbor
+        row_neighbor.each { |key| dir += neighboring_spaces(key, "col") if grid[key] == enemy_marker }
       end
-      # binding.pry
+      if col_neighbor.any?{ |key| grid[key] == enemy_marker }
+        dir -= col_neighbor
+        col_neighbor.each { |key| dir += neighboring_spaces(key, "row") if grid[key] == enemy_marker }
+      end
       return dir
     end
   end
