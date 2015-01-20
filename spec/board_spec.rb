@@ -93,6 +93,17 @@ describe 'Board' do
     end
   end
 
+  describe '#find_corner' do
+    it 'finds the corner spaces occupied by the given marker' do
+      board.grid[:top_left] = "X"
+      board.grid[:middle_right] = "X"
+      expect(board.find_corner("X")).to eq([:top_left])
+
+      board.grid[:bottom_left] = "X"
+      expect(board.find_corner("X")).to eq([:top_left, :bottom_left])
+    end
+  end
+
   describe '#empty?' do
     it 'returns true if the board is empty' do
       expect(board.empty?).to be true

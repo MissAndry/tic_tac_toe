@@ -98,8 +98,7 @@ class Board
   end
 
   def find_corner(marker)
-    marked_corner = corners.select{ |corner| corner.flatten.include? marker }.pop
-    marked_corner.first
+    corner_keys.select{ |corner| grid[corner] == marker }
   end
 
   def find_opposing_side(marker)
