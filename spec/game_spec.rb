@@ -111,6 +111,7 @@ describe 'Game' do
     it 'always has players take all their turns' do
     # pending("the computer doesn't correctly autorun yet") 
       computer_game = computers_fight
+      puts computer_game.board
       expect(computer_game.board.grid.values.count(computer_game.player1.marker)).to eq 5
       expect(computer_game.board.grid.values.count(computer_game.player2.marker)).to eq 4
     end

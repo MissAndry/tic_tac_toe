@@ -19,7 +19,7 @@ module OComputer
   def o_second_move
     if grid[:center] == marker
       return o_gets_the_middle
-    elsif grid[:center] == enemy_marker && board.corner_values.include?(enemy_marker)
+    elsif grid[:center] == enemy_marker
       return board.corner_keys - marked_spaces
     elsif board.side_values.count(enemy_marker) == 2 
       return x_all_up_the_sides
@@ -81,6 +81,7 @@ module OComputer
         # binding.pry
         return [found_col.first, found_col.last]
       end
+
     elsif board.corner_values.include?(marker)
       corner = board.find_corner(marker).pop
       surr_vals = surrounding_values(corner)
@@ -88,6 +89,7 @@ module OComputer
 
       if surr_vals.any?{ |vals| all_in_a_row?(vals) }
         moves = surr_keys.select.with_index{ |combo, index| combo if !surr_vals[index].include?(enemy_marker) }.pop
+        moves << :center
         return moves - marked_spaces
       end
 

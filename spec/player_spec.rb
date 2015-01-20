@@ -314,6 +314,7 @@ describe 'Computer' do
       it 'returns the values of the row/col set that includes the given space' do
         o_computer.send(:board=, x_computer_can_win_by_diagonal)
         expect(o_computer.surrounding_values(:center)).to eq([["X", "X", "O"], ["O", "X", "X"]])
+        expect(o_computer.surrounding_values(:top_left)).to eq([["X", "O", " "], ["X", "X", "O"]])
       end
     # { top_left:    "X", top_center:    "O", top_right:    " ",
     #   middle_left: "X", center:        "X", middle_right: "O",
@@ -332,9 +333,11 @@ describe 'Computer' do
     end
 
     describe '#x_on_the_side_and_corner' do
-      it 'returns the set of best strategic moves - if "X" is in a corner and the middle space directly next to it with "O" taking the third space in the row/col' do
-        o_computer.send(:board=, x_and_o_all_in_a_row)
-        expect(o_computer.x_on_the_side_and_corner).to eq([:middle_left, :bottom_left])
+      context '"X" is in a corner and the middle space directly next to it with "O" taking the third space in the row/col' do 
+        it 'returns the set of best strategic moves' do
+          o_computer.send(:board=, x_and_o_all_in_a_row)
+          expect(o_computer.x_on_the_side_and_corner).to eq([:middle_left, :bottom_left, :center])
+        end
       end
     end
 
@@ -364,6 +367,14 @@ describe 'Computer' do
         it 'chooses the best strategic move' do
           o_computer.send(:board=, o_in_the_center_x_flying_askew)
           expect(o_computer.o_second_move).to eq([:top_center, :bottom_center, :top_right, :bottom_right])
+        end
+      end
+
+      context '"X" is in the center and a side, "O" finishes the row' do
+        it 'never takes a side space' do
+          o_computer.send(:board=, x_centers_the_row)
+          expect(o_computer.o_second_move).to eq([:top_left, :top_right, :bottom_left, :bottom_right])
+          expect(o_computer.o_second_move).not_to include(:top_center, :middle_left, :middle_right, :bottom_center)
         end
       end
     end
@@ -649,5 +660,15 @@ describe 'Computer' do
     board.grid[:middle_left] = "X"
     board.grid[:middle_right] = "X"
     board.grid
+  end
+
+  def x_centers_the_row
+    board.grid[:top_center] = "X"
+    board.grid[:center] = "X"
+    board.grid[:bottom_center] = "O"
+    board.grid
+    # { top_left:    " ", top_center:    "X", top_right:    " ",
+    #   middle_left: " ", center:        "X", middle_right: " ",
+    #   bottom_left: " ", bottom_center: "O", bottom_right: " " }
   end
 end
