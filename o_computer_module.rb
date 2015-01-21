@@ -8,9 +8,9 @@ module OComputer
       side = board.find_sides(enemy_marker).pop
       opposite = board.find_opposing_side(enemy_marker)
       if board.col_values[1].include? enemy_marker
-        neighbors = neighboring_keys(side, "row")
+        neighbors = board.neighboring_keys(side, "row")
       elsif board.row_values[1].include? enemy_marker
-        neighbors = neighboring_keys(side, "col")
+        neighbors = board.neighboring_keys(side, "col")
       end
       neighbors + [opposite] + [:center]
     end
@@ -35,8 +35,8 @@ module OComputer
       if board.side_values.include?(enemy_marker)
         neighbors = []
         board.find_sides(enemy_marker).each do |side|
-          neighbors << neighboring_keys(side, "row")
-          neighbors << neighboring_keys(side, "col")
+          neighbors << board.neighboring_keys(side, "row")
+          neighbors << board.neighboring_keys(side, "col")
         end
         neighbors.select!{ |combo| combo.length == 2 }
 
@@ -96,8 +96,8 @@ module OComputer
         return moves - marked_spaces
       end
 
-      col_neighbor = neighboring_keys(corner, "col").pop
-      row_neighbor = neighboring_keys(corner, "row").pop
+      col_neighbor = board.neighboring_keys(corner, "col").pop
+      row_neighbor = board.neighboring_keys(corner, "row").pop
       if grid[col_neighbor] == enemy_marker
         side = col_neighbor
       else
@@ -113,8 +113,8 @@ module OComputer
       row_neighbor = []
       col_neighbor = []
       sides.each do |side|
-        row_neighbor << neighboring_keys(side, "row")
-        col_neighbor << neighboring_keys(side, "col")
+        row_neighbor << board.neighboring_keys(side, "row")
+        col_neighbor << board.neighboring_keys(side, "col")
       end
       moves = []
       moves << row_neighbor.select{ |row| row.length == 2 }.flatten
@@ -122,15 +122,15 @@ module OComputer
       return moves.flatten.compact.uniq
     else
       dir = board.side_keys
-      row_neighbor = neighboring_keys(:center, "row")
-      col_neighbor = neighboring_keys(:center, "col")
+      row_neighbor = board.neighboring_keys(:center, "row")
+      col_neighbor = board.neighboring_keys(:center, "col")
       if row_neighbor.any?{ |key| grid[key] == enemy_marker }
         dir -= row_neighbor
-        row_neighbor.each { |key| dir += neighboring_keys(key, "col") if grid[key] == enemy_marker }
+        row_neighbor.each { |key| dir += board.neighboring_keys(key, "col") if grid[key] == enemy_marker }
       end
       if col_neighbor.any?{ |key| grid[key] == enemy_marker }
         dir -= col_neighbor
-        col_neighbor.each { |key| dir += neighboring_keys(key, "row") if grid[key] == enemy_marker }
+        col_neighbor.each { |key| dir += board.neighboring_keys(key, "row") if grid[key] == enemy_marker }
       end
       return dir
     end

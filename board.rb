@@ -115,6 +115,24 @@ class Board
     end
   end
 
+  def neighboring_keys(key, direction)
+    case direction
+    when "row"
+      dir = row_keys
+    when "col"
+      dir = col_keys
+    end
+
+    neighbor = []
+    dir.each do |segment|
+      segment.each_with_index do |val, index|
+        neighbor << segment[index - 1] if val == key && index > 0
+        neighbor << segment[index + 1] if val == key && index < segment.length
+      end
+    end
+    neighbor.compact
+  end
+
   def to_s
     full_board = []
     row_values.each{ |row| full_board << PADDING + row.join(COLUMN_BREAK) }

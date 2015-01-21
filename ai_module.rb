@@ -81,24 +81,6 @@ module ComputerAI
     potential_moves.map{ |move| move.first if move.last == " " }.compact
   end
 
-  def neighboring_keys(key, direction)
-    case direction
-    when "row"
-      dir = board.row_keys
-    when "col"
-      dir = board.col_keys
-    end
-
-    neighbor = []
-    dir.each do |segment|
-      segment.each_with_index do |val, index|
-        neighbor << segment[index - 1] if val == key && index > 0
-        neighbor << segment[index + 1] if val == key && index < segment.length
-      end
-    end
-    neighbor.compact
-  end
-
   def surrounding_keys(key)
     (board.row_keys + board.col_keys).select{ |keys| keys.include? key }
   end

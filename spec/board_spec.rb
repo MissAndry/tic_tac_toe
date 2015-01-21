@@ -115,6 +115,27 @@ describe 'Board' do
     end
   end
 
+  describe '#neighboring_keys' do
+    it 'finds the one to two spaces next to a given space in a row' do
+      expect(board.neighboring_keys(:center, "row")).to eq([:middle_left, :middle_right])
+      expect(board.neighboring_keys(:top_center, "row")).to eq([:top_left, :top_right])
+      expect(board.neighboring_keys(:bottom_center, "row")).to eq([:bottom_left, :bottom_right])
+      expect(board.neighboring_keys(:bottom_left, "row")).to eq([:bottom_center])
+      expect(board.neighboring_keys(:top_right, "row")).to eq([:top_center])
+    end
+
+    it 'finds the one to two spaces next to a given space in a column' do
+      expect(board.neighboring_keys(:center, "col")).to eq([:top_center, :bottom_center])
+      expect(board.neighboring_keys(:middle_left, "col")).to eq([:top_left, :bottom_left])
+      expect(board.neighboring_keys(:middle_right, "col")).to eq([:top_right, :bottom_right])
+      expect(board.neighboring_keys(:top_center, "col")).to eq([:center])
+      expect(board.neighboring_keys(:bottom_center, "col")).to eq([:center])
+      expect(board.neighboring_keys(:top_right, "col")).to eq([:middle_right])
+    end
+  end
+
+
+
   describe '#to_s' do
     it 'prints the board as a string' do
       expect(board.to_s).to eq("                        |   |  \n                      ---------\n                        |   |  \n                      ---------\n                        |   |  ")

@@ -228,25 +228,6 @@ describe 'Computer' do
       end
     end
 
-    describe '#neighboring_keys' do
-      it 'finds the one to two spaces next to a given space in a row' do
-        expect(o_computer.neighboring_keys(:center, "row")).to eq([:middle_left, :middle_right])
-        expect(o_computer.neighboring_keys(:top_center, "row")).to eq([:top_left, :top_right])
-        expect(o_computer.neighboring_keys(:bottom_center, "row")).to eq([:bottom_left, :bottom_right])
-        expect(o_computer.neighboring_keys(:bottom_left, "row")).to eq([:bottom_center])
-        expect(o_computer.neighboring_keys(:top_right, "row")).to eq([:top_center])
-      end
-
-      it 'finds the one to two spaces next to a given space in a column' do
-        expect(o_computer.neighboring_keys(:center, "col")).to eq([:top_center, :bottom_center])
-        expect(o_computer.neighboring_keys(:middle_left, "col")).to eq([:top_left, :bottom_left])
-        expect(o_computer.neighboring_keys(:middle_right, "col")).to eq([:top_right, :bottom_right])
-        expect(o_computer.neighboring_keys(:top_center, "col")).to eq([:center])
-        expect(o_computer.neighboring_keys(:bottom_center, "col")).to eq([:center])
-        expect(o_computer.neighboring_keys(:top_right, "col")).to eq([:middle_right])
-      end
-    end
-
     describe '#defense_necessary?' do
       it 'returns true if the opponent can win in one move' do
         o_computer.send(:board=, x_computer_can_win_by_row)
