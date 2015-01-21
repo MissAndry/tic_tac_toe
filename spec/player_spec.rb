@@ -147,7 +147,7 @@ describe 'Computer' do
       end
 
       it 'returns false if the computer can\'t win in one move' do
-        o_computer.send(:board=, two_x_moves_one_o_and_x_takes_corners)
+        o_computer.send(:board=, o_in_the_center_x_in_opposing_corners)
         expect(o_computer.tryna_win?).to be false
       end
     end
@@ -254,7 +254,7 @@ describe 'Computer' do
       end
 
       it 'returns false if the opponent can\'t win in one move' do
-        o_computer.send(:board=, two_x_moves_one_o_and_x_takes_sides)
+        o_computer.send(:board=, o_in_the_center_x_flying_askew)
         expect(o_computer.defense_necessary?).to be false
       end
     end
@@ -296,13 +296,13 @@ describe 'Computer' do
     describe 'OComputer module' do
       describe '#o_gets_the_middle' do
         it 'returns a strategic move - not in the sides or a corner in an unpopulated row & col - when "X" has adjacent sides and "O" is in the middle' do
-          o_computer.send(:board=, o_has_the_center_x_all_up_the_sides)
+          o_computer.send(:board=, o_in_the_center_x_all_up_the_sides)
           expect(o_computer.o_gets_the_middle).to eq([:bottom_left, :bottom_right, :top_left])
         end
 
         it 'takes a space next to itself in an unobstructed row/col when "X" isn\'t on two sides and "O" is in the middle' do
-          o_computer.send(:board=, o_has_the_center_x_in_side_and_corner)
-          expect(o_computer.o_gets_the_middle).to eq([:top_center, :bottom_center, :top_left, :bottom_left])
+          o_computer.send(:board=, o_in_the_center_x_flying_askew)
+          expect(o_computer.o_gets_the_middle).to eq([:top_center, :bottom_center, :top_right, :bottom_right])
         end
       end
 
@@ -387,7 +387,7 @@ describe 'Computer' do
           end
 
           it 'chooses corners EXCEPT for the one that doesn\'t have an "X" in its corresponding row and column' do
-            o_computer.send(:board=, o_in_the_center_x_on_adjacent_sides)
+            o_computer.send(:board=, o_in_the_center_x_all_up_the_sides)
             expect(o_computer.o_second_move).to eq([:bottom_left, :bottom_right, :top_left])
           end
         end
@@ -445,7 +445,7 @@ describe 'Computer' do
     end
   end
 
-  #### CONTROLLED BOARDS ###
+  #### CONTROL BOARDS ###
 
   def reset_boards
     o_computer.send(:board=, nil)
@@ -522,34 +522,22 @@ describe 'Computer' do
   end
 
 #### O SECOND MOVES ####
-  def two_x_moves_one_o_and_x_takes_corners
-    { top_left:    " ", top_center:    " ", top_right:    "X",
-      middle_left: " ", center:        "O", middle_right: " ",
-      bottom_left: "X", bottom_center: " ", bottom_right: " " }
-  end
-
-  def two_x_moves_one_o_and_x_takes_sides
-    { top_left:    " ", top_center:    "X", top_right:    " ",
-      middle_left: " ", center:        "O", middle_right: " ",
-      bottom_left: "X", bottom_center: " ", bottom_right: " " }
-  end
-
   def two_x_moves_one_o_and_x_takes_center
     { top_left:    " ", top_center:    " ", top_right:    " ",
       middle_left: " ", center:        "X", middle_right: "X",
       bottom_left: " ", bottom_center: " ", bottom_right: "O" }
   end
 
-  def o_has_the_center_x_all_up_the_sides
+  def o_in_the_center_x_all_up_the_sides
     { top_left:    " ", top_center:    " ", top_right:    " ",
       middle_left: "X", center:        "O", middle_right: " ",
       bottom_left: " ", bottom_center: "X", bottom_right: " " }
   end
 
-  def o_has_the_center_x_in_side_and_corner
+  def o_in_the_center_x_flying_askew
     { top_left:    " ", top_center:    " ", top_right:    " ",
-      middle_left: "X", center:        "O", middle_right: " ",
-      bottom_left: " ", bottom_center: " ", bottom_right: "X" }
+      middle_left: " ", center:        "O", middle_right: "X",
+      bottom_left: "X", bottom_center: " ", bottom_right: " " }
   end
 
   def x_and_o_all_in_a_row
@@ -582,12 +570,6 @@ describe 'Computer' do
       bottom_left: " ", bottom_center: " ", bottom_right: " " }
   end
 
-  def o_in_the_center_x_flying_askew
-    { top_left:    " ", top_center:    " ", top_right:    " ",
-      middle_left: " ", center:        "O", middle_right: "X",
-      bottom_left: "X", bottom_center: " ", bottom_right: " " }
-  end
-
   def o_in_the_center_x_in_opposing_corners
     { top_left:    " ", top_center:    " ", top_right:    "X",
       middle_left: " ", center:        "O", middle_right: " ",
@@ -598,12 +580,6 @@ describe 'Computer' do
     { top_left:    " ", top_center:    " ", top_right:    " ",
       middle_left: "X", center:        "O", middle_right: "X",
       bottom_left: " ", bottom_center: " ", bottom_right: " " }
-  end
-
-  def o_in_the_center_x_on_adjacent_sides
-    { top_left:    " ", top_center:    " ", top_right:    " ",
-      middle_left: "X", center:        "O", middle_right: " ",
-      bottom_left: " ", bottom_center: "X", bottom_right: " " }
   end
 
   def x_centers_the_row
