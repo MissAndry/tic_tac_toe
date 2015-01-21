@@ -1,11 +1,10 @@
 require_relative 'x_computer_module'
 require_relative 'o_computer_module'
-# require 'pry'
+require 'pry'
 
 module ComputerAI
   include XComputer
   include OComputer
-
 
   def enemy_marker
     return "X" if marker == "O"
@@ -47,14 +46,13 @@ module ComputerAI
     if marker == "X"
       x_second_move
     elsif marker =="O"
-      # binding.pry
       o_second_move
     end
   end
 
   def third_move
     if marker == "O"
-      o_third_move
+      return o_third_move
     end
     go_anywhere
   end

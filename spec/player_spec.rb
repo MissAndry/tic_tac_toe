@@ -349,6 +349,13 @@ describe 'Computer' do
         end
       end
 
+      context '"O" is in a corner, "X" is in and adjacent side and the opposite corner' do
+        it 'chooses the best strategic move' do
+          o_computer.send(:board=, o_in_the_corner_x_adjacent_side_and_in_opposite_corner)
+          expect(o_computer.o_second_move).to eq([:middle_left, :center])
+        end
+      end
+
       context '"O" is in a corner and "X" has both adjacent sides' do
         it 'chooses the best strategic move' do
           o_computer.send(:board=, o_in_the_corner_x_adjacent)
@@ -396,12 +403,35 @@ describe 'Computer' do
           expect(o_computer.o_second_move).not_to include(:top_center, :middle_left, :middle_right, :bottom_center)
         end
       end
+
+      context '"O" is on the side, "X" is also on two sides' do
+        it 'chooses the best strategic move' do
+          o_computer.send(:board=, sides_party)
+          expect(o_computer.o_second_move).to eq([:top_left, :top_right])
+        end
+      end
+
+      context '"O" is on the side, "X" is in an adjacent corner and directly across' do
+        it 'chooses the best strategic move' do
+          o_computer.send(:board=, o_what_are_you_looking_at)
+          expect(o_computer.o_second_move).to eq([:top_left, :top_right, :center])
+        end
+      end
     end
 
     describe '#o_third_move' do
-      it 'returns the best strategic move - when the marker is "O", "O" has taken the center and a side, "X" is in a corner and two more sides but not in any position to immediately win' do
-        o_computer.send(:board=, o_needs_a_third_strategic_move)
-        expect(o_computer.o_third_move).to eq([:bottom_left, :bottom_right])
+      context '"O" has taken the center and a side, "X" is in a corner and two more sides but not in any position to immediately win' do
+        it 'returns the best strategic move' do
+          o_computer.send(:board=, o_needs_a_third_strategic_move)
+          expect(o_computer.o_third_move).to eq([:bottom_left, :bottom_right])
+        end
+      end
+
+      context '"O" has taken the center and a side, "X" is in a side and two corners but not in any position to immediately win' do
+        it 'returns the best strategic move' do
+          o_computer.send(:board=, o_tried_to_win)
+          expect(o_computer.o_third_move).to eq([:top_right, :bottom_right])
+        end
       end
 
       it 'takes the center if the center is empty and "X" is in two corners' do
@@ -635,6 +665,18 @@ describe 'Computer' do
     #   bottom_left: " ", bottom_center: "X", bottom_right: " " }
   end
 
+  def o_tried_to_win
+    board.grid[:top_left] = "X"
+    board.grid[:middle_left] = "O"
+    board.grid[:center] = "O"
+    board.grid[:middle_right] = "X"
+    board.grid[:bottom_left] = "X"
+    board.grid
+    # { top_left:    "X", top_center:    " ", top_right:    " ",
+    #   middle_left: "O", center:        "O", middle_right: "X",
+    #   bottom_left: "X", bottom_center: " ", bottom_right: " " }
+  end
+
   def o_needs_to_take_center
     board.grid[:top_right] = "X"
     board.grid[:middle_left] = "X"
@@ -655,6 +697,16 @@ describe 'Computer' do
     # { top_left:    " ", top_center:    " ", top_right:    " ",
     #   middle_left: " ", center:        " ", middle_right: "X",
     #   bottom_left: "X", bottom_center: " ", bottom_right: "O" }
+  end
+
+  def o_in_the_corner_x_adjacent_side_and_in_opposite_corner
+    board.grid[:top_left] = "X"
+    board.grid[:middle_right] = "X"
+    board.grid[:bottom_right] = "O"
+    board.grid
+    # { top_left:    "X", top_center:    " ", top_right:    " ",
+    #   middle_left: " ", center:        " ", middle_right: "X",
+    #   bottom_left: " ", bottom_center: " ", bottom_right: "O" }
   end
 
   def o_in_the_corner_x_in_two_sides
@@ -716,5 +768,25 @@ describe 'Computer' do
     # { top_left:    " ", top_center:    "X", top_right:    " ",
     #   middle_left: " ", center:        "X", middle_right: " ",
     #   bottom_left: " ", bottom_center: "O", bottom_right: " " }
+  end
+
+  def sides_party
+    board.grid[:top_center] = "X"
+    board.grid[:middle_right] = "X"
+    board.grid[:bottom_center] = "O"
+    board.grid
+    # { top_left:    " ", top_center:    "X", top_right:    " ",
+    #   middle_left: " ", center:        " ", middle_right: "X",
+    #   bottom_left: " ", bottom_center: "O", bottom_right: " " }
+  end
+
+  def o_what_are_you_looking_at
+    board.grid[:top_center] = "X"
+    board.grid[:bottom_center] = "O"
+    board.grid[:bottom_right] = "X"
+    board.grid
+    # { top_left:    " ", top_center:    "X", top_right:    " ",
+    #   middle_left: " ", center:        " ", middle_right: " ",
+    #   bottom_left: " ", bottom_center: "O", bottom_right: "X" }
   end
 end

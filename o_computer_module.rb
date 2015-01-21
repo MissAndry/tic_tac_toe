@@ -30,8 +30,9 @@ module OComputer
   end
 
   def o_third_move
+    return [:center] if grid[:center] == " "
     if grid[:center] == marker && board.side_values.include?(marker)
-      if board.side_values.count(enemy_marker) == 2
+      if board.side_values.include?(enemy_marker)
         neighbors = []
         board.find_sides(enemy_marker).each do |side|
           neighbors << neighboring_keys(side, "row")
@@ -39,16 +40,12 @@ module OComputer
         end
         neighbors.select!{ |combo| combo.length == 2 }
 
-        neighbors.select do |combo| 
-          # binding.pry
-          return combo if combo.all? { |value| 
-            # binding.pry
-            !surrounding_values(value).flatten.include?(marker) 
-          }
+        neighbors.select do |combo|
+          return combo if combo.all? { |value| !surrounding_values(value).flatten.include?(marker) }
         end
       end
     end
-    [:center]
+    go_anywhere
   end
 
   def x_all_up_the_sides
@@ -69,11 +66,9 @@ module OComputer
       side = board.find_opposing_side(marker)
       if side_in_row?(side)
         found_row = board.row_keys.select{ |row| row.include? side }.pop
-        # binding.pry
         return [found_row.first, found_row.last]
       elsif side_in_col?(side)
         found_col = board.col_keys.select{ |col| col.include? side }.pop
-        # binding.pry
         return [found_col.first, found_col.last]
       end
     end
@@ -84,12 +79,10 @@ module OComputer
       side = board.find_opposing_side(marker)
       if side_in_row?(side)
         found_row = board.row_keys.select{ |row| row.include? side }.pop
-        # binding.pry
-        return [found_row.first, found_row.last]
+        return [found_row.first, found_row.last, :center]
       elsif side_in_col?(side)
         found_col = board.col_keys.select{ |col| col.include? side }.pop
-        # binding.pry
-        return [found_col.first, found_col.last]
+        return [found_col.first, found_col.last, :center]
       end
 
     elsif board.corner_values.include?(marker)
@@ -105,13 +98,11 @@ module OComputer
 
       col_neighbor = neighboring_keys(corner, "col").pop
       row_neighbor = neighboring_keys(corner, "row").pop
-      # binding.pry
       if grid[col_neighbor] == enemy_marker
         side = col_neighbor
       else
         side = row_neighbor
       end
-      # binding.pry
       return [board.find_opposing_side(side), :center]
     end
   end
