@@ -453,25 +453,17 @@ describe 'Computer' do
   end
 
   def starting_grid
-    board.grid[:bottom_left] = "X"
-    board.grid[:top_left] = "X"
-    board.grid[:middle_right] = "X"
-    board.grid[:bottom_right] = "O"
-    board.grid[:center] = "O"
-    board.grid
-    # { top_left:    "X", top_center:    " ", top_right:    " ",
-    #   middle_left: " ", center:        "O", middle_right: "X",
-    #   bottom_left: "X", bottom_center: " ", bottom_right: "O" }
+    { top_left:    "X", top_center:    " ", top_right:    " ",
+      middle_left: " ", center:        "O", middle_right: "X",
+      bottom_left: "X", bottom_center: " ", bottom_right: "O" }
   end
 
 #### X FIRST MOVES ####
 
   def o_makes_the_first_move
-    board.grid[:bottom_left] = "O"
-    board.grid
-    # { top_left:    " ", top_center:    " ", top_right:    " ",
-    #   middle_left: " ", center:        " ", middle_right: " ",
-    #   bottom_left: "O", bottom_center: " ", bottom_right: " " }
+    { top_left:    " ", top_center:    " ", top_right:    " ",
+      middle_left: " ", center:        " ", middle_right: " ",
+      bottom_left: "O", bottom_center: " ", bottom_right: " " }
   end
   
 #### O FIRST MOVES ####
@@ -497,18 +489,12 @@ describe 'Computer' do
     board.grid[:center] = "X"
     board.grid[:middle_right] = "O"
     board.grid
-    # { top_left:    " ", top_center:    " ", top_right:    " ",
-    #   middle_left: " ", center:        "X", middle_right: "O",
-    #   bottom_left: " ", bottom_center: " ", bottom_right: " " }
   end
 
   def x_started_in_a_corner_and_o_takes_a_side
     board.grid[:bottom_right] = "X"
     board.grid[:middle_right] = "O"
     board.grid
-    # { top_left:    " ", top_center:    " ", top_right:    " ",
-    #   middle_left: " ", center:        " ", middle_right: "O",
-    #   bottom_left: " ", bottom_center: " ", bottom_right: "X" }
   end
 
   def x_started_in_a_corner_and_o_took_center
@@ -537,272 +523,161 @@ describe 'Computer' do
 
 #### O SECOND MOVES ####
   def two_x_moves_one_o_and_x_takes_corners
-    board.grid[:top_right] = "X"
-    board.grid[:center] = "O"
-    board.grid[:bottom_left] = "X"
-    board.grid
-    # { top_left:    " ", top_center:    " ", top_right:    "X",
-    #   middle_left: " ", center:        "O", middle_right: " ",
-    #   bottom_left: "X", bottom_center: " ", bottom_right: " " }
+    { top_left:    " ", top_center:    " ", top_right:    "X",
+      middle_left: " ", center:        "O", middle_right: " ",
+      bottom_left: "X", bottom_center: " ", bottom_right: " " }
   end
 
   def two_x_moves_one_o_and_x_takes_sides
-    board.grid[:top_center] = "X"
-    board.grid[:center] = "O"
-    board.grid[:bottom_left] = "X"
-    board.grid
-    # { top_left:    " ", top_center:    "X", top_right:    " ",
-    #   middle_left: " ", center:        "O", middle_right: " ",
-    #   bottom_left: "X", bottom_center: " ", bottom_right: " " }
+    { top_left:    " ", top_center:    "X", top_right:    " ",
+      middle_left: " ", center:        "O", middle_right: " ",
+      bottom_left: "X", bottom_center: " ", bottom_right: " " }
   end
 
   def two_x_moves_one_o_and_x_takes_center
-    board.grid[:center] = "X"
-    board.grid[:middle_right] = "X"
-    board.grid[:bottom_right] = "O"
-    board.grid
-    # { top_left:    " ", top_center:    " ", top_right:    " ",
-    #   middle_left: " ", center:        "X", middle_right: "X",
-    #   bottom_left: " ", bottom_center: " ", bottom_right: "O" }
+    { top_left:    " ", top_center:    " ", top_right:    " ",
+      middle_left: " ", center:        "X", middle_right: "X",
+      bottom_left: " ", bottom_center: " ", bottom_right: "O" }
   end
 
   def o_has_the_center_x_all_up_the_sides
-    board.grid[:middle_left] = "X"
-    board.grid[:center] = "O"
-    board.grid[:bottom_center] = "X"
-    board.grid
-    # { top_left:    " ", top_center:    " ", top_right:    " ",
-    #   middle_left: "X", center:        "O", middle_right: " ",
-    #   bottom_left: " ", bottom_center: "X", bottom_right: " " }
+    { top_left:    " ", top_center:    " ", top_right:    " ",
+      middle_left: "X", center:        "O", middle_right: " ",
+      bottom_left: " ", bottom_center: "X", bottom_right: " " }
   end
 
   def o_has_the_center_x_in_side_and_corner
-    board.grid[:middle_left] = "X"
-    board.grid[:center] = "O"
-    board.grid[:bottom_right] = "X"
-    board.grid
-    # { top_left:    " ", top_center:    " ", top_right:    " ",
-    #   middle_left: "X", center:        "O", middle_right: " ",
-    #   bottom_left: " ", bottom_center: " ", bottom_right: "X" }
+    { top_left:    " ", top_center:    " ", top_right:    " ",
+      middle_left: "X", center:        "O", middle_right: " ",
+      bottom_left: " ", bottom_center: " ", bottom_right: "X" }
   end
 
   def x_and_o_all_in_a_row
-    board.grid[:top_right] = "X"
-    board.grid[:top_center] = "X"
-    board.grid[:top_left] = "O"
-    board.grid
+    { top_left:    "O", top_center:    "X", top_right:    "X",
+      middle_left: " ", center:        " ", middle_right: " ",
+      bottom_left: " ", bottom_center: " ", bottom_right: " " }
   end
 
   def o_in_the_corner_x_in_side_and_other_corner
-    board.grid[:middle_right] = "X"
-    board.grid[:bottom_left] = "X"
-    board.grid[:bottom_right] = "O"
-    board.grid
-    # { top_left:    " ", top_center:    " ", top_right:    " ",
-    #   middle_left: " ", center:        " ", middle_right: "X",
-    #   bottom_left: "X", bottom_center: " ", bottom_right: "O" }
+    { top_left:    " ", top_center:    " ", top_right:    " ",
+      middle_left: " ", center:        " ", middle_right: "X",
+      bottom_left: "X", bottom_center: " ", bottom_right: "O" }
   end
 
   def o_in_the_corner_x_adjacent_side_and_in_opposite_corner
-    board.grid[:top_left] = "X"
-    board.grid[:middle_right] = "X"
-    board.grid[:bottom_right] = "O"
-    board.grid
-    # { top_left:    "X", top_center:    " ", top_right:    " ",
-    #   middle_left: " ", center:        " ", middle_right: "X",
-    #   bottom_left: " ", bottom_center: " ", bottom_right: "O" }
+    { top_left:    "X", top_center:    " ", top_right:    " ",
+      middle_left: " ", center:        " ", middle_right: "X",
+      bottom_left: " ", bottom_center: " ", bottom_right: "O" }
   end
 
   def o_in_the_corner_x_in_two_sides
-    board.grid[:top_center] = "X"
-    board.grid[:top_right] = "O"
-    board.grid[:middle_left] = "X"
-    board.grid
-    # { top_left:    " ", top_center:    "X", top_right:    "O",
-    #   middle_left: "X", center:        " ", middle_right: " ",
-    #   bottom_left: " ", bottom_center: " ", bottom_right: " " }
+    { top_left:    " ", top_center:    "X", top_right:    "O",
+      middle_left: "X", center:        " ", middle_right: " ",
+      bottom_left: " ", bottom_center: " ", bottom_right: " " }
   end
 
   def o_in_the_corner_x_adjacent
-    board.grid[:top_center] = "X"
-    board.grid[:top_right] = "O"
-    board.grid[:middle_right] = "X"
-    board.grid
-    # { top_left:    " ", top_center:    "X", top_right:    "O",
-    #   middle_left: " ", center:        " ", middle_right: "X",
-    #   bottom_left: " ", bottom_center: " ", bottom_right: " " }
+    { top_left:    " ", top_center:    "X", top_right:    "O",
+      middle_left: " ", center:        " ", middle_right: "X",
+      bottom_left: " ", bottom_center: " ", bottom_right: " " }
   end
 
   def o_in_the_center_x_flying_askew
-    board.grid[:center] = "O"
-    board.grid[:bottom_left] = "X"
-    board.grid[:middle_right] = "X"
-    board.grid
-    # { top_left:    " ", top_center:    " ", top_right:    " ",
-    #   middle_left: " ", center:        "O", middle_right: "X",
-    #   bottom_left: "X", bottom_center: " ", bottom_right: " " }
+    { top_left:    " ", top_center:    " ", top_right:    " ",
+      middle_left: " ", center:        "O", middle_right: "X",
+      bottom_left: "X", bottom_center: " ", bottom_right: " " }
   end
 
   def o_in_the_center_x_in_opposing_corners
-    board.grid[:center] = "O"
-    board.grid[:top_right] = "X"
-    board.grid[:bottom_left] = "X"
-    board.grid
+    { top_left:    " ", top_center:    " ", top_right:    "X",
+      middle_left: " ", center:        "O", middle_right: " ",
+      bottom_left: "X", bottom_center: " ", bottom_right: " " }
   end
 
   def o_in_the_center_x_on_opposing_sides
-    board.grid[:center] = "O"
-    board.grid[:middle_left] = "X"
-    board.grid[:middle_right] = "X"
-    board.grid
+    { top_left:    " ", top_center:    " ", top_right:    " ",
+      middle_left: "X", center:        "O", middle_right: "X",
+      bottom_left: " ", bottom_center: " ", bottom_right: " " }
   end
 
   def o_in_the_center_x_on_adjacent_sides
-    board.grid[:center] = "O"
-    board.grid[:middle_left] = "X"
-    board.grid[:bottom_center] = "X"
-    board.grid
+    { top_left:    " ", top_center:    " ", top_right:    " ",
+      middle_left: "X", center:        "O", middle_right: " ",
+      bottom_left: " ", bottom_center: "X", bottom_right: " " }
   end
 
   def x_centers_the_row
-    board.grid[:top_center] = "X"
-    board.grid[:center] = "X"
-    board.grid[:bottom_center] = "O"
-    board.grid
-    # { top_left:    " ", top_center:    "X", top_right:    " ",
-    #   middle_left: " ", center:        "X", middle_right: " ",
-    #   bottom_left: " ", bottom_center: "O", bottom_right: " " }
+    { top_left:    " ", top_center:    "X", top_right:    " ",
+      middle_left: " ", center:        "X", middle_right: " ",
+      bottom_left: " ", bottom_center: "O", bottom_right: " " }
   end
 
   def sides_party
-    board.grid[:top_center] = "X"
-    board.grid[:middle_right] = "X"
-    board.grid[:bottom_center] = "O"
-    board.grid
-    # { top_left:    " ", top_center:    "X", top_right:    " ",
-    #   middle_left: " ", center:        " ", middle_right: "X",
-    #   bottom_left: " ", bottom_center: "O", bottom_right: " " }
+    { top_left:    " ", top_center:    "X", top_right:    " ",
+      middle_left: " ", center:        " ", middle_right: "X",
+      bottom_left: " ", bottom_center: "O", bottom_right: " " }
   end
 
   def o_what_are_you_looking_at
-    board.grid[:top_center] = "X"
-    board.grid[:bottom_center] = "O"
-    board.grid[:bottom_right] = "X"
-    board.grid
-    # { top_left:    " ", top_center:    "X", top_right:    " ",
-    #   middle_left: " ", center:        " ", middle_right: " ",
-    #   bottom_left: " ", bottom_center: "O", bottom_right: "X" }
+    { top_left:    " ", top_center:    "X", top_right:    " ",
+      middle_left: " ", center:        " ", middle_right: " ",
+      bottom_left: " ", bottom_center: "O", bottom_right: "X" }
   end
 
 #### O THIRD MOVES ####
   def o_needs_a_third_strategic_move
-    board.grid[:top_left] = "X"
-    board.grid[:top_center] = "O"
-    board.grid[:center] = "O"
-    board.grid[:middle_right] = "X"
-    board.grid[:bottom_center] = "X"
-    board.grid
-    # { top_left:    "X", top_center:    "O", top_right:    " ",
-    #   middle_left: " ", center:        "O", middle_right: "X",
-    #   bottom_left: " ", bottom_center: "X", bottom_right: " " }
+    { top_left:    "X", top_center:    "O", top_right:    " ",
+      middle_left: " ", center:        "O", middle_right: "X",
+      bottom_left: " ", bottom_center: "X", bottom_right: " " }
   end
 
   def o_tried_to_win
-    board.grid[:top_left] = "X"
-    board.grid[:middle_left] = "O"
-    board.grid[:center] = "O"
-    board.grid[:middle_right] = "X"
-    board.grid[:bottom_left] = "X"
-    board.grid
-    # { top_left:    "X", top_center:    " ", top_right:    " ",
-    #   middle_left: "O", center:        "O", middle_right: "X",
-    #   bottom_left: "X", bottom_center: " ", bottom_right: " " }
+    { top_left:    "X", top_center:    " ", top_right:    " ",
+      middle_left: "O", center:        "O", middle_right: "X",
+      bottom_left: "X", bottom_center: " ", bottom_right: " " }
   end
 
   def o_needs_to_take_center
-    board.grid[:top_right] = "X"
-    board.grid[:middle_left] = "X"
-    board.grid[:middle_right] = "O"
-    board.grid[:bottom_left] = "O"
-    board.grid[:bottom_right] = "X"
-    board.grid
-    # { top_left:    " ", top_center:    " ", top_right:    "X",
-    #   middle_left: "X", center:        " ", middle_right: "O",
-    #   bottom_left: "O", bottom_center: " ", bottom_right: "X" }
+    { top_left:    " ", top_center:    " ", top_right:    "X",
+      middle_left: "X", center:        " ", middle_right: "O",
+      bottom_left: "O", bottom_center: " ", bottom_right: "X" }
   end
 
 #### X CAN WIN ####
   def x_computer_can_win_by_row
-    board.grid[:top_left] = "O"
-    board.grid[:middle_left] = "X"
-    board.grid[:center] = "O"
-    board.grid[:middle_right] = "O"
-    board.grid[:bottom_center] = "X"
-    board.grid[:bottom_right] = "X"
-    board.grid
-    # { top_left:    "O", top_center:    " ", top_right:    " ",
-    #   middle_left: "X", center:        "O", middle_right: "O",
-    #   bottom_left: " ", bottom_center: "X", bottom_right: "X" }
+    { top_left:    "O", top_center:    " ", top_right:    " ",
+      middle_left: "X", center:        "O", middle_right: "O",
+      bottom_left: " ", bottom_center: "X", bottom_right: "X" }
   end
 
   def x_computer_can_win_by_column
-    board.grid[:center] = "O"
-    board.grid[:middle_right] = "X"
-    board.grid[:bottom_right] = "X"
-    board.grid
-    # { top_left:    " ", top_center:    " ", top_right:    " ",
-    #   middle_left: " ", center:        "O", middle_right: "X",
-    #   bottom_left: " ", bottom_center: " ", bottom_right: "X" }
+    { top_left:    " ", top_center:    " ", top_right:    " ",
+      middle_left: " ", center:        "O", middle_right: "X",
+      bottom_left: " ", bottom_center: " ", bottom_right: "X" }
   end
 
   def x_computer_can_win_by_diagonal
-    board.grid[:top_left] = "X"
-    board.grid[:top_center] = "O"
-    board.grid[:middle_left] = "X"
-    board.grid[:center] = "X"
-    board.grid[:middle_right] = "O"
-    board.grid[:bottom_left] = "O"
-    board.grid[:bottom_center] = "X"
-    board.grid
-    # { top_left:    "X", top_center:    "O", top_right:    " ",
-    #   middle_left: "X", center:        "X", middle_right: "O",
-    #   bottom_left: "O", bottom_center: "X", bottom_right: " " }
+    { top_left:    "X", top_center:    "O", top_right:    " ",
+      middle_left: "X", center:        "X", middle_right: "O",
+      bottom_left: "O", bottom_center: "X", bottom_right: " " }
   end
     
 #### O CAN WIN ####
   def o_computer_can_win_by_row
-    board.grid[:top_left] = "X"
-    board.grid[:middle_left] = "O"
-    board.grid[:center] = "O"
-    board.grid[:bottom_center] = "X"
-    board.grid[:bottom_right] = "X"
-    board.grid
-    # { top_left:    "X", top_center:    " ", top_right:    " ",
-    #   middle_left: "O", center:        "O", middle_right: " ",
-    #   bottom_left: " ", bottom_center: "X", bottom_right: "X" }
+    { top_left:    "X", top_center:    " ", top_right:    " ",
+      middle_left: "O", center:        "O", middle_right: " ",
+      bottom_left: " ", bottom_center: "X", bottom_right: "X" }
   end
 
   def o_computer_can_win_by_column
-    board.grid[:middle_left] = "X"
-    board.grid[:center] = "O"
-    board.grid[:bottom_left] = "X"
-    board.grid[:bottom_center] = "O"
-    board.grid[:bottom_right] = "X"
-    board.grid
-    # { top_left:    " ", top_center:    " ", top_right:    " ",
-    #   middle_left: "X", center:        "O", middle_right: " ",
-    #   bottom_left: "X", bottom_center: "O", bottom_right: "X" }
+    { top_left:    " ", top_center:    " ", top_right:    " ",
+      middle_left: "X", center:        "O", middle_right: " ",
+      bottom_left: "X", bottom_center: "O", bottom_right: "X" }
   end
 
   def o_computer_can_win_by_diagonal
-    board.grid[:top_right] = "O"
-    board.grid[:top_center] = "X"
-    board.grid[:middle_left] = "X"
-    board.grid[:center] = "O"
-    board.grid[:bottom_center] = "X"
-    board.grid
-    # { top_left:    " ", top_center:    "X", top_right:    "O",
-    #   middle_left: "X", center:        "O", middle_right: " ",
-    #   bottom_left: " ", bottom_center: "X", bottom_right: " " }
+    { top_left:    " ", top_center:    "X", top_right:    "O",
+      middle_left: "X", center:        "O", middle_right: " ",
+      bottom_left: " ", bottom_center: "X", bottom_right: " " }
   end
 end
