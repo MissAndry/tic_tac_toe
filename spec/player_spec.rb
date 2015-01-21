@@ -228,22 +228,22 @@ describe 'Computer' do
       end
     end
 
-    describe '#neighboring_spaces' do
+    describe '#neighboring_keys' do
       it 'finds the one to two spaces next to a given space in a row' do
-        expect(o_computer.neighboring_spaces(:center, "row")).to eq([:middle_left, :middle_right])
-        expect(o_computer.neighboring_spaces(:top_center, "row")).to eq([:top_left, :top_right])
-        expect(o_computer.neighboring_spaces(:bottom_center, "row")).to eq([:bottom_left, :bottom_right])
-        expect(o_computer.neighboring_spaces(:bottom_left, "row")).to eq([:bottom_center])
-        expect(o_computer.neighboring_spaces(:top_right, "row")).to eq([:top_center])
+        expect(o_computer.neighboring_keys(:center, "row")).to eq([:middle_left, :middle_right])
+        expect(o_computer.neighboring_keys(:top_center, "row")).to eq([:top_left, :top_right])
+        expect(o_computer.neighboring_keys(:bottom_center, "row")).to eq([:bottom_left, :bottom_right])
+        expect(o_computer.neighboring_keys(:bottom_left, "row")).to eq([:bottom_center])
+        expect(o_computer.neighboring_keys(:top_right, "row")).to eq([:top_center])
       end
 
       it 'finds the one to two spaces next to a given space in a column' do
-        expect(o_computer.neighboring_spaces(:center, "col")).to eq([:top_center, :bottom_center])
-        expect(o_computer.neighboring_spaces(:middle_left, "col")).to eq([:top_left, :bottom_left])
-        expect(o_computer.neighboring_spaces(:middle_right, "col")).to eq([:top_right, :bottom_right])
-        expect(o_computer.neighboring_spaces(:top_center, "col")).to eq([:center])
-        expect(o_computer.neighboring_spaces(:bottom_center, "col")).to eq([:center])
-        expect(o_computer.neighboring_spaces(:top_right, "col")).to eq([:middle_right])
+        expect(o_computer.neighboring_keys(:center, "col")).to eq([:top_center, :bottom_center])
+        expect(o_computer.neighboring_keys(:middle_left, "col")).to eq([:top_left, :bottom_left])
+        expect(o_computer.neighboring_keys(:middle_right, "col")).to eq([:top_right, :bottom_right])
+        expect(o_computer.neighboring_keys(:top_center, "col")).to eq([:center])
+        expect(o_computer.neighboring_keys(:bottom_center, "col")).to eq([:center])
+        expect(o_computer.neighboring_keys(:top_right, "col")).to eq([:middle_right])
       end
     end
 
@@ -349,17 +349,36 @@ describe 'Computer' do
         end
       end
 
-      context '"O" is in the center, and "X" is in two side spots' do
+      context '"O" is in a corner and "X" has both adjacent sides' do
+        it 'chooses the best strategic move' do
+          o_computer.send(:board=, o_in_the_corner_x_adjacent)
+          expect(o_computer.o_second_move).to eq([:bottom_center, :middle_left, :center])
+        end
+      end
+
+      context '"O" is in the corner and "X" is in two sides - one adjacent, one not quite opposite' do
+        it 'chooses the corner inline with itself' do
+          o_computer.send(:board=, o_in_the_corner_x_in_two_sides)
+          expect(o_computer.o_second_move).to eq([:bottom_right])
+        end
+      end
+
+      context '"O" is in the center, and "X" is in two corner spots' do
         it 'chooses the best strategic move' do
           o_computer.send(:board=, o_in_the_center_x_in_opposing_corners)
           expect(o_computer.o_second_move).to eq([:top_center, :bottom_center, :middle_left, :middle_right])
         end
       end
 
-      context '"O" is in the center, and "X" is in two spaces' do
-        it 'chooses the best strategic move' do
+      context '"O" is in the center, and "X" is in two sides' do
+        it 'chooses the corners when the sides are opposite one another' do
           o_computer.send(:board=, o_in_the_center_x_on_opposing_sides)
           expect(o_computer.o_second_move).to eq([:top_left, :bottom_left, :top_right, :bottom_right])
+        end
+
+        it 'chooses corners EXCEPT for the one that doesn\'t have an "X" in its corresponding row and column' do
+          o_computer.send(:board=, o_in_the_center_x_on_adjacent_sides)
+          expect(o_computer.o_second_move).to eq([:bottom_left, :bottom_right, :top_left])
         end
       end
 
@@ -638,6 +657,26 @@ describe 'Computer' do
     #   bottom_left: "X", bottom_center: " ", bottom_right: "O" }
   end
 
+  def o_in_the_corner_x_in_two_sides
+    board.grid[:top_center] = "X"
+    board.grid[:top_right] = "O"
+    board.grid[:middle_left] = "X"
+    board.grid
+    # { top_left:    " ", top_center:    "X", top_right:    "O",
+    #   middle_left: "X", center:        " ", middle_right: " ",
+    #   bottom_left: " ", bottom_center: " ", bottom_right: " " }
+  end
+
+  def o_in_the_corner_x_adjacent
+    board.grid[:top_center] = "X"
+    board.grid[:top_right] = "O"
+    board.grid[:middle_right] = "X"
+    board.grid
+    # { top_left:    " ", top_center:    "X", top_right:    "O",
+    #   middle_left: " ", center:        " ", middle_right: "X",
+    #   bottom_left: " ", bottom_center: " ", bottom_right: " " }
+  end
+
   def o_in_the_center_x_flying_askew
     board.grid[:center] = "O"
     board.grid[:bottom_left] = "X"
@@ -659,6 +698,13 @@ describe 'Computer' do
     board.grid[:center] = "O"
     board.grid[:middle_left] = "X"
     board.grid[:middle_right] = "X"
+    board.grid
+  end
+
+  def o_in_the_center_x_on_adjacent_sides
+    board.grid[:center] = "O"
+    board.grid[:middle_left] = "X"
+    board.grid[:bottom_center] = "X"
     board.grid
   end
 

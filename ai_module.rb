@@ -83,7 +83,7 @@ module ComputerAI
     potential_moves.map{ |move| move.first if move.last == " " }.compact
   end
 
-  def neighboring_spaces(space, direction)
+  def neighboring_keys(key, direction)
     case direction
     when "row"
       dir = board.row_keys
@@ -94,8 +94,8 @@ module ComputerAI
     neighbor = []
     dir.each do |segment|
       segment.each_with_index do |val, index|
-        neighbor << segment[index - 1] if val == space && index > 0
-        neighbor << segment[index + 1] if val == space && index < segment.length
+        neighbor << segment[index - 1] if val == key && index > 0
+        neighbor << segment[index + 1] if val == key && index < segment.length
       end
     end
     neighbor.compact
