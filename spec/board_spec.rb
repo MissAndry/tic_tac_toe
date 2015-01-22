@@ -158,9 +158,50 @@ describe 'Board' do
     end
   end
 
+  describe '#surrounding_keys' do
+    it 'returns the row/col set that includes the given space' do
+      expect(board.surrounding_keys(:bottom_right)).to eq([[:bottom_left, :bottom_center, :bottom_right], [:top_right, :middle_right, :bottom_right]])
+      expect(board.surrounding_keys(:center)).to eq([[:middle_left, :center, :middle_right], [:top_center, :center, :bottom_center]])
+    end
+  end
+
+  describe '#surrounding_values' do
+    it 'returns the values of the row/col set that includes the given space' do
+      board.send(:grid=, marked_board)
+      expect(board.surrounding_values(:center)).to eq([["X", "X", "O"], ["O", "X", "X"]])
+      expect(board.surrounding_values(:top_left)).to eq([["X", "O", " "], ["X", "X", "O"]])
+    end
+  end
+
+  describe '#side_in_row?' do
+    it 'returns true if the side is a \'center\'' do
+      expect(board.side_in_row?(:top_center)).to be true
+    end
+
+    it 'returns false if the side is a \'middle\'' do
+      expect(board.side_in_row?(:middle_left)).to be false
+    end
+  end
+
+  describe '#side_in_col?' do
+    it 'returns true if the side is a \'middle\'' do
+      expect(board.side_in_col?(:middle_right)).to be true
+    end
+
+    it 'returns false if the side is a \'center\'' do
+      expect(board.side_in_col?(:bottom_center)).to be false
+    end
+  end
+
   describe '#to_s' do
     it 'prints the board as a string' do
       expect(board.to_s).to eq("                        |   |  \n                      ---------\n                        |   |  \n                      ---------\n                        |   |  ")
     end
+  end
+  
+  def marked_board
+    { top_left:    "X", top_center:    "O", top_right:    " ",
+      middle_left: "X", center:        "X", middle_right: "O",
+      bottom_left: "O", bottom_center: "X", bottom_right: " " }
   end
 end

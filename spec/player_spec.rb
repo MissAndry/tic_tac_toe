@@ -252,26 +252,6 @@ describe 'Computer' do
       end
     end
 
-    describe '#side_in_row?' do
-      it 'returns true if the side is a \'center\'' do
-        expect(x_computer.side_in_row?(:top_center)).to be true
-      end
-
-      it 'returns false if the side is a \'middle\'' do
-        expect(o_computer.side_in_row?(:middle_left)).to be false
-      end
-    end
-
-    describe '#side_in_col?' do
-      it 'returns true if the side is a \'middle\'' do
-        expect(x_computer.side_in_col?(:middle_right)).to be true
-      end
-
-      it 'returns false if the side is a \'center\'' do
-        expect(o_computer.side_in_col?(:bottom_center)).to be false
-      end
-    end
-
     #### O COMPUTER MODULE ####
 
     describe 'OComputer module' do
@@ -285,24 +265,6 @@ describe 'Computer' do
           o_computer.send(:board=, o_in_the_center_x_flying_askew)
           expect(o_computer.o_gets_the_middle).to eq([:top_center, :bottom_center, :top_right, :bottom_right])
         end
-      end
-
-      describe '#surrounding_keys' do
-        it 'returns the row/col set that includes the given space' do
-          expect(o_computer.surrounding_keys(:bottom_right)).to eq([[:bottom_left, :bottom_center, :bottom_right], [:top_right, :middle_right, :bottom_right]])
-          expect(o_computer.surrounding_keys(:center)).to eq([[:middle_left, :center, :middle_right], [:top_center, :center, :bottom_center]])
-        end
-      end
-
-      describe '#surrounding_values' do
-        it 'returns the values of the row/col set that includes the given space' do
-          o_computer.send(:board=, x_computer_can_win_by_diagonal)
-          expect(o_computer.surrounding_values(:center)).to eq([["X", "X", "O"], ["O", "X", "X"]])
-          expect(o_computer.surrounding_values(:top_left)).to eq([["X", "O", " "], ["X", "X", "O"]])
-        end
-      # { top_left:    "X", top_center:    "O", top_right:    " ",
-      #   middle_left: "X", center:        "X", middle_right: "O",
-      #   bottom_left: "O", bottom_center: "X", bottom_right: " " }
       end
 
       describe '#all_in_a_row?' do

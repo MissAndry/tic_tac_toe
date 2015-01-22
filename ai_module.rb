@@ -81,19 +81,6 @@ module ComputerAI
     potential_moves.map{ |move| move.first if move.last == " " }.compact
   end
 
-  def surrounding_keys(key)
-    (board.row_keys + board.col_keys).select{ |keys| keys.include? key }
-  end
-
-  def surrounding_values(starting_key)
-    row_keys = surrounding_keys(starting_key)
-    values = []
-    row_keys.each do |set|
-      values << set.map{ |key| grid[key] }
-    end
-    values
-  end
-
   def all_in_a_row?(combo)
     combo.sort == [enemy_marker, enemy_marker, marker].sort
   end
@@ -117,13 +104,5 @@ module ComputerAI
 
   def go_anywhere
     grid_keys - marked_spaces
-  end
-
-  def side_in_col?(side)
-    side.to_s.include?("middle")
-  end
-
-  def side_in_row?(side)
-    side.to_s.include?("center")
   end
 end

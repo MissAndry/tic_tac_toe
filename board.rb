@@ -149,6 +149,27 @@ class Board
     side_collection.map{ |side| col_neighbor(side) }
   end
 
+  def surrounding_keys(key)
+    (row_keys + col_keys).select{ |keys| keys.include? key }
+  end
+
+  def surrounding_values(starting_key)
+    row_keys = surrounding_keys(starting_key)
+    values = []
+    row_keys.each do |set|
+      values << set.map{ |key| grid[key] }
+    end
+    values
+  end
+
+  def side_in_col?(side)
+    side.to_s.include?("middle")
+  end
+
+  def side_in_row?(side)
+    side.to_s.include?("center")
+  end
+
   def to_s
     full_board = []
     row_values.each{ |row| full_board << PADDING + row.join(COLUMN_BREAK) }
