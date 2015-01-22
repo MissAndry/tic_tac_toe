@@ -5,12 +5,12 @@ module OComputer
     elsif enemy_in_the_corner?
       [:center]
     elsif enemy_on_the_side?
-      side = board.find_sides(enemy_marker).pop
+      side = board.find_sides(enemy_marker)
       opposite = board.find_opposing_side(enemy_marker)
       if board.col_values[1].include? enemy_marker
-        neighbors = board.neighboring_keys(side, "row")
+        neighbors = board.find_row_neighbors(side).pop
       elsif board.row_values[1].include? enemy_marker
-        neighbors = board.neighboring_keys(side, "col")
+        neighbors = board.find_col_neighbors(side).pop
       end
       neighbors + [opposite] + [:center]
     end
@@ -33,13 +33,9 @@ module OComputer
     return [:center] if grid[:center] == " "
     if grid[:center] == marker && board.side_values.include?(marker)
       if board.side_values.include?(enemy_marker)
-        neighbors = []
-        board.find_sides(enemy_marker).each do |side|
-          neighbors << board.neighboring_keys(side, "row")
-          neighbors << board.neighboring_keys(side, "col")
-        end
+        sides = board.find_sides(enemy_marker)
+        neighbors = board.find_row_neighbors(sides) + board.find_col_neighbors(sides)
         neighbors.select!{ |combo| combo.length == 2 }
-
         neighbors.select do |combo|
           return combo if combo.all? { |value| !surrounding_values(value).flatten.include?(marker) }
         end
@@ -96,8 +92,8 @@ module OComputer
         return moves - marked_spaces
       end
 
-      col_neighbor = board.neighboring_keys(corner, "col").pop
-      row_neighbor = board.neighboring_keys(corner, "row").pop
+      col_neighbor = board.col_neighbor(corner).pop
+      row_neighbor = board.row_neighbor(corner).pop
       if grid[col_neighbor] == enemy_marker
         side = col_neighbor
       else
@@ -110,28 +106,28 @@ module OComputer
   def o_gets_the_middle
     if board.side_values.count(enemy_marker) == 2
       sides = board.find_sides(enemy_marker)
-      row_neighbor = []
-      col_neighbor = []
-      sides.each do |side|
-        row_neighbor << board.neighboring_keys(side, "row")
-        col_neighbor << board.neighboring_keys(side, "col")
-      end
+      row_neighbor = board.find_row_neighbors(sides)
+      col_neighbor = board.find_col_neighbors(sides)
+
       moves = []
       moves << row_neighbor.select{ |row| row.length == 2 }.flatten
       moves << col_neighbor.select{ |col| col.length == 2 }.flatten
       return moves.flatten.compact.uniq
     else
       dir = board.side_keys
-      row_neighbor = board.neighboring_keys(:center, "row")
-      col_neighbor = board.neighboring_keys(:center, "col")
+      row_neighbor = board.row_neighbor(:center)
+      col_neighbor = board.col_neighbor(:center)
+      
       if row_neighbor.any?{ |key| grid[key] == enemy_marker }
         dir -= row_neighbor
-        row_neighbor.each { |key| dir += board.neighboring_keys(key, "col") if grid[key] == enemy_marker }
+        row_neighbor.each { |key| dir += board.col_neighbor(key) if grid[key] == enemy_marker }
       end
+
       if col_neighbor.any?{ |key| grid[key] == enemy_marker }
         dir -= col_neighbor
-        col_neighbor.each { |key| dir += board.neighboring_keys(key, "row") if grid[key] == enemy_marker }
+        col_neighbor.each { |key| dir += board.row_neighbor(key) if grid[key] == enemy_marker }
       end
+      
       return dir
     end
   end

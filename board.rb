@@ -133,6 +133,22 @@ class Board
     neighbor.compact
   end
 
+  def row_neighbor(side)
+    neighboring_keys(side, "row")
+  end
+
+  def col_neighbor(side)
+    neighboring_keys(side, "col")
+  end
+
+  def find_row_neighbors(side_collection)
+    side_collection.map{ |side| row_neighbor(side) }
+  end
+
+  def find_col_neighbors(side_collection)
+    side_collection.map{ |side| col_neighbor(side) }
+  end
+
   def to_s
     full_board = []
     row_values.each{ |row| full_board << PADDING + row.join(COLUMN_BREAK) }

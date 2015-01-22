@@ -134,7 +134,29 @@ describe 'Board' do
     end
   end
 
+  describe '#row_neighbor' do
+    it 'returns the keys neighboring the given space in a row' do
+      expect(board.row_neighbor(:center)).to eq([:middle_left, :middle_right])
+    end
+  end
 
+  describe '#col_neighbor' do
+    it 'returns the keys neighboring the given space in a column' do
+      expect(board.col_neighbor(:center)).to eq([:top_center, :bottom_center])
+    end
+  end
+
+  describe '#find_row_neighbors' do
+    it 'returns the neighboring keys in a row for a collection' do
+      expect(board.find_row_neighbors([:center, :middle_right])).to eq([[:middle_left, :middle_right], [:center]])
+    end
+  end
+
+  describe '#find_col_neighbors' do
+    it 'returns the neighboring keys in a row for a collection' do
+      expect(board.find_col_neighbors([:center, :middle_right])).to eq([[:top_center, :bottom_center], [:top_right, :bottom_right]])
+    end
+  end
 
   describe '#to_s' do
     it 'prints the board as a string' do
