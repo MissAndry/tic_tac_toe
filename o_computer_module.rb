@@ -46,7 +46,7 @@ module OComputer
 
   def x_all_up_the_sides
     if board.corner_values.include?(marker)
-      return o_corners_on_x(marker)
+      return o_corners_on_x
     elsif board.side_values.include?(marker)
       side = board.find_opposing_side(marker)
       if board.side_in_row?(side)
@@ -61,15 +61,7 @@ module OComputer
 
   def x_on_the_side_and_corner
     if board.side_values.include?(marker)
-      side = board.find_opposing_side(marker)
-      if board.side_in_row?(side)
-        found_row = board.row_keys.select{ |row| row.include? side }.pop
-        return [found_row.first, found_row.last, :center]
-      elsif board.side_in_col?(side)
-        found_col = board.col_keys.select{ |col| col.include? side }.pop
-        return [found_col.first, found_col.last, :center]
-      end
-
+      return o_u_watchdog
     elsif board.corner_values.include?(marker)
       corner = board.find_corner(marker).pop
       surr_vals = board.surrounding_values(corner)
@@ -81,13 +73,8 @@ module OComputer
         return moves - marked_spaces
       end
 
-      col_neighbor = board.col_neighbor(corner).pop
-      row_neighbor = board.row_neighbor(corner).pop
-      if grid[col_neighbor] == enemy_marker
-        side = col_neighbor
-      else
-        side = row_neighbor
-      end
+      side = col_or_row(corner)
+
       return [board.find_opposing_side(side), :center]
     end
   end
@@ -98,9 +85,8 @@ module OComputer
       row_neighbor = board.find_row_neighbors(sides)
       col_neighbor = board.find_col_neighbors(sides)
 
-      moves = []
-      moves << row_neighbor.select{ |row| row.length == 2 }.flatten
-      moves << col_neighbor.select{ |col| col.length == 2 }.flatten
+      moves = row_neighbor + col_neighbor
+      moves.delete([:center])
       return moves.flatten.compact.uniq
     else
       dir = board.side_keys
@@ -116,12 +102,11 @@ module OComputer
         dir -= col_neighbor
         col_neighbor.each { |key| dir += board.row_neighbor(key) if grid[key] == enemy_marker }
       end
-      
       return dir
     end
   end
 
-  def o_corners_on_x(corner)
+  def o_corners_on_x
     corner = board.find_corner(marker).pop
     if board.surrounding_values(corner).flatten.count(enemy_marker) == 1
       return o_corner_u_so_pretty(corner)
@@ -139,5 +124,25 @@ module OComputer
     move = col unless marked.any?{ |key| col.include? key }
     return [move.first] if move.last == corner
     return [move.last] if move.first == corner
+  end
+
+  def o_u_watchdog
+    side = board.find_opposing_side(marker)
+    if board.side_in_row?(side)
+      found = board.row_keys.select{ |row| row.include? side }.pop
+    elsif board.side_in_col?(side)
+      found = board.col_keys.select{ |col| col.include? side }.pop
+    end
+    [found.first, found.last, :center]
+  end
+
+  def col_or_row(corner)
+    col_neighbor = board.col_neighbor(corner).pop
+    row_neighbor = board.row_neighbor(corner).pop
+    if grid[col_neighbor] == enemy_marker
+      side = col_neighbor
+    else
+      side = row_neighbor
+    end
   end
 end

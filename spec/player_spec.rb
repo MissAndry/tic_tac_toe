@@ -99,10 +99,6 @@ describe 'Computer' do
         it 'moves anywhere besides the opposite side if "X" took a side first and "O" is in a corner or the center' do
           x_computer.send(:board=, x_started_on_the_side_and_o_is_in_the_center)
           expect(x_computer.second_move).to eq([:top_left, :top_center, :top_right, :bottom_left, :bottom_center, :bottom_right])
-
-          reset_boards
-          x_computer.send(:board=, x_started_on_the_side_and_o_is_in_a_corner)
-          expect(x_computer.second_move).to eq([:top_left, :top_center, :top_right, :center, :bottom_left, :bottom_center])
         end
       end
     end
@@ -385,6 +381,17 @@ describe 'Computer' do
           expect(o_computer.o_third_move).to eq([:center])
         end
       end
+
+      #### X COMPUTER MODULE ####
+
+      describe '#x_second_move' do
+        context '"X" is on the side and "O" is in an adjacent corner' do
+          it 'chooses the best strategic move' do
+            x_computer.send(:board=, x_started_on_the_side_and_o_is_adjacent)
+            expect(x_computer.x_second_move).to eq([:top_right, :bottom_right])
+          end
+        end
+      end
     end
   end
 
@@ -461,6 +468,12 @@ describe 'Computer' do
   def x_started_on_the_side_and_o_is_in_a_corner
     board.grid[:middle_left] = "X"
     board.grid[:bottom_right] = "O"
+    board.grid
+  end
+
+  def x_started_on_the_side_and_o_is_adjacent
+    board.grid[:middle_left] = "X"
+    board.grid[:bottom_left] = "O"
     board.grid
   end
 
