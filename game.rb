@@ -1,7 +1,6 @@
 require_relative 'board'
 require_relative 'player'
 require 'pry'
-
 class Game
   def initialize(options={})
     @player1 = options.fetch(:player1){ "human" }
@@ -41,6 +40,7 @@ class Game
     when "computer"
       people << Computer.new(board, "O")
     end
+    # binding.pry
     people
   end
 

@@ -21,9 +21,7 @@ class TicTacController
 
   def run!
     start
-    # binding.pry
     @user_input = gets.chomp.downcase
-    # binding.pry   
     return if quit?
     play_game
     if tic_tac_toe && tic_tac_toe.winner
@@ -40,7 +38,6 @@ class TicTacController
   end
 
   def handle_starting_input
-    # binding.pry
     if quit?
       return
     elsif AFFIRMATIVE.include? user_input
@@ -56,7 +53,6 @@ class TicTacController
 
     starting_prompt
     @user_input = gets.chomp.downcase
-    # binding.pry
     handle_starting_input
   end
 

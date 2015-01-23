@@ -1,5 +1,3 @@
-require 'pry'
-
 class Board
   COLUMN_BREAK = " | "
   PADDING = " " * 22

@@ -1,5 +1,3 @@
-require 'pry'
-
 module XComputer
   def x_second_move
     if grid[:center] == marker
@@ -41,7 +39,6 @@ module XComputer
     elsif enemy_in_the_corner?
       moves = board.corner_keys - marked_spaces
     end
-    return [:center] if grid[:center] == " " && moves.nil?
     return moves.flatten - marked_spaces unless moves.nil?
     go_anywhere
   end

@@ -1,5 +1,4 @@
 require_relative '../game'
-require 'pry'
 
 describe 'Game' do
   let(:game){ Game.new }
@@ -22,13 +21,13 @@ describe 'Game' do
     end
   end
 
-  describe 'player1' do
+  describe '#player1' do
     it 'is the first player' do
       expect(game.player1).to eq(game.players[0])
     end
   end
 
-  describe 'player2' do
+  describe '#player2' do
     it 'is the second player' do
       expect(game.player2).to eq(game.players[1])
     end
@@ -103,7 +102,6 @@ describe 'Game' do
     end
 
     it 'always results in a tie' do
-    # pending("the computer doesn't correctly autorun yet") 
       computer_game = computers_fight
       expect(computer_game.winner).to be nil
     end
@@ -114,9 +112,7 @@ describe 'Game' do
     end
 
     it 'always has players take all their turns' do
-    # pending("the computer doesn't correctly autorun yet") 
       computer_game = computers_fight
-      # puts computer_game.board
       expect(computer_game.board.grid.values.count(computer_game.player1.marker)).to eq 5
       expect(computer_game.board.grid.values.count(computer_game.player2.marker)).to eq 4
     end

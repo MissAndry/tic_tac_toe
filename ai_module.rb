@@ -1,6 +1,5 @@
 require_relative 'x_computer_module'
 require_relative 'o_computer_module'
-require 'pry'
 
 module ComputerAI
   include XComputer
