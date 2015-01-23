@@ -54,7 +54,8 @@ module ComputerAI
     if marker == "O"
       return o_third_move
     end
-    go_anywhere
+    # go_anywhere
+    x_third_move
   end
 
   def third_move?

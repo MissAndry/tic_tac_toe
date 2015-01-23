@@ -381,9 +381,9 @@ describe 'Computer' do
           expect(o_computer.o_third_move).to eq([:center])
         end
       end
-
-      #### X COMPUTER MODULE ####
-
+    end
+      
+    describe 'XComputer module' do
       describe '#x_second_move' do
         context '"X" is on the side and "O" is in an adjacent corner' do
           it 'chooses the best strategic move' do
