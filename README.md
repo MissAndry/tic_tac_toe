@@ -9,5 +9,4 @@ Clone this repo to your local computer by entering ```git clone https://github.c
 ```cd``` into the newly cloned folder (```tic_tac_toe```) and run ```bundle install```. In the terminal, type ```ruby runner.rb``` and play the game!
 
 ### DEPENDENCIES
-```rspec```: the test suite is built using RSpec. Check it out by typing ```rspec``` into the terminal!
-```pry```: for debugging. Add ```binding.pry``` to the code where you'd like to start debugging.
+```rspec```: the test suite is built using RSpec. Check it out by typing ```rspec spec``` into the terminal!
